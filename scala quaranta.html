@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala 40</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #2e8b57;
+            color: white;
+        }
+        .table {
+            margin: 20px auto;
+            width: 850px;
+            height: 750px;
+            background-color: #006400;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 13px solid rgb(101, 67, 33);
+        }
+        .card {
+            width: 60px;
+            height: 90px;
+            margin: 5px;
+            background-color: white;
+            color: black;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #228b22;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Scala 40</h1>
+    <div class="table" id="table">
+
+    </div>
+    <div class="controls">
+        <button onclick="drawCard()">Pesca Carta</button>
+        <button onclick="resetGame()">Reset Gioco</button>
+    </div>
+
+    <script>
+        const suits = ['♥', '♦', '♣', '♠'];
+        const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+        function drawCard() {
+            const table = document.getElementById('table');
+            const suit = suits[Math.floor(Math.random() * suits.length)];
+            const rank = ranks[Math.floor(Math.random() * ranks.length)];
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.textContent = `${rank} ${suit}`;
+            table.appendChild(card);
+        }
+
+        function resetGame() {
+            const table = document.getElementById('table');
+            table.innerHTML = '';
+        }
+    </script>
+</body>
+</html>
