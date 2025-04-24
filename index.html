@@ -37,16 +37,16 @@
         }
         p {
             color: white;
-            font-size: 250px;
+            font-size: 300px;
             text-align: center;
             margin-top: 20px;  
              
         }
         #carta{
-            width: 1100px; 
-            height: 1400px;
+            width: 1500px; 
+            height: 1900px;
             position: fixed;
-            margin-top: 2500px;
+            margin-top: 2200px;
             margin-left: -200px;
             transition: margin-top 0.5s, margin-left 0.5s, transform 0.5s;
             z-index: 1;
@@ -55,7 +55,7 @@
             width: 1100px; 
             height: 1400px;
             position: fixed;
-            margin-top: 1600px;
+            margin-top: 2350px;
             margin-left: 6900px;
             transition: margin-top 0.5s, margin-left 0.5s, transform 0.5s;
             z-index: 1;
@@ -69,16 +69,16 @@
     <h2>to the</h2>
     <h1 style="top: 40%;">Poker game</h1>
     <img src="q.jpg" alt="" id="carta" style="transform: rotate(15deg);" onmouseover="animateCard(this, 15); document.getElementById('play').style.display = 'block'; document.getElementById('guide').style.display = 'none'; document.getElementById('options').style.display = 'none';" onmouseout="resetCard(this, 15); document.getElementById('play').style.display = 'none';">
-    <img src="k.png" alt="" id="carta" style="transform: rotate(28deg); margin-top: 2620px; margin-left: 50px;" onmouseover="animateCard(this, 28); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'block'; document.getElementById('options').style.display = 'none';" onmouseout="resetCard(this, 28); document.getElementById('guide').style.display = 'none';">
-    <img src="Playing_card_spade_A.png" alt="" id="carta" style="transform: rotate(41deg); margin-top: 2750px; margin-left: 300px;" onmouseover="animateCard(this, 41); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'none'; document.getElementById('options').style.display = 'block';" onmouseout="resetCard(this, 41); document.getElementById('options').style.display = 'none';">
+    <img src="k.png" alt="" id="carta" style="transform: rotate(28deg); margin-top: 2320px; margin-left: 50px;" onmouseover="animateCard(this, 28); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'block'; document.getElementById('options').style.display = 'none';" onmouseout="resetCard(this, 28); document.getElementById('guide').style.display = 'none';">
+    <img src="Playing_card_spade_A.png" alt="" id="carta" style="transform: rotate(41deg); margin-top: 2450px; margin-left: 300px;" onmouseover="animateCard(this, 41); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'none'; document.getElementById('options').style.display = 'block';" onmouseout="resetCard(this, 41); document.getElementById('options').style.display = 'none';">
     
-    <img src="10.png" alt="" id="carta2" style="transform: rotate(-15deg);" onmouseover="animateCard(this, 15); document.getElementById('play').style.display = 'block'; document.getElementById('guide').style.display = 'none'; document.getElementById('options').style.display = 'none';" onmouseout="resetCard(this, 15); document.getElementById('play').style.display = 'none';">
-    <img src="j.jpg" alt="" id="carta2" style="transform: rotate(-28deg); margin-top: 1750px; margin-left: 6650px;" onmouseover="animateCard(this, 28); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'block'; document.getElementById('options').style.display = 'none';" onmouseout="resetCard(this, 28); document.getElementById('guide').style.display = 'none';">
-    <img src="q.jpg" alt="" id="carta2" style="transform: rotate(-41deg); margin-top: 2000px; margin-left: 6400px;" onmouseover="animateCard(this, 41); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'none'; document.getElementById('options').style.display = 'block';" onmouseout="resetCard(this, 41); document.getElementById('options').style.display = 'none';">
+    <img src="10.png" alt="" id="carta2" style="transform: rotate(-15deg);" onmouseover="animateCard(this, -15)" onmouseout="resetCard(this, -15)">
+    <img src="j.jpg" alt="" id="carta2" style="transform: rotate(-28deg); margin-top: 2500px; margin-left: 6650px;" onmouseover="animateCard(this, -28)" onmouseout="resetCard(this, -28)">
+    <img src="q.jpg" alt="" id="carta2" style="transform: rotate(-41deg); margin-top: 2750px; margin-left: 6400px;" onmouseover="animateCard(this, -41)" onmouseout="resetCard(this, -41)">
 
-    <p style="transform: rotate(15deg); margin-top: 1800px; margin-left: 300px; position: fixed; display: none;" id="play">play</p>
-    <p style="transform: rotate(28deg); margin-top: 2020px; margin-left: 700px; position: fixed; display: none;" id="guide">guide</p>
-    <p style="transform: rotate(41deg); margin-top: 2520px; margin-left: 1100px; position: fixed; display: none;" id="options">options</p>
+    <p style="transform: rotate(15deg); margin-top: 1500px; margin-left: 600px; position: fixed; display: none;" id="play">play</p>
+    <p style="transform: rotate(28deg); margin-top: 1650px; margin-left: 1100px; position: fixed; display: none;" id="guide">guide</p>
+    <p style="transform: rotate(41deg); margin-top: 1970px; margin-left: 1450px; position: fixed; display: none;" id="options">options</p>
     <script>
         function animateCard(card, rotation) {
             card.style.transform = "scale(1.2) rotate("+rotation+"deg)";
