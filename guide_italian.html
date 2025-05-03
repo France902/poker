@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regole Base del Poker</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      background-color: #2e8b57;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1, h2 {
+      color: white;
+      -webkit-text-stroke: 1px  black;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+      border-bottom: 2px dashed #ccc;
+      padding-bottom: 0.3rem;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 1rem;
+    }
+
+    li::before {
+      content: "🎯 ";
+      margin-right: 0.3rem;
+    }
+
+    .emoji-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .section {
+      margin-bottom: 1.5rem;
+    }
+
+    .combo-list li::before {
+      content: "🃏 ";
+    }
+
+    .actions-list li::before {
+      content: "➡️ ";
+    }
+
+    .tips-list li::before {
+      content: "🔥 ";
+    }
+
+    .flair {
+      background-color: #ffccf2;
+      padding: 0.4rem 0.7rem;
+      border-radius: 8px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎰 Regole Base del Poker (Texas Hold'em)</h1>
+
+  <div class="section">
+    <h2>🃎 1. Obiettivo</h2>
+    <p>👉 Fare la <strong>miglior combinazione di 5 carte</strong> possibile e/o far foldare gli altri.</p>
+  </div>
+
+  <div class="section">
+    <h2>📦 2. Setup</h2>
+    <ul>
+      <li>Si gioca con <strong>52 carte</strong></li>
+      <li>Minimo <strong>2 giocatori</strong>, massimo <strong>10</strong></li>
+      <li>Ogni player riceve <strong>2 carte coperte</strong></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🔁 3. Fasi del Gioco</h2>
+    <ul>
+      <li><strong>Pre-Flop</strong> – Ricevi 2 carte, primo giro di puntate</li>
+      <li><strong>Flop</strong> – 3 carte scoperte, si punta</li>
+      <li><strong>Turn</strong> – 1 carta in più, altro giro</li>
+      <li><strong>River</strong> – Ultima carta scoperta, puntate finali</li>
+      <li><strong>Showdown</strong> – Si girano le carte, chi ha la mano migliore vince</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>💰 4. Azioni Possibili</h2>
+    <ul class="actions-list">
+      <li><strong>Check</strong> = Passi senza puntare (se puoi)</li>
+      <li><strong>Bet</strong> = Scommetti</li>
+      <li><strong>Raise</strong> = Rilanci</li>
+      <li><strong>Fold</strong> = Ti arrendi (butti le carte)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🏆 5. Valore delle Mani</h2>
+    <ul class="combo-list">
+      <li><strong>Scala Reale</strong> (10-J-Q-K-A stesso seme)</li>
+      <li><strong>Poker</strong> (4 carte uguali)</li>
+      <li><strong>Full</strong> (tris + coppia)</li>
+      <li><strong>Colore</strong> (5 carte stesso seme)</li>
+      <li><strong>Scala</strong> (5 carte in ordine)</li>
+      <li><strong>Tris</strong></li>
+      <li><strong>Doppia Coppia</strong></li>
+      <li><strong>Coppia</strong></li>
+      <li><strong>Carta Alta</strong> (se non hai niente di meglio)</li>
+    </ul>
+  </div>
+<div class="section"></div>
+    <button onclick="ritorna()" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem;">
+        Torna alla Home
+    </button>
+</div>
+<script>
+function ritorna(){
+  const params = new URLSearchParams(window.location.search);
+  const lang = params.get('lang');
+  window.location.href = "index.html?lang=" + lang;
+}
+</script>
+  
+</body>
+</html>

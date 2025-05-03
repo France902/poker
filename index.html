@@ -2,92 +2,443 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.00, user-scalable=no, maximum-scale=1.00, minimum-scale=1.00">
     <title>Document</title>
 
     <style>
-        body {
+    .flip-card {
+      background-color: white;
+      width: 0px;
+      height: 0px;
+      perspective: 1000px;
+      position: fixed;
+      pointer-events: none;      
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 550px; 
+      height: 845px;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      pointer-events: all;
+     
+    }
+
+    .flip-card.clicked .flip-card-inner {
+      transform: rotateY(180deg);
+      
+    }
+
+    .flip-card-front,
+    .flip-card-back,
+    .flip-card-back2,
+    .flip-card-back3 {
+      position: absolute;
+      width: 900px; 
+      height: 900px;
+      backface-visibility: hidden;
+      border-radius: 16px;
+     
+    }
+
+    .flip-card-front img,
+    .flip-card-back img,
+    .flip-card-back2 img,
+    .flip-card-back3 img {
+        width: 500px; 
+        height: 725px;
+        object-fit: cover;
+       
+     
+    }
+    .flip-card-back {
+      transform: rotateY(180deg) translate(440px, 400px) scale(1.2);
+    }
+    .flip-card-back2 {
+      transform: rotateY(180deg) translate(500px, 450px) scale(1.2);
+    }
+    .flip-card-back3 {
+      transform: rotateY(180deg) translate(600px, 500px) scale(1.2);
+    }
+    </style>
+
+
+
+
+    <style>
+        html, body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
             background-color: #2e8b57;
         }
-        h1 {
-            color: white;
-            font-size: 250px;
-            text-align: center;
-            margin-top: 20px;   
+        #wrapper {
             position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+        }
+        h1 {
+            user-select: none;
+            color: white;
+            font-size: 87.5px;
+            text-align: center;
+            margin-top: -75px;   
+            position: absolute;
+            margin-left: 770px;
+            margin-top: 0px;
+            -webkit-text-stroke: 1.25px black;
         }
         h2 {
+            user-select: none;
             color: white;
-            font-size: 200px;
+            font-size: 75px;
             text-align: center;
-            margin-top: 20px;  
+            margin-top: -75px;  
             position: absolute; 
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%)
+            margin-top: 120px;
+            margin-left: 840px;
+            -webkit-text-stroke: 1.25px black;
+            width: 200px;
         }
         h3 {
-            color: white;
-            font-size: 120px;
+            color: black;
+            font-size: 30px;
             text-align: center;
-            margin-top: 20px;   
+            margin-top: 5px;   
         }
         p {
+            user-select: none;
             color: white;
-            font-size: 300px;
+            font-size: 100px;
             text-align: center;
-            margin-top: 20px;  
-             
+            margin-top: 5px;  
         }
-        #carta{
-            width: 1500px; 
-            height: 1900px;
+        #carta {
+            width: 500px; 
+            height: 720px;
             position: fixed;
-            margin-top: 2200px;
-            margin-left: -200px;
+            margin-top: 600px;
+            margin-left: -50px;
             transition: margin-top 0.5s, margin-left 0.5s, transform 0.5s;
             z-index: 1;
         }
-        #carta2{
-            width: 1100px; 
-            height: 1400px;
+        #carta2 {
+            width: 325px; 
+            height: 400px;
             position: fixed;
-            margin-top: 2350px;
-            margin-left: 6900px;
             transition: margin-top 0.5s, margin-left 0.5s, transform 0.5s;
             z-index: 1;
-           
+        }
+        .switch {
+            position: fixed;
+            display: inline-block;
+            width: 100px;
+            height: 50px;
+            margin-top: 475px;
+            margin-left: 650px;
+        }
+        #tasto1 {
+            display: none;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0;
+            right: 0; bottom: 0;
+            background-color: #bbb;
+            transition: 0.4s;
+            border-radius: 50px;
+            box-shadow: 0 0 7.5px #00000055;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 45px;
+            width: 45px;
+            left: 2.5px;
+            bottom: 2.5px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #00000033;
+        }
+        input:checked + .slider {
+            background-color: #9333ea; 
+        }
+        input:checked + .slider:before {
+            transform: translateX(50px);
+        }
+        .bottoni_audio {
+            width: 62.5px;
+            height: 62.5px;
+            position: fixed;
+            margin-top: 2.5px;
+            margin-left: 1800px;
+            z-index: 1;
+            cursor: pointer;
+        }
+        button {
+            user-select: none;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        img {
+            user-select: none;
+            
         }
     </style>
 
 </head>
-<body>        
-    <h1>Welcome</h1>  
-    <h2>to the</h2>
-    <h1 style="top: 40%;">Poker game</h1>
-    <img src="q.jpg" alt="" id="carta" style="transform: rotate(15deg);" onmouseover="animateCard(this, 15); document.getElementById('play').style.display = 'block'; document.getElementById('guide').style.display = 'none'; document.getElementById('options').style.display = 'none';" onmouseout="resetCard(this, 15); document.getElementById('play').style.display = 'none';">
-    <img src="k.png" alt="" id="carta" style="transform: rotate(28deg); margin-top: 2320px; margin-left: 50px;" onmouseover="animateCard(this, 28); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'block'; document.getElementById('options').style.display = 'none';" onmouseout="resetCard(this, 28); document.getElementById('guide').style.display = 'none';">
-    <img src="Playing_card_spade_A.png" alt="" id="carta" style="transform: rotate(41deg); margin-top: 2450px; margin-left: 300px;" onmouseover="animateCard(this, 41); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'none'; document.getElementById('options').style.display = 'block';" onmouseout="resetCard(this, 41); document.getElementById('options').style.display = 'none';">
-    
-    <img src="10.png" alt="" id="carta2" style="transform: rotate(-15deg);" onmouseover="animateCard(this, -15)" onmouseout="resetCard(this, -15)">
-    <img src="j.jpg" alt="" id="carta2" style="transform: rotate(-28deg); margin-top: 2500px; margin-left: 6650px;" onmouseover="animateCard(this, -28)" onmouseout="resetCard(this, -28)">
-    <img src="q.jpg" alt="" id="carta2" style="transform: rotate(-41deg); margin-top: 2750px; margin-left: 6400px;" onmouseover="animateCard(this, -41)" onmouseout="resetCard(this, -41)">
+<body> 
+    <div id="wrapper">
+    <audio id="audio">
+        <source src="Purple Funk.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio2">
+        <source src="effetto_over.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio3">
+        <source src="effetto_click.mp3" type="audio/mpeg">
+    </audio>
+    <button onclick="document.getElementById('audio').play(); document.getElementById('on').style.display = 'none'; document.getElementById('off').style.display = 'block';"><img class="bottoni_audio" id="on" src="blocca_volume.png" alt="" ></button>
+    <button onclick="document.getElementById('audio').pause(); document.getElementById('off').style.display = 'none'; document.getElementById('on').style.display = 'block';"><img style="display: none; " class="bottoni_audio" id="off" src="volume.png" alt=""></button>
+    <div id="pagina_iniziale_inglese">       
+    <h1 >Welcome</h1>  
+    <h2 >to the</h2>
+    <h1 style="margin-top: 200px; margin-left: 700px; width: 500px;">Poker game</h1>
+    <img src="Royal_Flush.png" alt="" style="width: 800px; height: 300px; position: fixed; margin-top: 290px; margin-left: 550px; z-index: -1;">
+    <div class="flip-card" id="f-card" >
+        <div class="flip-card-inner" >
+          <div class="flip-card-front">
+            <img onclick="document.getElementById('f-card').classList.toggle('clicked');play()" id="carta" style="transform: rotate(15deg); border: 5px solid black;" onmouseover="animateCard(this,  document.querySelector('.flip-card-back'), 15); document.getElementById('play').style.display = 'block'; document.getElementById('guide').style.display = 'none'; document.getElementById('options').style.display = 'none'; document.getElementById('audio2').play();" onmouseout="resetCard(this,  document.querySelector('.flip-card-back'), 15); document.getElementById('play').style.display = 'none'; " src="q.jpg" alt="Front Image" />
+          </div>
+          <div class="flip-card-back">
+            <img style="transform: rotate(15deg);" src="dietro_carta.png" alt="Back Image" />
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" id="f-card2">
+        <div class="flip-card-inner" style=" pointer-events: none;" >
+          <div class="flip-card-front" >
+            <img onclick="document.getElementById('f-card2').classList.toggle('clicked'); guide()"  id="carta" style=" pointer-events: all; transform: rotate(28deg); height: 680px; margin-top: 630px; margin-left: 12.5px; width: 485px; border: 5px solid black;" onmouseover="animateCard(this, document.querySelector('.flip-card-back'), 28); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'block'; document.getElementById('options').style.display = 'none'; document.getElementById('audio2').play();" onmouseout="resetCard(this, document.querySelector('.flip-card-back'), 28); document.getElementById('guide').style.display = 'none'; " src="k.png" alt="Front Image" />
+          </div>
+          <div class="flip-card-back2" >
+            <img style="transform: rotate(28deg); pointer-events: all;" src="dietro_carta.png" alt="Back Image" />
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" id="f-card3">
+        <div class="flip-card-inner" style=" pointer-events: none;" >
+          <div class="flip-card-front" >
+            <img onclick="document.getElementById('f-card3').classList.toggle('clicked'); options()" id="carta" style=" height: 609px; pointer-events: all; transform: rotate(41deg); margin-top: 662.5px; margin-left: 75px; width: 485px;" onmouseover="animateCard(this, document.querySelector('.flip-card-back'), 41); document.getElementById('play').style.display = 'none'; document.getElementById('guide').style.display = 'none'; document.getElementById('options').style.display = 'block'; document.getElementById('audio2').play();" onmouseout="resetCard(this, document.querySelector('.flip-card-back'), 41); document.getElementById('options').style.display = 'none'; " src="Playing_card_spade_A.png" alt="Front Image" />
+          </div>
+          <div class="flip-card-back3" >
+            <img style="transform: rotate(41deg); pointer-events: all;" src="dietro_carta.png" alt="Back Image" />
+          </div>
+        </div>
+      </div>
 
-    <p style="transform: rotate(15deg); margin-top: 1500px; margin-left: 600px; position: fixed; display: none;" id="play">play</p>
-    <p style="transform: rotate(28deg); margin-top: 1650px; margin-left: 1100px; position: fixed; display: none;" id="guide">guide</p>
-    <p style="transform: rotate(41deg); margin-top: 1970px; margin-left: 1450px; position: fixed; display: none;" id="options">options</p>
+    
+    <img src="04_Quattro_di_cuori.jpg" alt="" id="carta2" style="transform: rotate(-41deg); margin-left: 1580px; margin-top: 720px; border: 5px solid black;" onmouseover="animateCard(this, 0, -41)" onmouseout="resetCard(this, 0, -41)">
+    <img src="05_Cinque_di_cuori.jpg" alt="" id="carta2" style="transform: rotate(-28deg); margin-top: 700px; margin-left: 1630px; border: 5px solid black;" onmouseover="animateCard(this, 0, -28)" onmouseout="resetCard(this, 0, -28)">
+    <img src="06_Sei_di_cuori.jpg" alt="" id="carta2" style="transform: rotate(-15deg); margin-top: 670px; margin-left: 1700px; border: 5px solid black;" onmouseover="animateCard(this, 0, -15)" onmouseout="resetCard(this, 0, -15)">
+
+    <p style="transform: rotate(15deg); margin-top: 230px; margin-left: 350px; position: fixed; display: none; -webkit-text-stroke: 1.25px black;" id="play">Play</p>
+    <p style="transform: rotate(28deg); margin-top: 320.5px; margin-left: 490px; position: fixed; display: none; -webkit-text-stroke: 1.25px black;" id="guide">Guide</p>
+    <p style="transform: rotate(41deg); margin-top: 462.5px; margin-left: 600px; position: fixed; display: none; -webkit-text-stroke: 1.25px black;" id="options">Options</p>
+    
+</div>
+<div id="pagina_iniziale_italiano" style="display: none;">       
+    <h1 style=" margin-left: 800px;">Benvenuto</h1>  
+    <h2 style=" margin-left: 870px;">al</h2>
+    <h1 style="margin-top: 200px; margin-left: 600px; width: 800px;">Gioco del Poker</h1>
+    <img src="Royal_Flush.png" alt="" style="width: 800px; height: 300px; position: fixed; margin-top: 290px; margin-left: 600px; z-index: -1;">
+    <div class="flip-card" id="f-card4" >
+        <div class="flip-card-inner" >
+          <div class="flip-card-front">
+            <img onclick="document.getElementById('f-card4').classList.toggle('clicked');play()" id="carta" style="transform: rotate(15deg); border: 5px solid black;" onmouseover="animateCard(this,  document.querySelector('.flip-card-back'), 15); document.getElementById('play2').style.display = 'block'; document.getElementById('guide2').style.display = 'none'; document.getElementById('options2').style.display = 'none'; document.getElementById('audio2').play();" onmouseout="resetCard(this,  document.querySelector('.flip-card-back'), 15); document.getElementById('play2').style.display = 'none'; " src="q.jpg" alt="Front Image" />
+          </div>
+          <div class="flip-card-back">
+            <img style="transform: rotate(15deg);" src="dietro_carta.png" alt="Back Image" />
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" id="f-card5">
+        <div class="flip-card-inner" style=" pointer-events: none;" >
+          <div class="flip-card-front" >
+            <img onclick="document.getElementById('f-card5').classList.toggle('clicked'); guide()"  id="carta" style=" pointer-events: all; transform: rotate(28deg); height: 680px; margin-top: 630px; margin-left: 12.5px; width: 485px; border: 5px solid black;" onmouseover="animateCard(this, document.querySelector('.flip-card-back'), 28); document.getElementById('play2').style.display = 'none'; document.getElementById('guide2').style.display = 'block'; document.getElementById('options2').style.display = 'none'; document.getElementById('audio2').play();" onmouseout="resetCard(this, document.querySelector('.flip-card-back'), 28); document.getElementById('guide2').style.display = 'none'; " src="k.png" alt="Front Image" />
+          </div>
+          <div class="flip-card-back2" >
+            <img style="transform: rotate(28deg); pointer-events: all;" src="dietro_carta.png" alt="Back Image" />
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" id="f-card6">
+        <div class="flip-card-inner" style=" pointer-events: none;" >
+          <div class="flip-card-front" >
+            <img onclick="document.getElementById('f-card6').classList.toggle('clicked'); options()" id="carta" style=" height: 609px; pointer-events: all; transform: rotate(41deg); margin-top: 662.5px; margin-left: 75px; width: 485px;" onmouseover="animateCard(this, document.querySelector('.flip-card-back'), 41); document.getElementById('play2').style.display = 'none'; document.getElementById('guide2').style.display = 'none'; document.getElementById('options2').style.display = 'block'; document.getElementById('audio2').play();" onmouseout="resetCard(this, document.querySelector('.flip-card-back'), 41); document.getElementById('options2').style.display = 'none'; " src="Playing_card_spade_A.png" alt="Front Image" />
+          </div>
+          <div class="flip-card-back3" >
+            <img style="transform: rotate(41deg); pointer-events: all;" src="dietro_carta.png" alt="Back Image" />
+          </div>
+        </div>
+      </div>
+    
+    <img src="04_Quattro_di_cuori.jpg" alt="" id="carta2" style="transform: rotate(-41deg); margin-left: 1580px; margin-top: 720px; border: 5px solid black;" onmouseover="animateCard(this, 0,  -41)" onmouseout="resetCard(this, 0, -41)">
+    <img src="05_Cinque_di_cuori.jpg" alt="" id="carta2" style="transform: rotate(-28deg); margin-top: 700px; margin-left: 1630px; border: 5px solid black;" onmouseover="animateCard(this, 0, -28)" onmouseout="resetCard(this, 0, -28)">
+    <img src="06_Sei_di_cuori.jpg" alt="" id="carta2" style="transform: rotate(-15deg); margin-top: 670px; margin-left: 1700px; border: 5px solid black;" onmouseover="animateCard(this, 0, -15)" onmouseout="resetCard(this, 0, -15)">
+
+    <p style="transform: rotate(15deg); margin-top: 230px; margin-left: 350px; position: fixed; display: none; -webkit-text-stroke: 1.25px black;" id="play2">Gioca</p>
+    <p style="transform: rotate(28deg); margin-top: 320.5px; margin-left: 490px; position: fixed; display: none; -webkit-text-stroke: 1.25px black;" id="guide2">Guida</p>
+    <p style="transform: rotate(41deg); margin-top: 490.5px; margin-left: 520px; position: fixed; display: none; -webkit-text-stroke: 1.25px black;" id="options2">Impostazioni</p>
+    
+</div>
+<div id="schermata_options" style="display: none;">
+    <div style="background-color: rgb(174, 0, 0); width: 1050px; height: 700px; margin-left: 450px; margin-top: 200px; position: fixed; border-radius: 20px;"></div>
+    <div style="background-color: green; border-radius: 10px; width: 310px; height: 40px; position: fixed; margin-top: 370px; margin-left: 1050px;">
+        <h2 id="scritta1" style="font-size: 60px; -webkit-text-stroke: 1px black; margin-top: -100px; margin-left: 50px;">Music</h2>
+    <input style="width: 300px; height: 30px;" type="range" id="volumeControl" min="0" max="100" value="50">
+    </div>
+    <div style="background-color: green; border-radius: 10px; width: 310px; height: 40px; position: fixed; margin-top: 570px; margin-left: 1050px;">
+        <h2  style="font-size: 60px; -webkit-text-stroke: 1px black; margin-top: -100px; margin-left: 50px;">SFX</h2>
+    <input style="width: 300px; height: 30px;" type="range" id="volumeControl2" min="0" max="100" value="50">
+    </div>
+<div id="tasto1">
+<h2 id="scritta" style="position: fixed; font-size: 45px; -webkit-text-stroke: 0.625px black; margin-top: 75px; margin-left: 550px; margin-top: 350px;">Language (English/Italian)</h2>
+<label class="switch">
+    <input type="checkbox" id="langSwitch">
+    <span class="slider"></span>
+  </label>
+</div>
+
+<div>
+    <button id="tasto2" onclick="ritorna()" style=" margin-top: 833px; margin-left: 1300px; width: 200px; background-color: rgb(159, 3, 3); color: white; -webkit-text-stroke: 0.3px black; padding: 2.5px 5px; border: none; border-radius: 5px; cursor: pointer; font-size: 70px; font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; position: fixed; display: none;">
+        <p id="ritorna" style="display: none; font-size: 25px;">Return to Home</p>
+    </button>
+</div>
+</div>
+</div>
     <script>
-        function animateCard(card, rotation) {
-            card.style.transform = "scale(1.2) rotate("+rotation+"deg)";
+        const audio = document.getElementById('audio');
+        const audio2 = document.getElementById('audio2');
+        const audio3 = document.getElementById('audio3');
+        audio.volume = 0.5; 
+        audio2.volume = 0.5; 
+        audio3.volume = 1; 
+        const volumeControl = document.getElementById('volumeControl');
+        volumeControl.addEventListener('input', () => {
+        audio.volume = volumeControl.value / 100;
+        });
+        const volumeControl2 = document.getElementById('volumeControl2');
+        volumeControl2.addEventListener('input', () => {
+        audio2.volume = volumeControl2.value / 100;
+        audio3.volume = volumeControl2.value / 100;
+        });
+
+
+        let lang = "en";
+        const langSwitch = document.getElementById('langSwitch');
+        function animateCard(card, back, rotation) {
+            card.style.transform = "scale(1.2) rotate("+rotation+"deg) translate(50px, -150px)";
+            
         }
-        function resetCard(card, rotation) {
+        function resetCard(card, back, rotation) {
             card.style.transform = "scale(1) rotate("+rotation+"deg)";
+            
+        }
+
+
+        function play() {
+            document.getElementById('audio3').play();
+            setTimeout(function() {
+                window.location.href = "game.html"; 
+            }, 500);
+        }
+        function guide() {
+            document.getElementById('audio3').play();
+            if(lang == "it"){
+                setTimeout(function() {
+                    window.location.href = "guide_italian.html?lang=" + lang;
+                }, 500);
+            }
+            else{
+                setTimeout(function() {
+                    window.location.href = "guide_english.html?lang=" + lang; 
+                }, 500);
+            }
+        }
+        function options() {
+            setTimeout(function() {
+                document.getElementById('audio3').play();
+            document.getElementById("pagina_iniziale_inglese").style.display = "none";
+            document.getElementById("pagina_iniziale_italiano").style.display = "none";
+            document.getElementById("schermata_options").style.display = "block";
+            document.getElementById("tasto1").style.display = "block";
+            document.getElementById("ritorna").style.display = "block";
+            document.getElementById("tasto2").style.display = "block";
+            langSwitch.addEventListener('change', () => {
+            lang = langSwitch.checked ? "it" : "en";
+            console.log("Lingua attuale:", lang);
+            if(lang == "it"){
+                document.getElementById("scritta").innerText= "Lingua (Inglese/Italiano)";
+                document.getElementById("ritorna").innerText = "Torna alla Home";
+                document.getElementById("scritta1").innerText = "Musica";
+
+            }
+            else{
+                document.getElementById("scritta").innerText = "Language (English/Italian)";
+                document.getElementById("ritorna").innerText = "Return to Home";
+                document.getElementById("scritta1").innerText = "Music";
+            }
+            });
+                }, 500);
+           
+            
+        }
+        function ritorna() {
+            if(lang == "it"){
+                document.getElementById("pagina_iniziale_italiano").style.display = "block";
+            }
+            else{
+                document.getElementById("pagina_iniziale_inglese").style.display = "block";
+            }
+            document.getElementById("schermata_options").style.display = "none";
+            document.getElementById("tasto1").style.display = "none";
+            document.getElementById("ritorna").style.display = "none";
+            document.getElementById("tasto2").style.display = "none";
+            document.getElementById('f-card3').classList.toggle('clicked');
+            document.getElementById('f-card6').classList.toggle('clicked');
         }
     </script>
 
+
+    <script>
+            function scalePage() {
+        const baseWidth = 1920; 
+        const baseHeight = 1080;
+
+        const scaleX = window.innerWidth / baseWidth;
+        const scaleY = window.innerHeight / baseHeight;
+        const scale = Math.min(scaleX, scaleY);
+
+        const wrapper = document.getElementById('wrapper');
+        wrapper.style.transform = `scale(${scale})`;
+    }
+
+    window.addEventListener('resize', scalePage);
+    window.addEventListener('load', scalePage);
+    </script>
     
 </body>
 </html>

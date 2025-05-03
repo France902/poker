@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Volume Semplice</title>
+</head>
+<body>
+
+  <!-- Audio da controllare -->
+  <audio id="audio" controls>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    Il tuo browser non supporta l’audio 😢
+  </audio>
+
+  <!-- Barra del volume -->
+  <br><br>
+  <div style="background-color: green; border-radius: 10px; width: 210px; height: 40px;">
+  <input style="width: 200px; height: 30px;" type="range" id="volumeControl" min="0" max="100" value="50">
+  </div>
+  <script>
+    const audio = document.getElementById('audio');
+    const volumeControl = document.getElementById('volumeControl');
+
+    // Imposta volume iniziale
+    audio.volume = 0.5;
+
+    // Cambia volume al movimento della barra
+    volumeControl.addEventListener('input', () => {
+      audio.volume = volumeControl.value / 100;
+    });
+  </script>
+
+</body>
+</html>
