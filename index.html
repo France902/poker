@@ -208,7 +208,7 @@
     <audio id="audio2">
         <source src="effetto_over.mp3" type="audio/mpeg">
     </audio>
-    <audio id="audio3">
+    <audio id="audio3" autoplay>
         <source src="effetto_click.mp3" type="audio/mpeg">
     </audio>
     <button onclick="document.getElementById('audio').play(); document.getElementById('on').style.display = 'none'; document.getElementById('off').style.display = 'block';"><img class="bottoni_audio" id="on" src="blocca_volume.png" alt="" ></button>
@@ -323,7 +323,7 @@
 </div>
 
 <div>
-    <button id="tasto2" onclick="ritorna()" style=" margin-top: 833px; margin-left: 1300px; width: 200px; background-color: rgb(159, 3, 3); color: white; -webkit-text-stroke: 0.3px black; padding: 2.5px 5px; border: none; border-radius: 5px; cursor: pointer; font-size: 70px; font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; position: fixed; display: none;">
+    <button id="tasto2" onclick="ritorna()" style=" margin-top: 832px; margin-left: 1300px; width: 200px; background-color: rgb(159, 3, 3); color: white; -webkit-text-stroke: 0.3px black; padding: 2.5px 5px; border: none; border-radius: 5px; cursor: pointer; font-size: 70px; font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; position: fixed; display: none;">
         <p id="ritorna" style="display: none; font-size: 25px;">Return to Home</p>
     </button>
 </div>
@@ -336,7 +336,6 @@
         audio.volume = 0.5; 
         audio2.volume = 0.5; 
         audio3.volume = 1; 
-        audio.play();
         const volumeControl = document.getElementById('volumeControl');
         volumeControl.addEventListener('input', () => {
         audio.volume = volumeControl.value / 100;
@@ -363,20 +362,20 @@
         function play() {
             document.getElementById('audio3').play();
             setTimeout(function() {
-                window.location.href = "game.html"; 
-            }, 500);
+                window.location.href = "poker.html?lang=" + lang + "&audio=" + audio.currentTime + "&audio2=" + audio2.currentTime;
+            }, 750);
         }
         function guide() {
             document.getElementById('audio3').play();
             if(lang == "it"){
                 setTimeout(function() {
                     window.location.href = "guide_italian.html?lang=" + lang;
-                }, 500);
+                }, 750);
             }
             else{
                 setTimeout(function() {
                     window.location.href = "guide_english.html?lang=" + lang; 
-                }, 500);
+                }, 750);
             }
         }
         function options() {
@@ -403,7 +402,7 @@
                 document.getElementById("scritta1").innerText = "Music";
             }
             });
-                }, 500);
+                }, 750);
            
             
         }
