@@ -363,19 +363,19 @@
             document.getElementById('audio3').play();
             setTimeout(function() {
                 window.location.href = "poker.html?lang=" + lang + "&audio=" + audio.currentTime + "&audio2=" + audio2.currentTime;
-            }, 750);
+            }, 900);
         }
         function guide() {
             document.getElementById('audio3').play();
             if(lang == "it"){
                 setTimeout(function() {
                     window.location.href = "guide_italian.html?lang=" + lang;
-                }, 750);
+                }, 900);
             }
             else{
                 setTimeout(function() {
                     window.location.href = "guide_english.html?lang=" + lang; 
-                }, 750);
+                }, 900);
             }
         }
         function options() {
@@ -402,7 +402,7 @@
                 document.getElementById("scritta1").innerText = "Music";
             }
             });
-                }, 750);
+                }, 900);
            
             
         }
