@@ -1,97 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Game</title>
+    <title>Poker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #2b2b2b;
+            background-color: #2e8b57;
             color: white;
         }
+        .table {
+            margin: 20px auto;
+            width: 650px;
+            height: 550px;
+            background-color: #006400;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            border: 13px solid rgb(101, 67, 33);
+            position: relative;
+        }
         .card {
-            display: inline-block;
-            width: 80px;
-            height: 120px;
-            margin: 10px;
-            border: 1px solid #fff;
-            border-radius: 8px;
-            background-color: #fff;
+            width: 60px;
+            height: 90px;
+            margin: 5px;
+            background-color: white;
             color: black;
-            font-size: 20px;
-            line-height: 120px;
-            text-align: center;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .card.back {
+            background-color: gray;
+            color: transparent;
+        }
+        .player-cards, .opponent-cards {
+            display: flex;
+            justify-content: center;
+            margin: 10px;
         }
         .controls {
             margin-top: 20px;
         }
         button {
             padding: 10px 20px;
-            font-size: 16px;
             margin: 5px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+        }
+        button:hover {
+            background-color: #228b22;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+        .left-button {
+            position: absolute;
+            left: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 90px;
+            background-color: white;
+            color: black;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        .left-button:hover {
+            background-color: #f0f0f0;
+        }
+        .right-button {
+            position: absolute;
+            right: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 90px;
+            background-color: white;
+            color: black;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        .right-button:hover {
+            background-color: #f0f0f0;
+        }
+        .bottom-controls {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Poker Game</h1>
-    <div id="player-hand">
-        <h2>Your Hand</h2>
-        <div id="cards"></div>
+    <h1>Poker</h1>
+    <div id="start-screen">
+        <button onclick="startGame()">Start</button>
     </div>
-    <div class="controls">
-        <button onclick="dealCards()">Deal Cards</button>
-        <button onclick="checkHand()">Check Hand</button>
+    <div class="table hidden" id="table">
+        <div class="left-button" onclick="revealWinner()">👁️</div>
+        <div class="right-button" onclick="dealCards()">🂠</div>
+        <div class="opponent-cards" id="opponent-cards"></div>
+        <div class="player-cards" id="player-cards"></div>
     </div>
-    <div id="result"></div>
+    <div class="bottom-controls hidden" id="controls">
+        <button onclick="resetGame()">Fine Gioco</button>
+    </div>
 
     <script>
-        const suits = ['♠', '♥', '♦', '♣'];
-        const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-        let deck = [];
+        const suits = ['♥', '♦', '♣', '♠'];
+        const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        const rankValues = { 'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13 };
+
         let playerHand = [];
+        let opponentHand = [];
 
-        function createDeck() {
-            deck = [];
-            for (let suit of suits) {
-                for (let rank of ranks) {
-                    deck.push({ rank, suit });
-                }
-            }
-        }
+        function startGame() {
+            const startScreen = document.getElementById('start-screen');
+            const table = document.getElementById('table');
+            const controls = document.getElementById('controls');
 
-        function shuffleDeck() {
-            for (let i = deck.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [deck[i], deck[j]] = [deck[j], deck[i]];
-            }
+            // Nascondi schermata iniziale e mostra il tavolo
+            startScreen.classList.add('hidden');
+            table.classList.remove('hidden');
+            controls.classList.remove('hidden');
         }
 
         function dealCards() {
-            createDeck();
-            shuffleDeck();
-            playerHand = deck.slice(0, 5);
-            displayHand();
-            document.getElementById('result').innerText = '';
-        }
+            const opponentCards = document.getElementById('opponent-cards');
+            const playerCards = document.getElementById('player-cards');
 
-        function displayHand() {
-            const cardsDiv = document.getElementById('cards');
-            cardsDiv.innerHTML = '';
-            for (let card of playerHand) {
-                const cardDiv = document.createElement('div');
-                cardDiv.className = 'card';
-                cardDiv.innerText = `${card.rank}${card.suit}`;
-                cardsDiv.appendChild(cardDiv);
+            // Pulisci le carte precedenti
+            playerHand = [];
+            opponentHand = [];
+            playerCards.innerHTML = '';
+            opponentCards.innerHTML = '';
+
+            // Distribuisci 5 carte a ciascun giocatore
+            for (let i = 0; i < 5; i++) {
+                // Carte del giocatore
+                const playerCard = drawCard();
+                playerHand.push(playerCard);
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.textContent = `${playerCard.rank} ${playerCard.suit}`;
+                playerCards.appendChild(cardElement);
+
+                // Carte dell'avversario
+                const opponentCard = drawCard();
+                opponentHand.push(opponentCard);
+                const opponentCardElement = document.createElement('div');
+                opponentCardElement.className = 'card back';
+                opponentCards.appendChild(opponentCardElement);
             }
         }
 
-        function checkHand() {
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerText = 'Hand checking is not implemented yet.';
-            // Add logic to evaluate the player's hand (e.g., pairs, flush, etc.)
+        function drawCard() {
+            const suit = suits[Math.floor(Math.random() * suits.length)];
+            const rank = ranks[Math.floor(Math.random() * ranks.length)];
+            return { rank, suit };
+        }
+
+        function calculateHandValue(hand) {
+            const rankCount = {};
+            hand.forEach(card => {
+                rankCount[card.rank] = (rankCount[card.rank] || 0) + 1;
+            });
+
+            const counts = Object.values(rankCount);
+            if (counts.includes(4)) return { name: 'Poker', score: 7 };
+            if (counts.includes(3) && counts.includes(2)) return { name: 'Full', score: 6 };
+            if (counts.includes(3)) return { name: 'Tris', score: 3 };
+            if (counts.filter(count => count === 2).length === 2) return { name: 'Doppia Coppia', score: 2 };
+            if (counts.includes(2)) return { name: 'Coppia', score: 1 };
+            return { name: 'Carta Alta', score: 0 };
+        }
+
+        function revealWinner() {
+            const opponentCards = document.getElementById('opponent-cards');
+            opponentCards.innerHTML = '';
+
+            // Mostra le carte dell'avversario
+            opponentHand.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.textContent = `${card.rank} ${card.suit}`;
+                opponentCards.appendChild(cardElement);
+            });
+
+            // Calcola il valore delle mani
+            const playerHandValue = calculateHandValue(playerHand);
+            const opponentHandValue = calculateHandValue(opponentHand);
+
+            // Determina il vincitore
+            let message;
+            if (playerHandValue.score === opponentHandValue.score) {
+                message = `Pareggio! Entrambi avete ${playerHandValue.name}.`;
+            } else if (playerHandValue.score > opponentHandValue.score) {
+                message = `Hai vinto con ${playerHandValue.name}! L'avversario aveva ${opponentHandValue.name}.`;
+            } else {
+                message = `Hai perso! L'avversario ha ${opponentHandValue.name}, mentre tu hai ${playerHandValue.name}.`;
+            }
+
+            alert(message);
+        }
+
+        function resetGame() {
+            const table = document.getElementById('table');
+            const opponentCards = document.getElementById('opponent-cards');
+            const playerCards = document.getElementById('player-cards');
+            const startScreen = document.getElementById('start-screen');
+            const controls = document.getElementById('controls');
+
+            // Resetta il tavolo e torna alla schermata iniziale
+            playerCards.innerHTML = '';
+            opponentCards.innerHTML = '';
+            startScreen.classList.remove('hidden');
+            table.classList.add('hidden');
+            controls.classList.add('hidden');
         }
     </script>
 </body>
