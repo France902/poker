@@ -336,6 +336,7 @@
         audio.volume = 0.5; 
         audio2.volume = 0.5; 
         audio3.volume = 1; 
+        audio.play();
         const volumeControl = document.getElementById('volumeControl');
         volumeControl.addEventListener('input', () => {
         audio.volume = volumeControl.value / 100;
