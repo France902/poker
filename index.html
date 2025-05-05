@@ -389,12 +389,15 @@
             document.getElementById("tasto2").style.display = "block";
             langSwitch.addEventListener('change', () => {
             lang = langSwitch.checked ? "it" : "en";
-            console.log("Lingua attuale:", lang);
+            if(langSwitch.checked == true){
+               if(lang == "it") document.getElementById('f-card6').classList.toggle('clicked');
+               else document.getElementById('f-card3').classList.toggle('clicked');
+            }
             if(lang == "it"){
                 document.getElementById("scritta").innerText= "Lingua (Inglese/Italiano)";
                 document.getElementById("ritorna").innerText = "Torna alla Home";
                 document.getElementById("scritta1").innerText = "Musica";
-
+                
             }
             else{
                 document.getElementById("scritta").innerText = "Language (English/Italian)";
@@ -419,11 +422,11 @@
             document.getElementById("tasto2").style.display = "none";
             if(lang == "it"){
                 document.getElementById('f-card6').classList.toggle('clicked');
-                document.getElementById('f-card3').classList.toggle('clicked');
+                
             }
             else{
                 document.getElementById('f-card3').classList.toggle('clicked');
-                document.getElementById('f-card6').classList.toggle('clicked');
+               
             }
             
         }
