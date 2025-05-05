@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,, initial-scale=1.00, user-scalable=no, maximum-scale=1.00, minimum-scale=1.00">
     <title>Poker</title>
     <style>
         body {
@@ -11,22 +11,29 @@
             background-color: #2e8b57;
             color: white;
         }
+        #wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+        }
         .table {
             margin: 20px auto;
-            width: 650px;
-            height: 550px;
+            width: 800px;
+            height: 700px;
+            margin-left: 550px;
+            margin-top: 180px;
             background-color: #006400;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            align-items: center;
             border: 13px solid rgb(101, 67, 33);
             position: relative;
         }
         .card {
-            width: 60px;
-            height: 90px;
+            width: 95px;
+            height: 142px;
             margin: 5px;
             background-color: white;
             color: black;
@@ -36,10 +43,13 @@
             align-items: center;
             font-weight: bold;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            border: 2px solid black;
         }
         .card.back {
-            background-color: gray;
-            color: transparent;
+            background-image: url('dietro_carta2.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid black;
         }
         .player-cards, .opponent-cards {
             display: flex;
@@ -110,25 +120,25 @@
     </style>
 </head>
 <body>
-    <h1>Poker</h1>
-    <div id="start-screen">
-        <button onclick="startGame()">Start</button>
-    </div>
+    <div id="wrapper">
     <div class="table hidden" id="table">
-        <div class="left-button" onclick="revealWinner()">👁️</div>
-        <div class="right-button" onclick="dealCards()">🂠</div>
+        <img src="pila_gettoni.png" alt="" style="position: fixed; width: 200px; height: 150px; margin-top: 390px; margin-left: 50px;">
+        
+        <img src="pila_gettoni.png" alt="" style="position: fixed; width: 200px; height: 150px; margin-top: 150px; margin-left: 520px;">
+        <img src="icona_bot.jpg" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 325px; margin-top: -185px; border-radius: 20px;">
         <div class="opponent-cards" id="opponent-cards"></div>
-        <div class="player-cards" id="player-cards"></div>
+        <img src="icona_player.png" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 325px; margin-top: 730px; border-radius: 20px;">
+        <div class="player-cards" id="player-cards" ></div>
     </div>
     <div class="bottom-controls hidden" id="controls">
         <button onclick="resetGame()">Fine Gioco</button>
     </div>
-
+</div>
     <script>
         const suits = ['♥', '♦', '♣', '♠'];
         const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
         const rankValues = { 'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13 };
-
+        let suit, rank;
         let playerHand = [];
         let opponentHand = [];
 
@@ -136,26 +146,75 @@
             const startScreen = document.getElementById('start-screen');
             const table = document.getElementById('table');
             const controls = document.getElementById('controls');
-
-            // Nascondi schermata iniziale e mostra il tavolo
-            startScreen.classList.add('hidden');
             table.classList.remove('hidden');
             controls.classList.remove('hidden');
+            setTimeout(() => {
+                pre_flop();
+            }, 3000); 
         }
-
-        function dealCards() {
+        startGame();
+        function pre_flop() {
             const opponentCards = document.getElementById('opponent-cards');
             const playerCards = document.getElementById('player-cards');
 
-            // Pulisci le carte precedenti
+            suit = suits[Math.floor(Math.random() * suits.length)];
+            rank = ranks[Math.floor(Math.random() * ranks.length)];
+            playerHand[0] = rank;
+            playerHand[1] = suit;
+
+            const cardElement = document.createElement('div');
+            cardElement.className = 'card';
+            cardElement.textContent += `${playerHand[0]} ${playerHand[1]}`;
+            playerCards.appendChild(cardElement);
+            
+            
+
+            suit = suits[Math.floor(Math.random() * suits.length)];
+            rank = ranks[Math.floor(Math.random() * ranks.length)];
+            opponentHand[0] = rank;
+            opponentHand[1] = suit;
+
+            const opponentCard = drawCard();
+            opponentHand.push(opponentCard);
+            const opponentCardElement = document.createElement('div');
+            opponentCardElement.className = 'card back';
+            opponentCards.appendChild(opponentCardElement);
+
+            setTimeout(() => {
+                suit = suits[Math.floor(Math.random() * suits.length)];
+                rank = ranks[Math.floor(Math.random() * ranks.length)];
+                playerHand[2] = rank;
+                playerHand[3] = suit;
+
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.textContent += `${playerHand[2]} ${playerHand[3]}`;
+                playerCards.appendChild(cardElement);
+
+                suit = suits[Math.floor(Math.random() * suits.length)];
+                rank = ranks[Math.floor(Math.random() * ranks.length)];
+                opponentHand[2] = rank;
+                opponentHand[3] = suit;
+                
+                
+                const opponentCardElement = document.createElement('div');
+                opponentCardElement.className = 'card back';
+                
+                opponentCards.appendChild(opponentCardElement);
+            }, 300); 
+        }
+        function dealCards() {
+
+
+
             playerHand = [];
             opponentHand = [];
             playerCards.innerHTML = '';
             opponentCards.innerHTML = '';
 
-            // Distribuisci 5 carte a ciascun giocatore
+
             for (let i = 0; i < 5; i++) {
-                // Carte del giocatore
+
                 const playerCard = drawCard();
                 playerHand.push(playerCard);
                 const cardElement = document.createElement('div');
@@ -163,7 +222,6 @@
                 cardElement.textContent = `${playerCard.rank} ${playerCard.suit}`;
                 playerCards.appendChild(cardElement);
 
-                // Carte dell'avversario
                 const opponentCard = drawCard();
                 opponentHand.push(opponentCard);
                 const opponentCardElement = document.createElement('div');
@@ -236,6 +294,24 @@
             table.classList.add('hidden');
             controls.classList.add('hidden');
         }
+
+        
+    </script>
+    <script>
+    function scalePage() {
+        const baseWidth = 1920; 
+        const baseHeight = 1080;
+
+        const scaleX = window.innerWidth / baseWidth;
+        const scaleY = window.innerHeight / baseHeight;
+        const scale = Math.min(scaleX, scaleY);
+
+        const wrapper = document.getElementById('wrapper');
+        wrapper.style.transform = `scale(${scale})`;
+    }
+
+    window.addEventListener('resize', scalePage);
+    window.addEventListener('load', scalePage);
     </script>
 </body>
 </html>
