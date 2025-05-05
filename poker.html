@@ -10,24 +10,20 @@
             text-align: center;
             background-color: #2e8b57;
             color: white;
-        }
-        #wrapper {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform-origin: top left;
+            user-select: none;
+            
         }
         .table {
-            margin: 20px auto;
-            width: 800px;
-            height: 700px;
-            margin-left: 550px;
-            margin-top: 180px;
+            margin: 21px auto;
+            margin-top: 25px;
+            width: 900px;
+            height: 800px;
             background-color: #006400;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            align-items: center;
             border: 13px solid rgb(101, 67, 33);
             position: relative;
         }
@@ -44,6 +40,7 @@
             font-weight: bold;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             border: 2px solid black;
+            transition: transform 0.3s;
         }
         .card.back {
             background-image: url('dietro_carta2.jpg');
@@ -51,13 +48,18 @@
             background-position: center;
             border: 2px solid black;
         }
-        .player-cards, .opponent-cards {
+        .card.centre {
+            margin-top: -500px;
+            z-index: 3;
+        }
+        .player-cards, .opponent-cards, .common-cards {
             display: flex;
             justify-content: center;
             margin: 10px;
         }
         .controls {
             margin-top: 20px;
+            position: fixed;
         }
         button {
             padding: 10px 20px;
@@ -66,6 +68,9 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+             margin-left: -500px;
+             margin-top: -100px;
+             position: fixed;
         }
         button:hover {
             background-color: #228b22;
@@ -74,108 +79,158 @@
         .hidden {
             display: none;
         }
-        .left-button {
-            position: absolute;
-            left: -80px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 60px;
-            height: 90px;
-            background-color: white;
-            color: black;
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-        }
-        .left-button:hover {
-            background-color: #f0f0f0;
-        }
-        .right-button {
-            position: absolute;
-            right: -80px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 60px;
-            height: 90px;
-            background-color: white;
-            color: black;
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-        }
-        .right-button:hover {
-            background-color: #f0f0f0;
-        }
         .bottom-controls {
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div id="wrapper">
+    
     <div class="table hidden" id="table">
-        <img src="pila_gettoni.png" alt="" style="position: fixed; width: 200px; height: 150px; margin-top: 390px; margin-left: 50px;">
-        
+        <h1 id="gettoni_bot" style="position: fixed; font-size: 40px; color: white; margin-left: 550px; margin-top: 300px; ">2000 🪙</h1>
+        <h1 id="piatto_bot" style="position: fixed; font-size: 30px; color: white; margin-left: 1050px; margin-top: 150px;">Current Playing:</h1>
+        <h1 id="gettoni_player" style="position: fixed; font-size: 40px; color: white; margin-left: -450px; margin-top: 650px;">2000 🪙</h1>
+        <h1 id="piatto_player" style="position: fixed; font-size: 30px; color: white; margin-left: 1050px; margin-top: 600px; ">Current Playing:</h1>
+        <h1 id="turni" style="position: fixed; font-size: 50px; color: white; margin-left: -1200px; margin-top: 0px; "></h1>
+        <img src="pila_gettoni.png" alt="" style="position: fixed; width: 200px; height: 150px; margin-top: 500px; margin-left: -480px;">
         <img src="pila_gettoni.png" alt="" style="position: fixed; width: 200px; height: 150px; margin-top: 150px; margin-left: 520px;">
-        <img src="icona_bot.jpg" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 325px; margin-top: -185px; border-radius: 20px;">
+        <img src="icona_bot.jpg" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 970px; margin-top: -15px; border-radius: 20px;">
         <div class="opponent-cards" id="opponent-cards"></div>
-        <img src="icona_player.png" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 325px; margin-top: 730px; border-radius: 20px;">
+        <img src="icona_player.png" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 970px; margin-top: 660px; border-radius: 20px;">
         <div class="player-cards" id="player-cards" ></div>
+        <img src="dietro_carta2.jpg" alt="" style="margin-left: 650px; margin-top: 430px; position: fixed; width: 120px; height: 150px; border: 4px solid black;">
+        <div class="controls2" style="position: fixed;"></div>
+            <button id="fold" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 300px; margin-left: -1200px;">Fold</button>
+            <button id="call" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 400px; margin-left: -1200px;">Call</button>
+            <button id="raise" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 500px; margin-left: -1200px;">Raise</button>
+            <button id="all-in" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 600px; margin-left: -1200px;">All in</button>
+        </div>
+        <div id="countdown" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 520px; margin-top: -500px; display: none; text-align: center;">3</div>
+        <button onclick="startGame()" id="new_round" style="display: none; width: 150px; height: 90px; position: fixed; font-size: 30px; margin-top: -370px; margin-left: 700px; text-align: center;">New round</button>
+        <div class="common-cards" id="common-cards" ></div>
     </div>
     <div class="bottom-controls hidden" id="controls">
-        <button onclick="resetGame()">Fine Gioco</button>
+        <button onclick="window.location.href = 'index.html?lang=' + lang + '&audio=' + audio.currentTime + '&audio2=' + audio2.currentTime;">Exit the Game <br>(Return to menu)</button>
     </div>
-</div>
+
     <script>
         const suits = ['♥', '♦', '♣', '♠'];
         const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
         const rankValues = { 'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13 };
-        let suit, rank;
+        let suit, rank, turno;
         let playerHand = [];
         let opponentHand = [];
+        let commonCards = [];
+
+        const countdownElement = document.getElementById('countdown');
+        const opponentCards = document.getElementById('opponent-cards');
+        const playerCards = document.getElementById('player-cards');
+        const commonCard = document.getElementById('common-cards');
+        const turni = document.getElementById("turni");
+
+        // DATI DI GIOCO
+
+        let playerChips = 2000;
+        const playerChipsElement = document.getElementById('gettoni_player');
+        let opponentChips = 2000;
+        const opponentChipsElement = document.getElementById('gettoni_bot');
+        let playerBet = 0;
+        const playerBetElement = document.getElementById('piatto_player');
+        let opponentBet = 0;
+        const opponentBetElement = document.getElementById('piatto_bot');
+        let wage = 50;
+
+        const fold = document.getElementById("fold");
+        const call = document.getElementById("call");
+        const raise = document.getElementById("raise");
+        const all_in = document.getElementById("all-in");
+        const new_round = document.getElementById("new_round");
 
         function startGame() {
             const startScreen = document.getElementById('start-screen');
             const table = document.getElementById('table');
             const controls = document.getElementById('controls');
+            playerCards.innerHTML = '';
+            opponentCards.innerHTML = '';
+            countdownElement.innerHTML = '';
+            turni.textContent = "Your Turn";
+            new_round.style.display = 'none';
+            countdownElement.style.fontSize = "100px";   
             table.classList.remove('hidden');
             controls.classList.remove('hidden');
+            let countdown = 3;
+            const countdownInterval = setInterval(() => {
+                countdownElement.style.display = 'block';   
+                countdownElement.textContent = countdown;
+                countdown--;
+                switch (countdown) {
+                    case 2:
+                        playerChips = playerChips - 50;
+                        playerBet = playerBet + 50;
+                        playerChipsElement.textContent = `${playerChips} 🪙 -50`;
+                        playerChipsElement.style.color = 'red';
+                        playerBetElement.textContent = `Current Playing: ${playerBet} 🪙 +50`;
+                        playerBetElement.style.color = 'green';
+                        break;
+                    case 1:
+                        opponentChips = opponentChips - 50;
+                        opponentBet = opponentBet + 50;
+                        playerChipsElement.style.color = 'white';
+                        playerBetElement.style.color = 'white';
+                        opponentChipsElement.textContent = `${opponentChips} 🪙 -50`;
+                        opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙 +50`;
+                        opponentChipsElement.style.color = 'red';
+                        opponentBetElement.style.color = 'green';
+                        playerChipsElement.textContent = `${playerChips} 🪙`;
+                        playerBetElement.textContent = `Current Playing: ${playerBet} 🪙`;
+                        break;
+                    case 0:
+                        opponentChipsElement.style.color = 'white';
+                        opponentBetElement.style.color = 'white';
+                        break;
+                    case -1:
+                        opponentChipsElement.textContent = `${opponentChips} 🪙`;
+                        opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙`;
+                        clearInterval(countdownInterval);
+                        countdownElement.style.display = 'none';
+                        break;
+                }
+            }, 1000);
+           
             setTimeout(() => {
                 pre_flop();
-            }, 3000); 
+            }, 4000); 
         }
         startGame();
-        function pre_flop() {
-            const opponentCards = document.getElementById('opponent-cards');
-            const playerCards = document.getElementById('player-cards');
 
+
+        //SEZIONE PLAYER + Preimpostazione carte
+
+        function pre_flop() {
+            turno = 1;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
             playerHand[0] = rank;
             playerHand[1] = suit;
-
             const cardElement = document.createElement('div');
             cardElement.className = 'card';
             cardElement.textContent += `${playerHand[0]} ${playerHand[1]}`;
+            cardElement.style.fontSize = '40px';
             playerCards.appendChild(cardElement);
+            cardElement.style.cursor = 'pointer';
+            cardElement.addEventListener('click', () => {
+                cardElement.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    cardElement.style.transform = 'scale(1)';
+                }, 2000);
+            });
             
             
-
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
             opponentHand[0] = rank;
             opponentHand[1] = suit;
 
-            const opponentCard = drawCard();
-            opponentHand.push(opponentCard);
             const opponentCardElement = document.createElement('div');
             opponentCardElement.className = 'card back';
             opponentCards.appendChild(opponentCardElement);
@@ -190,128 +245,496 @@
                 cardElement.className = 'card';
                 cardElement.textContent += `${playerHand[2]} ${playerHand[3]}`;
                 playerCards.appendChild(cardElement);
+                cardElement.style.fontSize = '40px';
+                cardElement.addEventListener('click', () => {
+                cardElement.style.transform = 'scale(1.2)';
+
+                setTimeout(() => {
+                    cardElement.style.transform = 'scale(1)';
+                }, 2000);
+                });
 
                 suit = suits[Math.floor(Math.random() * suits.length)];
                 rank = ranks[Math.floor(Math.random() * ranks.length)];
                 opponentHand[2] = rank;
                 opponentHand[3] = suit;
-                
-                
                 const opponentCardElement = document.createElement('div');
                 opponentCardElement.className = 'card back';
-                
                 opponentCards.appendChild(opponentCardElement);
             }, 300); 
+
+            call.textContent += "  -"+wage+" 🪙";
+            raise.textContent += "  -"+(wage*2)+" 🪙";
+            all_in.textContent += "  -"+playerChips+" 🪙";
+            fold.onclick = function() {
+                countdownElement.style.fontSize = "30px";
+                countdownElement.style.display = 'block';
+                countdownElement.textContent = "FOLD - Bot wins "+ (opponentBet + playerBet) + " 🪙";
+                countdownElement.innerHTML += "<br>New Round ↓";
+                new_round.style.display = 'block';
+                call.textContent = "Call";
+                raise.textContent = "Raise";
+                all_in.textContent = "All in";
+                playerBetElement.textContent = `Current Playing: `;
+                opponentBetElement.textContent = `Current Playing: `;
+                opponentChips = opponentChips + opponentBet + playerBet;
+                opponentChipsElement.textContent = `${opponentChips} 🪙`;
+                wage = 50;
+                playerBet = 0;
+                opponentBet = 0;
+            };
+            call.onclick = function() {
+                playerBet = playerBet + wage;
+                playerChips = playerChips - wage;
+                playerChipsElement.textContent = `${playerChips} 🪙 -`+wage;
+                playerBetElement.textContent = `Current Playing: ${playerBet} 🪙 +`+wage;
+                playerChipsElement.style.color = 'red';
+                playerBetElement.style.color = 'green';
+                turni.textContent = "Bot Turn";
+                setTimeout(() => {
+                    playerChipsElement.style.color = 'white';
+                    playerBetElement.style.color = 'white';
+                    playerChipsElement.textContent = `${playerChips} 🪙`;
+                    playerBetElement.textContent = `Current Playing: ${playerBet} 🪙`;
+                    if(turno == 1) turno_bot_preflop(true, false, false);
+                    if(turno == 2) turno_flop_bot(true, false, false);
+                    if(turno == 3) turno_river_bot(true, false, false);
+                    if(turno == 4) turno_showdown_bot(true, false, false);
+                    
+                }, 2000);
+            };
+            raise.onclick = function() {
+                wage = wage*2;
+                playerBet = playerBet + wage ;
+                playerChips = playerChips - wage ;
+                playerChipsElement.textContent = `${playerChips} 🪙 -`+wage;
+                playerBetElement.textContent = `Current Playing: ${playerBet} 🪙 +`+wage;
+                playerChipsElement.style.color = 'red';
+                playerBetElement.style.color = 'green';
+                turni.textContent = "Bot Turn";
+                setTimeout(() => {
+                    playerChipsElement.style.color = 'white';
+                    playerBetElement.style.color = 'white';
+                    playerChipsElement.textContent = `${playerChips} 🪙`;
+                    playerBetElement.textContent = `Current Playing: ${playerBet} 🪙`;
+                    if(turno == 1) turno_bot_preflop(false, true, false);
+                    if(turno == 2) turno_flop_bot(false, true, false);
+                    if(turno == 3) turno_river_bot(false, true, false);
+                    if(turno == 4) turno_showdown_bot(false, true, false);
+                }, 2000);
+            };
+            all_in.onclick = function() {
+                playerBet = playerBet + playerChips;
+                playerChips = 0;
+                playerChipsElement.textContent = `${playerChips} 🪙 -`+playerBet;
+                playerBetElement.textContent = `Current Playing: ${playerBet} 🪙 +`+playerBet;
+                playerChipsElement.style.color = 'red';
+                playerBetElement.style.color = 'green';
+                turni.textContent = "Bot Turn";
+                setTimeout(() => {
+                    playerChipsElement.style.color = 'white';
+                    playerBetElement.style.color = 'white';
+                    playerChipsElement.textContent = `${playerChips} 🪙`;
+                    playerBetElement.textContent = `Current Playing: ${playerBet} 🪙`;
+                    if(turno == 1) turno_bot_preflop(false, false, true);
+                    if(turno == 2) turno_flop_bot(false, false, true);
+                    if(turno == 3) turno_river_bot(false, false, true);
+                    if(turno == 4) turno_showdown_bot(false, false, true);
+                }, 2000);
+            };
         }
-        function dealCards() {
 
-
-
-            playerHand = [];
-            opponentHand = [];
-            playerCards.innerHTML = '';
-            opponentCards.innerHTML = '';
-
-
-            for (let i = 0; i < 5; i++) {
-
-                const playerCard = drawCard();
-                playerHand.push(playerCard);
-                const cardElement = document.createElement('div');
-                cardElement.className = 'card';
-                cardElement.textContent = `${playerCard.rank} ${playerCard.suit}`;
-                playerCards.appendChild(cardElement);
-
-                const opponentCard = drawCard();
-                opponentHand.push(opponentCard);
-                const opponentCardElement = document.createElement('div');
-                opponentCardElement.className = 'card back';
-                opponentCards.appendChild(opponentCardElement);
-            }
-        }
-
-        function drawCard() {
-            const suit = suits[Math.floor(Math.random() * suits.length)];
-            const rank = ranks[Math.floor(Math.random() * ranks.length)];
-            return { rank, suit };
-        }
-
-        function calculateHandValue(hand) {
-            const rankCount = {};
-            hand.forEach(card => {
-                rankCount[card.rank] = (rankCount[card.rank] || 0) + 1;
+        function flop(){
+            turno = 2;
+            suit = suits[Math.floor(Math.random() * suits.length)];
+            rank = ranks[Math.floor(Math.random() * ranks.length)];
+            commonCards[0] = rank;
+            commonCards[1] = suit;
+            const cardElement = document.createElement('div');
+            cardElement.className = 'card centre';
+            cardElement.textContent += `${commonCards[0]} ${commonCards[1]}`;
+            cardElement.style.fontSize = '40px';
+            commonCard.appendChild(cardElement);
+            cardElement.style.cursor = 'pointer';
+            cardElement.addEventListener('click', () => {
+                cardElement.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    cardElement.style.transform = 'scale(1)';
+                }, 2000);
             });
-
-            const counts = Object.values(rankCount);
-            if (counts.includes(4)) return { name: 'Poker', score: 7 };
-            if (counts.includes(3) && counts.includes(2)) return { name: 'Full', score: 6 };
-            if (counts.includes(3)) return { name: 'Tris', score: 3 };
-            if (counts.filter(count => count === 2).length === 2) return { name: 'Doppia Coppia', score: 2 };
-            if (counts.includes(2)) return { name: 'Coppia', score: 1 };
-            return { name: 'Carta Alta', score: 0 };
-        }
-
-        function revealWinner() {
-            const opponentCards = document.getElementById('opponent-cards');
-            opponentCards.innerHTML = '';
-
-            // Mostra le carte dell'avversario
-            opponentHand.forEach(card => {
+            setTimeout(() => {
+                suit = suits[Math.floor(Math.random() * suits.length)];
+                rank = ranks[Math.floor(Math.random() * ranks.length)];
+                commonCards[2] = rank;
+                commonCards[3] = suit;
                 const cardElement = document.createElement('div');
-                cardElement.className = 'card';
-                cardElement.textContent = `${card.rank} ${card.suit}`;
-                opponentCards.appendChild(cardElement);
-            });
-
-            // Calcola il valore delle mani
-            const playerHandValue = calculateHandValue(playerHand);
-            const opponentHandValue = calculateHandValue(opponentHand);
-
-            // Determina il vincitore
-            let message;
-            if (playerHandValue.score === opponentHandValue.score) {
-                message = `Pareggio! Entrambi avete ${playerHandValue.name}.`;
-            } else if (playerHandValue.score > opponentHandValue.score) {
-                message = `Hai vinto con ${playerHandValue.name}! L'avversario aveva ${opponentHandValue.name}.`;
-            } else {
-                message = `Hai perso! L'avversario ha ${opponentHandValue.name}, mentre tu hai ${playerHandValue.name}.`;
-            }
-
-            alert(message);
+                cardElement.className = 'card centre';
+                cardElement.textContent += `${commonCards[2]} ${commonCards[3]}`;
+                cardElement.style.fontSize = '40px';
+                commonCard.appendChild(cardElement);
+                cardElement.style.cursor = 'pointer';
+                cardElement.addEventListener('click', () => {
+                    cardElement.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        cardElement.style.transform = 'scale(1)';
+                    }, 2000);
+                });
+            }, 300);
+            setTimeout(() => {
+                suit = suits[Math.floor(Math.random() * suits.length)];
+                rank = ranks[Math.floor(Math.random() * ranks.length)];
+                commonCards[4] = rank;
+                commonCards[5] = suit;
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card centre';
+                cardElement.textContent += `${commonCards[4]} ${commonCards[5]}`;
+                cardElement.style.fontSize = '40px';
+                commonCard.appendChild(cardElement);
+                cardElement.style.cursor = 'pointer';
+                cardElement.addEventListener('click', () => {
+                    cardElement.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        cardElement.style.transform = 'scale(1)';
+                    }, 2000);
+                });
+            }, 600);
         }
 
-        function resetGame() {
-            const table = document.getElementById('table');
-            const opponentCards = document.getElementById('opponent-cards');
-            const playerCards = document.getElementById('player-cards');
-            const startScreen = document.getElementById('start-screen');
-            const controls = document.getElementById('controls');
 
-            // Resetta il tavolo e torna alla schermata iniziale
-            playerCards.innerHTML = '';
-            opponentCards.innerHTML = '';
-            startScreen.classList.remove('hidden');
-            table.classList.add('hidden');
-            controls.classList.add('hidden');
-        }
+        //SEZIONE BOT
+        let indicatore_di_cognizione;
+        let valore_coppia = 0.25;
+        let valore_tris = 0.5;
+        let valore_doppia_coppia = 0.75;
+        let valore_colore = 0.9;
+        let valore_straight = 0.92;   
+        let valore_full = 0.94;
+        let valore_four_of_a_kind = 0.96;
+        let valore_straight_flush = 0.98;
+        let valore_royal_flush = 1.0;
+
+        let allCardsValue = [];
+        let allCardsSuit = [];
 
         
-    </script>
-    <script>
-    function scalePage() {
-        const baseWidth = 1920; 
-        const baseHeight = 1080;
 
-        const scaleX = window.innerWidth / baseWidth;
-        const scaleY = window.innerHeight / baseHeight;
-        const scale = Math.min(scaleX, scaleY);
+        function turno_bot_preflop(call, raise, all_in) {
 
-        const wrapper = document.getElementById('wrapper');
-        wrapper.style.transform = `scale(${scale})`;
-    }
+           
+            let Coppia_22 = 0.50;
+            let Coppia_33 = 0.54;
+            let Coppia_44 = 0.58;
+            let Coppia_55 = 0.62;
+            let Coppia_66 = 0.66;
+            let Coppia_77 = 0.70;
+            let Coppia_88 = 0.74;
+            let Coppia_99 = 0.78;
+            let Coppia_10_10 = 0.82;
+            let Coppia_JJ = 0.86;
+            let Coppia_QQ = 0.90;
+            let Coppia_KK = 0.94;
+            let Coppia_AA = 0.98;
 
-    window.addEventListener('resize', scalePage);
-    window.addEventListener('load', scalePage);
+            indicatore_di_cognizione = 0.10;
+            alert(opponentHand[0] + opponentHand[1]+" - "+opponentHand[2] + opponentHand[3]);
+            switch (opponentHand[0]) {
+                case 'A':
+                    if (opponentHand[2] == 'A') {
+                        indicatore_di_cognizione += Coppia_AA;
+                    }
+                    break;
+                case '2':
+                    if (opponentHand[2] == '2') {
+                        indicatore_di_cognizione += Coppia_22;
+                    }
+                    break;
+                case '3':
+                    if (opponentHand[2] == '3') {
+                        indicatore_di_cognizione += Coppia_33;
+                    }
+                    break;
+                case '4':
+                    if (opponentHand[2] == '4') {
+                        indicatore_di_cognizione += Coppia_44;
+                    }
+                    break;
+                case '5':
+                    if (opponentHand[2] == '5') {
+                        indicatore_di_cognizione += Coppia_55;
+                    }
+                    break;
+                case '6':
+                    if (opponentHand[2] == '6') {
+                        indicatore_di_cognizione += Coppia_66;
+                    }
+                    break;
+                case '7':
+                    if (opponentHand[2] == '7') {
+                        indicatore_di_cognizione += Coppia_77;
+                    }
+                    break;
+                case '8':
+                    if (opponentHand[2] == '8') {
+                        indicatore_di_cognizione += Coppia_88;
+                    }
+                    break;
+                case '9':
+                    if (opponentHand[2] == '9') {
+                        indicatore_di_cognizione += Coppia_99;
+                    }
+                    break;
+                case '10':
+                    if (opponentHand[2] == '10') {
+                        indicatore_di_cognizione += Coppia_10_10;
+                    }
+                    break;
+                case 'J':
+                    if (opponentHand[2] == 'J') {
+                        indicatore_di_cognizione += Coppia_JJ;
+                    }
+                    break;
+                case 'Q':
+                    if (opponentHand[2] == 'Q') {
+                        indicatore_di_cognizione += Coppia_QQ;
+                    }
+                    break;
+                case 'K':
+                    if (opponentHand[2] == 'K') {
+                        indicatore_di_cognizione += Coppia_KK;
+                    }
+                    break;
+        }
+        
+        let randomValue = (Math.random() * 10).toFixed(1) / 100;
+        indicatore_di_cognizione += parseFloat(randomValue);
+        if(opponentHand[1] == opponentHand[3]) {
+            indicatore_di_cognizione += 0.04;
+        }
+
+        if(call == true) indicatore_di_cognizione += 0.02;
+        if(raise == true) indicatore_di_cognizione -= 0.02;
+        alert("Indicatore di cognizione: " + indicatore_di_cognizione);
+        if(indicatore_di_cognizione < 0.12) {
+            fold_bot();
+        } else if(indicatore_di_cognizione >0.12 && indicatore_di_cognizione <0.7){
+            call_bot();
+        } else raise_bot();
+        }
+        function fold_bot() {
+            countdownElement.style.fontSize = "30px";
+            countdownElement.style.display = 'block';
+            countdownElement.textContent = "FOLD - Player wins "+ (opponentBet + playerBet) + " 🪙";
+            countdownElement.innerHTML += "<br>New Round ↓";
+            new_round.style.display = 'block';
+            call.textContent = "Call";
+            raise.textContent = "Raise";
+            all_in.textContent = "All in";
+            playerBetElement.textContent = `Current Playing: `;
+            opponentBetElement.textContent = `Current Playing: `;
+            playerChips = playerChips + opponentBet + playerBet;
+            playerChipsElement.textContent = `${playerChips} 🪙`;
+            wage = 50;
+            playerBet = 0;
+            opponentBet = 0;
+        }
+        function call_bot() {
+            opponentBet = opponentBet + wage;
+            opponentChips = opponentChips - wage;
+            opponentChipsElement.textContent = `${opponentChips} 🪙 -`+wage;
+            opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙 +`+wage;
+            opponentChipsElement.style.color = 'red';
+            opponentBetElement.style.color = 'green';
+            turni.textContent = "Player Turn";
+            setTimeout(() => {
+                opponentChipsElement.style.color = 'white';
+                opponentBetElement.style.color = 'white';
+                opponentChipsElement.textContent = `${opponentChips} 🪙`;
+                opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙`;
+                flop();
+            }, 2000);
+        }
+        function raise_bot() {
+            wage = wage*2;
+            opponentBet = opponentBet + wage;
+            opponentChips = opponentChips - wage;
+            opponentChipsElement.textContent = `${opponentChips} 🪙 -`+wage;
+            opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙 +`+wage;
+            opponentChipsElement.style.color = 'red';
+            opponentBetElement.style.color = 'green';
+            turni.textContent = "Player Turn";
+            setTimeout(() => {
+                opponentChipsElement.style.color = 'white';
+                opponentBetElement.style.color = 'white';
+                opponentChipsElement.textContent = `${opponentChips} 🪙`;
+                opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙`;
+                flop();
+            }, 2000);
+        }
+
+        function turno_flop_bot(call, raise, all_in){
+            indicatore_di_cognizione = 0.20;
+            switch (opponentHand[0]) {
+                case 'A':
+                    opponentHand[0] = 14;
+                    break;
+                case 'K':
+                    opponentHand[0] = 13;
+                    break;
+                case 'Q':
+                    opponentHand[0] = 12;
+                    break;
+                case 'J':
+                    opponentHand[0] = 11;
+                    break;
+                case '10':
+                    opponentHand[0] = 10;
+                    break;
+            }
+
+            switch (opponentHand[2]) {
+                case 'A':
+                    opponentHand[2] = 14;
+                    break;
+                case 'K':
+                    opponentHand[2] = 13;
+                    break;
+                case 'Q':
+                    opponentHand[2] = 12;
+                    break;
+                case 'J':
+                    opponentHand[2] = 11;
+                    break;
+                case '10':
+                    opponentHand[2] = 10;
+                    break;
+            }
+            switch (commonCards[0]) {
+                case 'A':
+                    commonCards[0] = 14;
+                    break;
+                case 'K':
+                    commonCards[0] = 13;
+                    break;
+                case 'Q':
+                    commonCards[0] = 12;
+                    break;
+                case 'J':
+                    commonCards[0] = 11;
+                    break;
+                case '10':
+                    opponentHand[4] = 10;
+                    break;
+            }
+            switch (commonCards[2]) {
+                case 'A':
+                    commonCards[2] = 14;
+                    break;
+                case 'K':
+                    commonCards[2] = 13;
+                    break;
+                case 'Q':
+                    commonCards[2] = 12;
+                    break;
+                case 'J':
+                    commonCards[2] = 11;
+                    break;
+                case '10':
+                    commonCards[2] = 10;
+                    break;
+            }
+            switch (commonCards[4]) {
+                case 'A':
+                    commonCards[4] = 14;
+                    break;
+                case 'K':
+                    commonCards[4] = 13;
+                    break;
+                case 'Q':
+                    commonCards[4] = 12;
+                    break;
+                case 'J':
+                    commonCards[4] = 11;
+                    break;
+                case '10':
+                    commonCards[4] = 10;
+                    break;
+            }
+            allCardsValue = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4]];
+            allCardsSuit = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5]];
+            let app, i, j;
+            alert(allCardsValue + " - " + allCardsSuit);
+            for (i = 0; i < allCardsValue.length - 1; i++) {
+                for (j = i+1; j < allCardsValue.length; j++) {
+                    if (allCardsValue[i] < allCardsValue[j]) {
+                        app = allCardsValue[i];
+                        allCardsValue[i] = allCardsValue[j];
+                        allCardsValue[j] = app;
+                        app = allCardsSuit[i];
+                        allCardsSuit[i] = allCardsSuit[j];
+                        allCardsSuit[j] = app;
+                    }
+                }
+            }
+            alert(allCardsValue + " - " + allCardsSuit);
+            if (allCardsValue[0] === 14 && allCardsValue[1] === 13 && allCardsValue[2] === 12 && allCardsValue[3] === 11 && allCardsValue[4] === 10) {
+                indicatore_di_cognizione = valore_royal_flush;
+            } else if(allCardsValue[1] == allCardsValue[0]-1 && allCardsValue[2] == allCardsValue[0]-2 && allCardsValue[3] == allCardsValue[0]-3 && allCardsValue[4] == allCardsValue[0]-4) {
+                if(allCardsSuit[0] == allCardsSuit[1] && allCardsSuit[0] == allCardsSuit[2] && allCardsSuit[0] == allCardsSuit[3] && allCardsSuit[0] == allCardsSuit[4]) {
+                    indicatore_di_cognizione = valore_straight_flush;
+                } else {
+                    indicatore_di_cognizione = valore_straight;
+                }
+            
+            } else if(allCardsValue[0] == allCardsValue[1] && allCardsValue[1] == allCardsValue[2] && allCardsValue[2] == allCardsValue[3]) {
+                indicatore_di_cognizione = valore_four_of_a_kind;
+            } else if(allCardsValue[1] == allCardsValue[2] && allCardsValue[2] == allCardsValue[3] && allCardsValue[3] == allCardsValue[4]) {
+                indicatore_di_cognizione = valore_four_of_a_kind;
+            } else if(allCardsValue[0] == allCardsValue[1] && allCardsValue[1] == allCardsValue[2] ){
+                if(allCardsValue[3] == allCardsValue[4]) {
+                    indicatore_di_cognizione = valore_full;
+                } else {
+                    indicatore_di_cognizione = valore_tris;
+                }
+            } else if(allCardsValue[1] == allCardsValue[2] && allCardsValue[2] == allCardsValue[3]) {
+                if(allCardsValue[0] == allCardsValue[4]) {
+                    indicatore_di_cognizione = valore_full;
+                } else {
+                    indicatore_di_cognizione = valore_tris;
+                } 
+            } else if(allCardsValue[2] == allCardsValue[3] && allCardsValue[3] == allCardsValue[4]) {
+                    if(allCardsValue[0] == allCardsValue[1]) {
+                        indicatore_di_cognizione = valore_full;
+                    } else {
+                        indicatore_di_cognizione = valore_tris;
+                    }
+            } else if(allCardsSuit[0] == allCardsSuit[1] && allCardsSuit[0] == allCardsSuit[2] && allCardsSuit[0] == allCardsSuit[3] && allCardsSuit[0] == allCardsSuit[4]) {
+                indicatore_di_cognizione = valore_colore;
+            } else if(allCardsValue[0] == allCardsValue[1] && allCardsValue[2] == allCardsValue[3]) {
+                indicatore_di_cognizione = valore_doppia_coppia;
+            } else if(allCardsValue[1] == allCardsValue[2] && allCardsValue[3] == allCardsValue[4]) {
+                indicatore_di_cognizione = valore_doppia_coppia;
+            } else if(allCardsValue[0] == allCardsValue[1] && allCardsValue[3] == allCardsValue[4]) {
+                indicatore_di_cognizione = valore_doppia_coppia;
+            } else if(allCardsValue[0] == allCardsValue[1]) {
+                indicatore_di_cognizione = valore_coppia;
+            } else if(allCardsValue[1] == allCardsValue[2]) {
+                indicatore_di_cognizione = valore_coppia;
+            } else if(allCardsValue[2] == allCardsValue[3]) {
+                indicatore_di_cognizione = valore_coppia;
+            } else if(allCardsValue[3] == allCardsValue[4]) {
+                indicatore_di_cognizione = valore_coppia;
+            }
+            let randomValue = (Math.random() * 10).toFixed(1) / 100;
+            indicatore_di_cognizione += parseFloat(randomValue);
+            if(call == true) indicatore_di_cognizione += 0.02;
+            if(raise == true) indicatore_di_cognizione -= 0.02;
+            alert("Indicatore di cognizione: " + indicatore_di_cognizione);
+            if(indicatore_di_cognizione < 0.12) {
+                fold_bot();
+            } else if(indicatore_di_cognizione >0.12 && indicatore_di_cognizione <0.7){
+                call_bot();
+            } else raise_bot();
+        } 
     </script>
 </body>
 </html>
