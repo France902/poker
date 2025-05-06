@@ -5,29 +5,29 @@
     <meta name="viewport" content="width=device-width,, initial-scale=1.00, user-scalable=no, maximum-scale=1.00, minimum-scale=1.00">
     <title>Poker</title>
     <style>
-        //Caratteristiche comuni della pagina
+        
         body {
-            font-family: Arial, sans-serif; //Font del testo
+            font-family: Arial, sans-serif; 
             text-align: center;
             background-color: #2e8b57;
             color: white;
-            user-select: none;  //Niente è selezionabile dall'utente
+            user-select: none; 
             
         }
         //Caratteristiche degli oggetti specifici
         .table {
-            margin: 21px auto;  //Margine da ogni lato
-            margin-top: 25px;   //Margine specifico dall'alto
+            margin: 21px auto;  
+            margin-top: 25px;  
             width: 900px;
             height: 800px;
             background-color: #006400;
             border-radius: 50%;
-            display: flex;      //Centramento verticale
-            flex-direction: column;  //Impila ogni oggetto child verticalmente
-            justify-content: space-between;  //Definisce lo spazio tra i child del table
-            align-items: center;  //Centramento orizzontale
+            display: flex;      
+            flex-direction: column; 
+            justify-content: space-between;  
+            align-items: center; 
             border: 13px solid rgb(101, 67, 33);
-            position: relative; //Rimane fermo nella pagina ma si muove con top, left eccc..
+            position: relative; 
         }
         .card {
             width: 95px;
@@ -39,15 +39,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-weight: bold;  //Grassetto
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); //Crea un effetto d'ombra
+            font-weight: bold;  
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
             border: 2px solid black;
-            transition: transform 0.3s;  //Crea una transizione quando viene fatto un transform di 0.3s
+            transition: transform 0.3s;  
         }
         .card.back {
             background-image: url('dietro_carta2.jpg');
-            background-size: cover;  //La dimensione si addatta a quella del contenitore
-            background-position: center;  //Centramento dell'immagine nel contenitore
+            background-size: cover;  
+            background-position: center; 
             border: 2px solid black;
         }
         .card.centre {
