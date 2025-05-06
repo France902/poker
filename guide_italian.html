@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Regole Base del Poker</title>
+  <title>Regole del Poker</title>
   <style>
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -38,7 +38,7 @@
     }
 
     li::before {
-      content: "🎯 ";
+      content: "● ";
       margin-right: 0.3rem;
     }
 
@@ -57,13 +57,16 @@
     }
 
     .actions-list li::before {
-      content: "➡️ ";
+      content: "--> ";
     }
 
     .tips-list li::before {
       content: "🔥 ";
     }
-
+    body {
+      border-top: 3px solid black;
+      border-bottom: 3px solid black;
+    }
     .flair {
       background-color: #ffccf2;
       padding: 0.4rem 0.7rem;
@@ -75,24 +78,30 @@
   </style>
 </head>
 <body>
-  <h1>🎰 Regole Base del Poker (Texas Hold'em)</h1>
+  <h1>🎰 Regole Base del Poker</h1>
+  <style>
+    body {
+      border-left: 400px solid black;
+      border-right:400px solid black;
+    }
+  </style>
 
   <div class="section">
-    <h2>🃎 1. Obiettivo</h2>
-    <p>👉 Fare la <strong>miglior combinazione di 5 carte</strong> possibile e/o far foldare gli altri.</p>
+    <h2> <strong> 1. Obiettivo </strong></h2>
+    <p>● Fare la miglior combinazione di 5 carte possibile e far foldare gli altri.</p>
   </div>
 
   <div class="section">
-    <h2>📦 2. Setup</h2>
+    <h2><strong>2. Setup</strong></h2>
     <ul>
-      <li>Si gioca con <strong>52 carte</strong></li>
-      <li>Minimo <strong>2 giocatori</strong>, massimo <strong>10</strong></li>
-      <li>Ogni player riceve <strong>2 carte coperte</strong></li>
+      <li>Si gioca con 52 carte</li>
+      <li>Minimo 2 giocatori, massimo 10</li>
+      <li>Ogni player riceve 2 carte coperte</li>
     </ul>
   </div>
 
   <div class="section">
-    <h2>🔁 3. Fasi del Gioco</h2>
+    <h2><strong>3. Fasi del Gioco</strong></h2>
     <ul>
       <li><strong>Pre-Flop</strong> – Ricevi 2 carte, primo giro di puntate</li>
       <li><strong>Flop</strong> – 3 carte scoperte, si punta</li>
@@ -103,7 +112,7 @@
   </div>
 
   <div class="section">
-    <h2>💰 4. Azioni Possibili</h2>
+    <h2><strong>4. Azioni Possibili</strong></h2>
     <ul class="actions-list">
       <li><strong>Check</strong> = Passi senza puntare (se puoi)</li>
       <li><strong>Bet</strong> = Scommetti</li>
@@ -113,31 +122,24 @@
   </div>
 
   <div class="section">
-    <h2>🏆 5. Valore delle Mani</h2>
+    <h2><strong> 5. Valore delle Mani</strong></h2>
     <ul class="combo-list">
-      <li><strong>Scala Reale</strong> (10-J-Q-K-A stesso seme)</li>
-      <li><strong>Poker</strong> (4 carte uguali)</li>
-      <li><strong>Full</strong> (tris + coppia)</li>
-      <li><strong>Colore</strong> (5 carte stesso seme)</li>
-      <li><strong>Scala</strong> (5 carte in ordine)</li>
-      <li><strong>Tris</strong></li>
-      <li><strong>Doppia Coppia</strong></li>
-      <li><strong>Coppia</strong></li>
+      <li><strong>Scala Reale</strong> 10-J-Q-K-A dello stesso seme</li>
+      <li><strong>Poker</strong> 4 carte uguali</li>
+      <li><strong>Full</strong> un tris + una coppia</li>
+      <li><strong>Colore</strong> 5 carte dello stesso seme</li>
+      <li><strong>Scala</strong> 5 carte in ordine crescente</li>
+      <li><strong>Tris</strong> tre carte uguali</li>
+      <li><strong>Doppia Coppia</strong> due coppie da due carte uguali ciascuna</li>
+      <li><strong>Coppia</strong> due carte uguali</li>
       <li><strong>Carta Alta</strong> (se non hai niente di meglio)</li>
     </ul>
   </div>
 <div class="section"></div>
-    <button onclick="ritorna()" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem;">
+    <button onclick="window.location.href='index.html'" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem;">
         Torna alla Home
     </button>
 </div>
-<script>
-function ritorna(){
-  const params = new URLSearchParams(window.location.search);
-  const lang = params.get('lang');
-  window.location.href = "index.html?lang=" + lang;
-}
-</script>
   
 </body>
 </html>
