@@ -107,7 +107,7 @@
             <button id="raise" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 500px; margin-left: -1200px;">Raise</button>
             <button id="all-in" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 600px; margin-left: -1200px;">All in</button>
         </div>
-        <div id="countdown" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 600px; margin-top: -500px; display: none; text-align: center;">3</div>
+        <div id="countdown" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 520px; margin-top: -500px; display: none; text-align: center;">3</div>
         <button onclick="startGame()" id="new_round" style="display: none; width: 150px; height: 90px; position: fixed; font-size: 30px; margin-top: -370px; margin-left: 700px; text-align: center;">New round</button>
         <div class="common-cards" id="common-cards" ></div>
     </div>
@@ -247,6 +247,7 @@
                 cardElement.className = 'card';
                 cardElement.textContent += `${playerHand[2]} ${playerHand[3]}`;
                 playerCards.appendChild(cardElement);
+                cardElement.style.cursor = 'pointer';
                 cardElement.style.fontSize = '40px';
                 cardElement.addEventListener('click', () => {
                 cardElement.style.transform = 'scale(1.2)';
