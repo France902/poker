@@ -169,9 +169,9 @@
                     case 2:
                         playerChips = playerChips - 50;
                         playerBet = playerBet + 50;
-                        playerChipsElement.textContent = `${playerChips} 🪙 -50`;
+                        playerChipsElement.textContent = `${playerChips} 💰 -50`;
                         playerChipsElement.style.color = 'red';
-                        playerBetElement.textContent = `Current Playing: ${playerBet} 🪙 +50`;
+                        playerBetElement.textContent = `Current Playing: ${playerBet} 💰 +50`;
                         playerBetElement.style.color = 'green';
                         break;
                     case 1:
@@ -179,20 +179,20 @@
                         opponentBet = opponentBet + 50;
                         playerChipsElement.style.color = 'white';
                         playerBetElement.style.color = 'white';
-                        opponentChipsElement.textContent = `${opponentChips} 🪙 -50`;
-                        opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙 +50`;
+                        opponentChipsElement.textContent = `${opponentChips} 💰 -50`;
+                        opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰 +50`;
                         opponentChipsElement.style.color = 'red';
                         opponentBetElement.style.color = 'green';
-                        playerChipsElement.textContent = `${playerChips} 🪙`;
-                        playerBetElement.textContent = `Current Playing: ${playerBet} 🪙`;
+                        playerChipsElement.textContent = `${playerChips} 💰`;
+                        playerBetElement.textContent = `Current Playing: ${playerBet} 💰`;
                         break;
                     case 0:
                         opponentChipsElement.style.color = 'white';
                         opponentBetElement.style.color = 'white';
                         break;
                     case -1:
-                        opponentChipsElement.textContent = `${opponentChips} 🪙`;
-                        opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙`;
+                        opponentChipsElement.textContent = `${opponentChips} 💰`;
+                        opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰`;
                         clearInterval(countdownInterval);
                         countdownElement.style.display = 'none';
                         break;
@@ -265,13 +265,13 @@
                 opponentCards.appendChild(opponentCardElement);
             }, 300); 
 
-            call.textContent += "  -"+wage+" 🪙";
-            raise.textContent += "  -"+(wage*2)+" 🪙";
-            all_in.textContent += "  -"+playerChips+" 🪙";
+            call.textContent += "  -"+wage+" 💰";
+            raise.textContent += "  -"+(wage*2)+" 💰";
+            all_in.textContent += "  -"+playerChips+" 💰";
             fold.onclick = function() {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
-                countdownElement.textContent = "FOLD - Bot wins "+ (opponentBet + playerBet) + " 🪙";
+                countdownElement.textContent = "FOLD - Bot wins "+ (opponentBet + playerBet) + " 💰";
                 countdownElement.innerHTML += "<br>New Round ↓";
                 new_round.style.display = 'block';
                 call.textContent = "Call";
@@ -280,7 +280,7 @@
                 playerBetElement.textContent = `Current Playing: `;
                 opponentBetElement.textContent = `Current Playing: `;
                 opponentChips = opponentChips + opponentBet + playerBet;
-                opponentChipsElement.textContent = `${opponentChips} 🪙`;
+                opponentChipsElement.textContent = `${opponentChips} 💰`;
                 wage = 50;
                 playerBet = 0;
                 opponentBet = 0;
@@ -288,16 +288,16 @@
             call.onclick = function() {
                 playerBet = playerBet + wage;
                 playerChips = playerChips - wage;
-                playerChipsElement.textContent = `${playerChips} 🪙 -`+wage;
-                playerBetElement.textContent = `Current Playing: ${playerBet} 🪙 +`+wage;
+                playerChipsElement.textContent = `${playerChips} 💰 -`+wage;
+                playerBetElement.textContent = `Current Playing: ${playerBet} 💰 +`+wage;
                 playerChipsElement.style.color = 'red';
                 playerBetElement.style.color = 'green';
                 turni.textContent = "Bot Turn";
                 setTimeout(() => {
                     playerChipsElement.style.color = 'white';
                     playerBetElement.style.color = 'white';
-                    playerChipsElement.textContent = `${playerChips} 🪙`;
-                    playerBetElement.textContent = `Current Playing: ${playerBet} 🪙`;
+                    playerChipsElement.textContent = `${playerChips} 💰`;
+                    playerBetElement.textContent = `Current Playing: ${playerBet} 💰`;
                     if(turno == 1) turno_bot_preflop(true, false, false);
                     if(turno == 2) turno_flop_bot(true, false, false);
                     if(turno == 3) turno_river_bot(true, false, false);
@@ -309,16 +309,16 @@
                 wage = wage*2;
                 playerBet = playerBet + wage ;
                 playerChips = playerChips - wage ;
-                playerChipsElement.textContent = `${playerChips} 🪙 -`+wage;
-                playerBetElement.textContent = `Current Playing: ${playerBet} 🪙 +`+wage;
+                playerChipsElement.textContent = `${playerChips} 💰 -`+wage;
+                playerBetElement.textContent = `Current Playing: ${playerBet} 💰 +`+wage;
                 playerChipsElement.style.color = 'red';
                 playerBetElement.style.color = 'green';
                 turni.textContent = "Bot Turn";
                 setTimeout(() => {
                     playerChipsElement.style.color = 'white';
                     playerBetElement.style.color = 'white';
-                    playerChipsElement.textContent = `${playerChips} 🪙`;
-                    playerBetElement.textContent = `Current Playing: ${playerBet} 🪙`;
+                    playerChipsElement.textContent = `${playerChips} 💰`;
+                    playerBetElement.textContent = `Current Playing: ${playerBet} 💰`;
                     if(turno == 1) turno_bot_preflop(false, true, false);
                     if(turno == 2) turno_flop_bot(false, true, false);
                     if(turno == 3) turno_river_bot(false, true, false);
@@ -328,16 +328,16 @@
             all_in.onclick = function() {
                 playerBet = playerBet + playerChips;
                 playerChips = 0;
-                playerChipsElement.textContent = `${playerChips} 🪙 -`+playerBet;
-                playerBetElement.textContent = `Current Playing: ${playerBet} 🪙 +`+playerBet;
+                playerChipsElement.textContent = `${playerChips} 💰 -`+playerBet;
+                playerBetElement.textContent = `Current Playing: ${playerBet} 💰 +`+playerBet;
                 playerChipsElement.style.color = 'red';
                 playerBetElement.style.color = 'green';
                 turni.textContent = "Bot Turn";
                 setTimeout(() => {
                     playerChipsElement.style.color = 'white';
                     playerBetElement.style.color = 'white';
-                    playerChipsElement.textContent = `${playerChips} 🪙`;
-                    playerBetElement.textContent = `Current Playing: ${playerBet} 🪙`;
+                    playerChipsElement.textContent = `${playerChips} 💰`;
+                    playerBetElement.textContent = `Current Playing: ${playerBet} 💰`;
                     if(turno == 1) turno_bot_preflop(false, false, true);
                     if(turno == 2) turno_flop_bot(false, false, true);
                     if(turno == 3) turno_river_bot(false, false, true);
@@ -525,7 +525,7 @@
         function fold_bot() {
             countdownElement.style.fontSize = "30px";
             countdownElement.style.display = 'block';
-            countdownElement.textContent = "FOLD - Player wins "+ (opponentBet + playerBet) + " 🪙";
+            countdownElement.textContent = "FOLD - Player wins "+ (opponentBet + playerBet) + " 💰";
             countdownElement.innerHTML += "<br>New Round ↓";
             new_round.style.display = 'block';
             call.textContent = "Call";
@@ -534,7 +534,7 @@
             playerBetElement.textContent = `Current Playing: `;
             opponentBetElement.textContent = `Current Playing: `;
             playerChips = playerChips + opponentBet + playerBet;
-            playerChipsElement.textContent = `${playerChips} 🪙`;
+            playerChipsElement.textContent = `${playerChips} 💰`;
             wage = 50;
             playerBet = 0;
             opponentBet = 0;
@@ -542,16 +542,16 @@
         function call_bot() {
             opponentBet = opponentBet + wage;
             opponentChips = opponentChips - wage;
-            opponentChipsElement.textContent = `${opponentChips} 🪙 -`+wage;
-            opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙 +`+wage;
+            opponentChipsElement.textContent = `${opponentChips} 💰 -`+wage;
+            opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰 +`+wage;
             opponentChipsElement.style.color = 'red';
             opponentBetElement.style.color = 'green';
             turni.textContent = "Player Turn";
             setTimeout(() => {
                 opponentChipsElement.style.color = 'white';
                 opponentBetElement.style.color = 'white';
-                opponentChipsElement.textContent = `${opponentChips} 🪙`;
-                opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙`;
+                opponentChipsElement.textContent = `${opponentChips} 💰`;
+                opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰`;
                 flop();
             }, 2000);
         }
@@ -559,16 +559,16 @@
             wage = wage*2;
             opponentBet = opponentBet + wage;
             opponentChips = opponentChips - wage;
-            opponentChipsElement.textContent = `${opponentChips} 🪙 -`+wage;
-            opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙 +`+wage;
+            opponentChipsElement.textContent = `${opponentChips} 💰 -`+wage;
+            opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰 +`+wage;
             opponentChipsElement.style.color = 'red';
             opponentBetElement.style.color = 'green';
             turni.textContent = "Player Turn";
             setTimeout(() => {
                 opponentChipsElement.style.color = 'white';
                 opponentBetElement.style.color = 'white';
-                opponentChipsElement.textContent = `${opponentChips} 🪙`;
-                opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙`;
+                opponentChipsElement.textContent = `${opponentChips} 💰`;
+                opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰`;
                 flop();
             }, 2000);
         }
