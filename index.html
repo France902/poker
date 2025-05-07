@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.00, user-scalable=no, maximum-scale=1.00, minimum-scale=1.00">
-    <title>Document</title>
-
+    <title>POKER</title>
     <style>
+        /* Sezione css della flip-card */
     .flip-card {
       background-color: white;
       width: 0px;
       height: 0px;
       perspective: 1000px;
       position: fixed;
-      pointer-events: none;      
+      pointer-events: none;  /* Annulamento degli eventi legati al clic*/    
     }
 
     .flip-card-inner {
@@ -20,16 +20,15 @@
       width: 550px; 
       height: 845px;
       transition: transform 0.8s;
-      transform-style: preserve-3d;
+      transform-style: preserve-3d; /* Effetto tridimensionale*/
       pointer-events: all;
-     
     }
-
+    /* Proprietà degli elementi classe flip-card.clicked e .flip-card-inner */
     .flip-card.clicked .flip-card-inner {
       transform: rotateY(180deg);
       
     }
-
+    /*Proprietà comuni delle varie classi delle carte */
     .flip-card-front,
     .flip-card-back,
     .flip-card-back2,
@@ -41,14 +40,14 @@
       border-radius: 16px;
      
     }
-
+    /*Proprietà comuni delle varie immagini delle classi delle carte */
     .flip-card-front img,
     .flip-card-back img,
     .flip-card-back2 img,
     .flip-card-back3 img {
         width: 500px; 
         height: 725px;
-        object-fit: cover;
+        object-fit: cover; /* L'immagine deve riempire lo spazio In modo da non tagliarsi */
        
      
     }
@@ -63,10 +62,8 @@
     }
     </style>
 
-
-
-
     <style>
+        /* Stile predefinito della pagina */
         html, body {
             overflow: hidden;
             margin: 0;
@@ -75,23 +72,26 @@
             width: 100%;
             background-color: #2e8b57;
         }
+        /* stile del wrapper */
         #wrapper {
-            position: absolute;
+            position: absolute; 
             top: 0;
             left: 0;
-            transform-origin: top left;
+            transform-origin: top left; /*Punto di origine delle trasformazioni */
         }
+        /*Proprietà del h1 */
         h1 {
-            user-select: none;
+            user-select: none; /*Non selezionabile dall'utente*/
             color: white;
             font-size: 87.5px;
-            text-align: center;
+            text-align: center; /*Centramento testo*/
             margin-top: -75px;   
             position: absolute;
             margin-left: 820px;
             margin-top: 0px;
-            -webkit-text-stroke: 1.25px black;
+            -webkit-text-stroke: 1.25px black; /*Contorno del testo*/
         }
+        /*Proprietà del h2 */
         h2 {
             user-select: none;
             color: white;
@@ -104,12 +104,14 @@
             -webkit-text-stroke: 1.25px black;
             width: 200px;
         }
+        /*Proprietà del h3 */
         h3 {
             color: black;
             font-size: 30px;
             text-align: center;
             margin-top: 5px;   
         }
+        /*Proprietà del p */
         p {
             user-select: none;
             color: white;
@@ -117,15 +119,17 @@
             text-align: center;
             margin-top: 5px;  
         }
+        /*Proprietà del primo gruppo di carte */
         #carta {
             width: 500px; 
             height: 720px;
             position: fixed;
             margin-top: 600px;
             margin-left: -50px;
-            transition: margin-top 0.5s, margin-left 0.5s, transform 0.5s;
+            transition: margin-top 0.5s, margin-left 0.5s, transform 0.5s; /*Transizione dell'oggetto di 0.5 secondi quando gli viene cambiato il margin-left e top o quando gli si fa un transform */
             z-index: 1;
         }
+        /*Proprietà del secondo gruppo di carte */
         #carta2 {
             width: 325px; 
             height: 400px;
@@ -133,9 +137,10 @@
             transition: margin-top 0.5s, margin-left 0.5s, transform 0.5s;
             z-index: 1;
         }
+        /*Proprietà dello switch */
         .switch {
             position: fixed;
-            display: inline-block;
+            display: inline-block; /* Determina il tipo di box generati per l'elemento switch */
             width: 100px;
             height: 50px;
             margin-top: 475px;
@@ -144,21 +149,27 @@
         #tasto1 {
             display: none;
         }
+        /*Proprietà dello switch nell'evento input */
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
+        /*Proprietà dello slider*/
+        /* Proprietà dello slider (Barra di scorrimento) */
         .slider {
             position: absolute;
             cursor: pointer;
-            top: 0; left: 0;
-            right: 0; bottom: 0;
+            top: 0; 
+            left: 0;
+            right: 0; 
+            bottom: 0;
             background-color: #bbb;
             transition: 0.4s;
             border-radius: 50px;
-            box-shadow: 0 0 7.5px #00000055;
+            box-shadow: 0 0 7.5px #00000055; /*Ombra dello slider */
         }
+        /*Creazione di uno pseudo-elemento prima della generazione dell'elemento stesso, utilizzato spesso in barre e switch*/
         .slider:before {
             position: absolute;
             content: "";
@@ -177,6 +188,7 @@
         input:checked + .slider:before {
             transform: translateX(50px);
         }
+        /*Proprietà bottoni */
         .bottoni_audio {
             width: 62.5px;
             height: 62.5px;
@@ -201,7 +213,9 @@
 
 </head>
 <body> 
+    <!--Creazione di un wrapper, che impedisce alla pagina di scalare-->
     <div id="wrapper">
+        <!--Sezione audio-->
     <audio id="audio">
         <source src="Purple Funk.mp3" type="audio/mpeg">
     </audio>
@@ -211,13 +225,16 @@
     <audio id="audio3" autoplay>
         <source src="effetto_click.mp3" type="audio/mpeg">
     </audio>
+    <!--Sezione tasti del volume-->
     <button onclick="document.getElementById('audio').play(); document.getElementById('on').style.display = 'none'; document.getElementById('off').style.display = 'block';"><img class="bottoni_audio" id="on" src="blocca_volume.png" alt="" ></button>
     <button onclick="document.getElementById('audio').pause(); document.getElementById('off').style.display = 'none'; document.getElementById('on').style.display = 'block';"><img style="display: none; " class="bottoni_audio" id="off" src="volume.png" alt=""></button>
+    <!--Pagina in lingua inglese-->
     <div id="pagina_iniziale_inglese">       
     <h1 >Welcome</h1>  
     <h2>to the</h2>
     <h1 style="margin-top: 200px; margin-left: 750px; width: 500px;">Poker game</h1>
     <img src="Royal_Flush.png" alt="" style="width: 800px; height: 300px; position: fixed; margin-top: 290px; margin-left: 600px; z-index: -1;">
+    <!--Creazione flip-card-->
     <div class="flip-card" id="f-card" >
         <div class="flip-card-inner" >
           <div class="flip-card-front">
@@ -259,6 +276,7 @@
     <p style="transform: rotate(41deg); margin-top: 462.5px; margin-left: 600px; position: fixed; display: none; -webkit-text-stroke: 1.25px black;" id="options">Options</p>
     
 </div>
+<!--Pagina in lingua italiana-->
 <div id="pagina_iniziale_italiano" style="display: none;">       
     <h1 style=" margin-left: 800px;">Benvenuto</h1>  
     <h2 style=" margin-left: 900px;">al</h2>
@@ -304,6 +322,7 @@
     <p style="transform: rotate(41deg); margin-top: 490.5px; margin-left: 520px; position: fixed; display: none; -webkit-text-stroke: 1.25px black;" id="options2">Impostazioni</p>
     
 </div>
+<!--Pagina delle opzioni-->
 <div id="schermata_options" style="display: none;">
     <div style="background-color: rgb(174, 0, 0); width: 1050px; height: 700px; margin-left: 450px; margin-top: 200px; position: fixed; border-radius: 20px;"></div>
     <div style="background-color: green; border-radius: 10px; width: 310px; height: 40px; position: fixed; margin-top: 370px; margin-left: 1050px;">
@@ -330,17 +349,20 @@
 </div>
 </div>
     <script>
+        //Assegnazioni delle costannti per gli audio e del loro volume
         const audio = document.getElementById('audio');
         const audio2 = document.getElementById('audio2');
         const audio3 = document.getElementById('audio3');
         audio.volume = 0.5; 
         audio2.volume = 0.5; 
         audio3.volume = 1; 
+        //Assegnazione dello slider per controllare il volume dell'audio
         const volumeControl = document.getElementById('volumeControl');
         volumeControl.addEventListener('input', () => {
         audio.volume = volumeControl.value / 100;
             let audioValore = volumeControl.value / 100;
         });
+        //Assegnazione dello slider per controllare il volume dell'audio2 e 3
         const volumeControl2 = document.getElementById('volumeControl2');
         volumeControl2.addEventListener('input', () => {
         audio2.volume = volumeControl2.value / 100;
@@ -348,38 +370,43 @@
         audio3.volume = volumeControl2.value / 100;
         });
 
-
+        //Lingua preimpostata inglese
         let lang = "en";
         const langSwitch = document.getElementById('langSwitch');
+        //Funzioni per animare la carta quando si passa o toglie il mouse da sopra
         function animateCard(card, back, rotation) {
             card.style.transform = "scale(1.2) rotate("+rotation+"deg) translate(50px, -150px)";
-            
         }
         function resetCard(card, back, rotation) {
             card.style.transform = "scale(1) rotate("+rotation+"deg)";
-            
         }
 
-
+        //Funzione del tasto che avvia il gioco
         function play() {
             document.getElementById('audio3').play();
+            //Indirizzamento a poker.html con parametri di lingua e audio
             setTimeout(function() {
                 window.location.href = "poker.html?lang=" + lang + "&audioValore=" + audio.currentTime + "&audioValore2=" + audio2.currentTime;
             }, 900);
         }
+        //Funzione del tasto che avvia la guida
         function guide() {
             document.getElementById('audio3').play();
+            //Controllo lingua
             if(lang == "it"){
                 setTimeout(function() {
+                    //Indirizzamento a guide_italian.html con parametri di lingua
                     window.location.href = "guide_italian.html?lang=" + lang;
                 }, 900);
             }
             else{
                 setTimeout(function() {
+                    //Indirizzamento a guide_english.html con parametri di lingua
                     window.location.href = "guide_english.html?lang=" + lang; 
                 }, 900);
             }
         }
+        //Funzione del tasto che avvia le options
         function options() {
             setTimeout(function() {
                 document.getElementById('audio3').play();
@@ -389,8 +416,10 @@
             document.getElementById("tasto1").style.display = "block";
             document.getElementById("ritorna").style.display = "block";
             document.getElementById("tasto2").style.display = "block";
+            //Controllo del click dello switch
             langSwitch.addEventListener('change', () => {
             lang = langSwitch.checked ? "it" : "en";
+            //Se il controllo da vero si cambia la lingua
             if(langSwitch.checked == true){
                if(lang == "it") document.getElementById('f-card6').classList.toggle('clicked');
                else document.getElementById('f-card3').classList.toggle('clicked');
@@ -411,6 +440,7 @@
            
             
         }
+        //Funzione ritorna per ritornare al menù principale
         function ritorna() {
             if(lang == "it"){
                 document.getElementById("pagina_iniziale_italiano").style.display = "block";
@@ -436,10 +466,13 @@
 
 
     <script>
+        //Funzione del wrapper per impedire che la pagina scali
             function scalePage() {
+                //Dimensioni preimpstate della pagina
         const baseWidth = 1920; 
         const baseHeight = 970;
 
+        //Calcolo del rapporto tra la dimensione attuale della scheda con quelle preimpostate in modo da scalare dinamicamente
         const scaleX = window.innerWidth / baseWidth;
         const scaleY = window.innerHeight / baseHeight;
         const scale = Math.min(scaleX, scaleY);
@@ -447,7 +480,7 @@
         const wrapper = document.getElementById('wrapper');
         wrapper.style.transform = `scale(${scale})`;
     }
-
+    //Controlli dello zoom o dezoom della scheda 
     window.addEventListener('resize', scalePage);
     window.addEventListener('load', scalePage);
     </script>
