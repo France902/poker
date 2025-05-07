@@ -141,6 +141,7 @@
         let opponentBet = 0;
         const opponentBetElement = document.getElementById('piatto_bot');
         let wage = 50;
+        let cond = true;
 
         let valore_coppia = 0.25;
         let valore_tris = 0.5;
@@ -157,6 +158,15 @@
         const raise = document.getElementById("raise");
         const all_in = document.getElementById("all-in");
         const new_round = document.getElementById("new_round");
+
+       
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang');
+        const audio = parseInt(urlParams.get('audio'), 10);
+        const audio2 = parseInt(urlParams.get('audio2'), 10);
+        alert(`Language: ${lang}`);
+        alert(`Audio: ${audio}`);
+        alert(`Audio2: ${audio2}`);
 
         function startGame() {
             if(playerChips <= 0) {
@@ -291,6 +301,7 @@
         //SEZIONE PLAYER + Preimpostazione carte
 
         function pre_flop() {
+            cond = true;
             turno = 1;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -352,6 +363,12 @@
             raise.textContent += "  -"+(wage*2)+" 💰";
             all_in.textContent += "  -"+playerChips+" 💰";
             fold.onclick = function() {
+                if(cond){
+                fold.onclick = null;
+                call.onclick = null;
+                raise.onclick = null;
+                all_in.onclick = null;
+                cond = false;
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
                 countdownElement.textContent = "FOLD - Bot wins "+ (opponentBet + playerBet) + " 💰";
@@ -368,8 +385,11 @@
                 playerBet = 0;
                 opponentBet = 0;
                 commonCard.innerHTML = '';
+                }
             };
             call.onclick = function() {
+                if(cond){
+                    cond = false;
                 if(playerChips >= wage) {
                 playerBet = playerBet + wage;
                 playerChips = playerChips - wage;
@@ -396,8 +416,11 @@
             } else {
                 alert("Not enough chips to call! You can only do a all in or fold.");
             }
+            } 
             };
             raise.onclick = function() {
+                if(cond){
+                    cond = false;
                 if(playerChips >= wage*2) {
                 wage = wage*2;
                 playerBet = playerBet + wage ;
@@ -423,8 +446,11 @@
             } else {
                 alert("Not enough chips to raise! You can only do a all in or fold.");
             }
+            } 
             };
             all_in.onclick = function() {
+                if(cond){
+                    cond = false;
                 wage = playerChips;
                 playerBet = playerBet + playerChips;
                 playerChips = 0;
@@ -452,10 +478,12 @@
                     if(turno == 3) turno_river_bot(false, false, true);
                     if(turno == 4) turno_showdown_bot(false, false, true);
                 }, 2000);
+            }
             };
         }
 
         function flop(all_in1, all_in2){
+            cond = true;
             if(!all_in2){
                 turno = 2;
             suit = suits[Math.floor(Math.random() * suits.length)];
@@ -867,6 +895,7 @@
         }
     }
     function river(all_in1, all_in2){
+        cond = true;
         if(!all_in2){
             turno = 3;
             suit = suits[Math.floor(Math.random() * suits.length)];
@@ -1253,7 +1282,7 @@
         }
     }
     function showdown(all_in1, all_in2) {
-        
+        cond = true;
         if(!all_in2){
             turno = 4;
             suit = suits[Math.floor(Math.random() * suits.length)];
