@@ -87,7 +87,16 @@
     </style>
 </head>
 <body>
-    
+    <audio id="audio">
+        <source src="Purple Funk.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio2">
+        <source src="effetto_over.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio3" autoplay>
+        <source src="effetto_click.mp3" type="audio/mpeg">
+    </audio>
+    <div id="pagina_inglese">
     <div class="table hidden" id="table">
         <h1 id="gettoni_bot" style="position: fixed; font-size: 40px; color: white; margin-left: 525px; margin-top: 100px; ">2000 💰</h1>
         <h1 id="piatto_bot" style="position: fixed; font-size: 30px; color: white; margin-left: 1150px; margin-top: 150px;">Current Playing:</h1>
@@ -114,7 +123,42 @@
     <div class="bottom-controls hidden" id="controls">
         <button onclick="window.location.href = 'index.html?lang=' + lang + '&audio=' + audio.currentTime + '&audio2=' + audio2.currentTime;">Exit the Game <br>(Return to menu)</button>
     </div>
-
+    </div>
+    <div id="pagina_italiano" style="display: none;">
+        <div class="table hidden" id="table2">
+            <h1 id="gettoni_bot2" style="position: fixed; font-size: 40px; color: white; margin-left: 525px; margin-top: 100px;">2000 💰</h1>
+            <h1 id="piatto_bot2" style="position: fixed; font-size: 30px; color: white; margin-left: 1150px; margin-top: 150px;">In Gioco:</h1>
+            <h1 id="gettoni_player2" style="position: fixed; font-size: 40px; color: white; margin-left: -450px; margin-top: 650px;">2000 💰</h1>
+            <h1 id="piatto_player2" style="position: fixed; font-size: 30px; color: white; margin-left: 1150px; margin-top: 600px;">In Gioco:</h1>
+            <h1 id="turni2" style="position: fixed; font-size: 50px; color: white; margin-left: -1000px; margin-top: 0px;"></h1>
+        
+            <img src="pila_gettoni.png" alt="" style="position: fixed; width: 200px; height: 150px; margin-top: 500px; margin-left: -480px;">
+            <img src="pila_gettoni.png" alt="" style="position: fixed; width: 200px; height: 150px; margin-top: 150px; margin-left: 520px;">
+            <img src="icona_bot.jpg" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 1150px; margin-top: -15px; border-radius: 20px;">
+            
+            <div class="opponent-cards" id="opponent-cards2"></div>
+            
+            <img src="icona_player.png" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 1150px; margin-top: 660px; border-radius: 20px;">
+            <div class="player-cards" id="player-cards2"></div>
+            <img src="dietro_carta2.jpg" alt="" style="margin-left: 670px; margin-top: 430px; position: fixed; width: 120px; height: 150px; border: 4px solid black;">
+            
+            <div class="controls2" style="position: fixed;"></div>
+                <button id="fold2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 300px; margin-left: -1200px;">Passa</button>
+                <button id="call2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 400px; margin-left: -1200px;">Chiama</button>
+                <button id="raise2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 500px; margin-left: -1200px;">Rilancia</button>
+                <button id="all-in2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 600px; margin-left: -1200px;">All-in</button>
+            </div>
+        
+            <div id="countdown2" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 700px; margin-top: -500px; display: none; text-align: center;">3</div>
+            <button onclick="startGame()" id="new_round2" style="display: none; width: 150px; height: 90px; position: fixed; font-size: 30px; margin-top: -370px; margin-left: 900px; text-align: center;">Nuovo turno</button>
+            
+            <div class="common-cards" id="common-cards2"></div>
+        </div>
+        
+        <div class="bottom-controls hidden" id="controls2">
+            <button onclick="window.location.href = 'index.html?lang=' + lang + '&audio=' + audio.currentTime + '&audio2=' + audio2.currentTime;">Esci dal Gioco <br>(Torna al menu)</button>
+        </div>
+    </div>        
     <script>
         const suits = ['♥', '♦', '♣', '♠'];
         const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
@@ -135,7 +179,7 @@
         let playerChips = 2000;
         const playerChipsElement = document.getElementById('gettoni_player');
         let opponentChips = 2000;
-        const opponentChipsElement = document.getElementById('gettoni_bot');
+        const opponentChip2Element = document.getElementById('gettoni_bot');
         let playerBet = 0;
         const playerBetElement = document.getElementById('piatto_player');
         let opponentBet = 0;
@@ -161,16 +205,58 @@
 
        
         const urlParams = new URLSearchParams(window.location.search);
-        const lang = urlParams.get('lang');
-        const audio = urlParams.get('audioValore');
-        const audio2 = urlParams.get('audioValore2');
-        alert(`Language: ${lang}`);
-        alert(`Audio: ${audio}`);
-        alert(`Audio2: ${audio2}`);
+        let lang = urlParams.get('lang');
+        let valore_audio = urlParams.get('audioValore');
+        let valore_audio2 = urlParams.get('audioValore2');
+        const audio = document.getElementById('audio');
+        const audio2 = document.getElementById('audio2');
+        const audio3 = document.getElementById('audio3');
+        audio.volume = valore_audio;
+        audio2.volume = valore_audio2;
+        audio3.volume = valore_audio2;
 
+
+        const startScreen = document.getElementById('start-screen');
+    const table = document.getElementById('table2');
+    const controls = document.getElementById('controls2');
+    const countdownElement2 = document.getElementById('countdown2');
+    const opponentCards2 = document.getElementById('opponent-cards2');
+    const playerCards2 = document.getElementById('player-cards2');
+    const commonCard2 = document.getElementById('common-cards2');
+    const turni2 = document.getElementById("turni2");
+    let playerChips2 = 2000;
+    const playerChipsElement2 = document.getElementById('gettoni_player2');
+    let opponentChips2 = 2000;
+    const opponentChipsElement2 = document.getElementById('gettoni_bot2');
+    let playerBet2 = 0;
+    const playerBetElement2 = document.getElementById('piatto_player2');
+    let opponentBet2 = 0;
+    const opponentBe2tElement2 = document.getElementById('piatto_bot2');
+    let wage2 = 50;
+    let cond2 = true;
+    const fold2 = document.getElementById("fold2");
+    const call2 = document.getElementById("call2");
+    const raise2 = document.getElementById("raise2");
+    const all_in2 = document.getElementById("all-in2");
+    const new_round2 = document.getElementById("new_round2");
+    
+        function lingua(){
+            if(lang == "en") {
+                document.getElementById('pagina_inglese').style.display = 'block';
+                document.getElementById('pagina_italiano').style.display = 'none';
+                startGame();
+            } else {
+                document.getElementById('pagina_inglese').style.display = 'none';
+                document.getElementById('pagina_italiano').style.display = 'block';
+                startGame_it();
+            }
+        }
+        lingua();
         function startGame() {
+            if(lang == "it") {
+                new_round2.onclick = startGame_it();
+            }
             if(playerChips <= 0) {
-                alert("Bot wins "+ (opponentBet + playerBet) + " 💰");
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
                 countdownElement.textContent = "Bot wins! ";
@@ -203,7 +289,6 @@
                 raise.onclick = null;
                 all_in.onclick = null;
             } else if(opponentChips <= 0) {
-                alert("Player wins "+ (opponentBet + playerBet) + " 💰");
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
                 countdownElement.textContent = "Bot wins! ";
@@ -295,7 +380,7 @@
             }, 4000); 
         }
     }
-        startGame();
+        
 
 
         //SEZIONE PLAYER + Preimpostazione carte
@@ -837,10 +922,10 @@
                     break;
             }
             const all_in = document.getElementById('all-in');
-            if(punteggio_p > punteggio_b) {
+            if(punteggio_p < punteggio_b) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
-                countdownElement.textContent = "Player wins "+ (opponentBet + playerBet) + " 💰";
+                countdownElement.textContent = "PLAYER wins "+ (opponentBet + playerBet) + " 💰";
                 countdownElement.innerHTML += "<br>New Round ↓";
                 new_round.style.display = 'block';
                 call.textContent = "Call";
@@ -858,7 +943,7 @@
             } else if(punteggio_b > punteggio_p) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
-                countdownElement.textContent = "Bot wins "+ (opponentBet + playerBet) + " 💰";
+                countdownElement.textContent = "PLAYER wins "+ (opponentBet + playerBet) + " 💰";
                 countdownElement.innerHTML += "<br>New Round ↓";
                 new_round.style.display = 'block';
                 call.textContent = "Call";
@@ -1225,10 +1310,10 @@
                 if(allCardsSuit_player2[0] == allCardsSuit_player2[1] && allCardsSuit_player2[0] == allCardsSuit_player2[2] && allCardsSuit_player2[0] == allCardsSuit_player2[3] && allCardsSuit_player2[0] == allCardsSuit_player2[4] || (allCardsSuit_player2[1] == allCardsSuit_player2[2] && allCardsSuit_player2[1] == allCardsSuit_player2[3] && allCardsSuit_player2[1] == allCardsSuit_player2[4] && allCardsSuit_player2[1] == allCardsSuit_player2[5])) {
                 punteggio_p += valore_colore;
                 }
-        if(punteggio_p > punteggio_b) {
+        if(punteggio_p < punteggio_b) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
-                countdownElement.textContent = "Player wins "+ (opponentBet + playerBet) + " 💰";
+                countdownElement.textContent = "PLAYER wins "+ (opponentBet + playerBet) + " 💰";
                 countdownElement.innerHTML += "<br>New Round ↓";
                 new_round.style.display = 'block';
                 call.textContent = "Call";
@@ -1245,7 +1330,7 @@
             } else if(punteggio_b > punteggio_p) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
-                countdownElement.textContent = "Bot wins "+ (opponentBet + playerBet) + " 💰";
+                countdownElement.textContent = "PLAYER wins "+ (opponentBet + playerBet) + " 💰";
                 countdownElement.innerHTML += "<br>New Round ↓";
                 new_round.style.display = 'block';
                 call.textContent = "Call";
@@ -1302,8 +1387,6 @@
                 }, 2000);
             });
         } else{
-            alert("si")
-            
             let punteggio_p=0.1, punteggio_b=0.1; 
             let playerHand2 = [...playerHand];
             let opponentHand2 = [...opponentHand];
@@ -1726,12 +1809,10 @@
                 if(allCardsSuit_bot2[0] == allCardsSuit_bot2[1] && allCardsSuit_bot2[0] == allCardsSuit_bot2[2] && allCardsSuit_bot2[0] == allCardsSuit_bot2[3] && allCardsSuit_bot2[0] == allCardsSuit_bot2[4] || (allCardsSuit_bot2[1] == allCardsSuit_bot2[2] && allCardsSuit_bot2[1] == allCardsSuit_bot2[3] && allCardsSuit_bot2[1] == allCardsSuit_bot2[4] && allCardsSuit_bot2[1] == allCardsSuit_bot2[5]) || (allCardsSuit_bot2[2] == allCardsSuit_bot2[3] && allCardsSuit_bot2[2] == allCardsSuit_bot2[4] && allCardsSuit_bot2[2] == allCardsSuit_bot2[5] && allCardsSuit_bot2[2] == allCardsSuit_bot2[6])) {
                 punteggio_b = valore_colore;
                 }
-                alert(punteggio_p + " - " + punteggio_b);
-                if(punteggio_p > punteggio_b) {
-                    alert("Player wins "+ (opponentBet + playerBet) + " 🪙");
+                if(punteggio_p < punteggio_b) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
-                countdownElement.textContent = "Player wins "+ (opponentBet + playerBet) + " 💰";
+                countdownElement.textContent = "PLAYER wins "+ (opponentBet + playerBet) + " 💰";
                 countdownElement.innerHTML += "<br>New Round ↓";
                 new_round.style.display = 'block';
                 call.textContent = "Call";
@@ -1747,10 +1828,9 @@
                 commonCard.innerHTML = '';
                 
             } else if(punteggio_b > punteggio_p) {
-                alert("Bot wins "+ (opponentBet + playerBet) + " 💰");
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
-                countdownElement.textContent = "Bot wins "+ (opponentBet + playerBet) + " 💰";
+                countdownElement.textContent = "PLAYER wins "+ (opponentBet + playerBet) + " 💰";
                 countdownElement.innerHTML += "<br>New Round ↓";
                 new_round.style.display = 'block';
                 call.textContent = "Call";
@@ -1765,7 +1845,6 @@
                 opponentBet = 0;
                 commonCard.innerHTML = '';
             } else {
-                alert("It's a tie! Bets are returned.");
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
                 countdownElement.textContent = "It's a tie! Bets are returned.";
@@ -1819,7 +1898,6 @@
 
 
             indicatore_di_cognizione = 0.11;
-            alert(opponentHand[0] + opponentHand[1]+" - "+opponentHand[2] + opponentHand[3]);
             switch (opponentHand[0]) {
                 case 'A':
                     if (opponentHand[2] == 'A') {
@@ -1897,7 +1975,6 @@
         if(call == true) indicatore_di_cognizione += 0.02;
         if(raise == true) indicatore_di_cognizione -= 0.02;
         if(all_in == true) indicatore_di_cognizione -= 0.2;
-        alert("Indicatore di cognizione: " + indicatore_di_cognizione);
         if(indicatore_di_cognizione < 0.12) {
             fold_bot();
         } else if(indicatore_di_cognizione > 0.12 && indicatore_di_cognizione < 0.7){
@@ -2109,7 +2186,6 @@
             allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4]];
             allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5]];
             let app, i, j;
-            alert(allCardsValue_bot + " - " + allCardsSuit_bot);
             for (i = 0; i < allCardsValue_bot.length - 1; i++) {
                 for (j = i+1; j < allCardsValue_bot.length; j++) {
                     if (allCardsValue_bot[i] < allCardsValue_bot[j]) {
@@ -2122,7 +2198,6 @@
                     }
                 }
             }
-            alert(allCardsValue_bot + " - " + allCardsSuit_bot);
             if (allCardsValue_bot[0] === 14 && allCardsValue_bot[1] === 13 && allCardsValue_bot[2] === 12 && allCardsValue_bot[3] === 11 && allCardsValue_bot[4] === 10) {
                 indicatore_di_cognizione = valore_royal_flush;
             } else if(allCardsValue_bot[1] == allCardsValue_bot[0]-1 && allCardsValue_bot[2] == allCardsValue_bot[0]-2 && allCardsValue_bot[3] == allCardsValue_bot[0]-3 && allCardsValue_bot[4] == allCardsValue_bot[0]-4) {
@@ -2176,7 +2251,6 @@
             if(call == true) indicatore_di_cognizione += 0.04;
             if(raise == true) indicatore_di_cognizione -= 0.04;
             if(all_in1 == true) indicatore_di_cognizione -= 0.15;
-            alert("Indicatore di cognizione: " + indicatore_di_cognizione);
             let randomValue2 = Math.floor(Math.random() * 6) + 1;
             if(randomValue2 == 1) {
                 indicatore_di_cognizione = 1;
@@ -2307,7 +2381,6 @@
             allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6]];
             allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7]];
             let app, i, j;
-            alert(allCardsValue_bot + " - " + allCardsSuit_bot);
             for (i = 0; i < allCardsValue_bot.length - 1; i++) {
                 for (j = i+1; j < allCardsValue_bot.length; j++) {
                     if (allCardsValue_bot[i] < allCardsValue_bot[j]) {
@@ -2320,7 +2393,6 @@
                     }
                 }
             }
-            alert(allCardsValue_bot + " - " + allCardsSuit_bot);
             if (allCardsValue_bot[0] === 14 && allCardsValue_bot[1] === 13 && allCardsValue_bot[2] === 12 && allCardsValue_bot[3] === 11 && allCardsValue_bot[4] === 10 || (allCardsValue_bot[1] === 14 && allCardsValue_bot[2] === 13 && allCardsValue_bot[3] === 12 && allCardsValue_bot[4] === 11 && allCardsValue_bot[5] === 10)) {
                 indicatore_di_cognizione = valore_royal_flush;
             } else if(allCardsValue_bot[0] == allCardsValue_bot[1]+1 && allCardsValue_bot[0] == allCardsValue_bot[2]+2 && allCardsValue_bot[0] == allCardsValue_bot[3]+3 && allCardsValue_bot[0] == allCardsValue_bot[4]+4) {
@@ -2449,7 +2521,6 @@
             if(call == true) indicatore_di_cognizione += 0.05;
             if(raise == true) indicatore_di_cognizione -= 0.03;
             if(all_in == true) indicatore_di_cognizione -= 0.15;
-            alert("Indicatore di cognizione: " + indicatore_di_cognizione);
             let randomValue2 = Math.floor(Math.random() * 6) + 1;
             if(randomValue2 == 1) {
                 indicatore_di_cognizione = 1;
@@ -2478,7 +2549,6 @@
             allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6], commonCards[8]];
             allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7], commonCards[9]];
             let app, i, j;
-            alert(allCardsValue_bot + " - " + allCardsSuit_bot);
             for (i = 0; i < allCardsValue_bot.length - 1; i++) {
                 for (j = i+1; j < allCardsValue_bot.length; j++) {
                     if (allCardsValue_bot[i] < allCardsValue_bot[j]) {
@@ -2695,7 +2765,6 @@
             if(call == true) indicatore_di_cognizione += 0.06;
             if(raise == true) indicatore_di_cognizione -= 0.03;
             if(all_in == true) indicatore_di_cognizione -= 0.1;
-            alert("Indicatore di cognizione: " + indicatore_di_cognizione);
             let randomValue2 = Math.floor(Math.random() * 8) + 1;
             if(randomValue2 == 1) {
                 indicatore_di_cognizione = 1;
@@ -2718,6 +2787,2551 @@
                 all_in_bot(all_in1);
             }
         } 
+
+
+function startGame_it(){
+    if(playerChips2 <= 0) {
+    countdownElement2.style.fontSize = "30px";
+    countdownElement2.style.display = 'block';
+    countdownElement2.textContent = "Il Bot vince! ";
+    countdownElement2.innerHTML += "<br>Nuovo Match ↓";
+    new_round2.style.display = 'block';
+    new_round2.onclick = function() {
+        let playerChips2 = 2000;
+        let opponentChips2 = 2000;
+        let playerBet2 = 0;
+        let opponentBet2 = 0;
+        let wage2 = 50;
+        let playerHand = [];
+        let opponentHand = [];
+        let commonCards = [];
+        startGame_it();
+    }
+    call.textContent = "Chiama";
+    raise.textContent = "Rilancia";
+    all_in.textContent = "All-in";
+    playerBetElement2.textContent = `In Gioco: `;
+    opponentBe2tElement2.textContent = `In Gioco: `;
+    opponentChips2 = opponentChips2 + opponentBet2 + playerBet2;
+    opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+    wage2 = 50;
+    playerBet2 = 0;
+    opponentBet2 = 0;
+    commonCard2.innerHTML = '';
+    fold2.onclick = null;
+    call2.onclick = null;
+    raise2.onclick = null;
+    all_in2.onclick = null;
+} else if(opponentChips2 <= 0) {
+    countdownElement2.style.fontSize = "30px";
+    countdownElement2.style.display = 'block';
+    countdownElement2.textContent = "Il Bot vince! ";
+    countdownElement2.innerHTML += "<br>Nuovo Match ↓";
+    new_round2.onclick = function() {
+        let playerChips2 = 2000;
+        let opponentChips2 = 2000;
+        let playerBet2 = 0;
+        let opponentBet2 = 0;
+        let wage2 = 50;
+        let playerHand = [];
+        let opponentHand = [];
+        let commonCards = [];
+        startGame_it();
+    }
+    new_round2.style.display = 'block';
+    call.textContent = "Chiama";
+    raise.textContent = "Rilancia";
+    all_in.textContent = "All-in";
+    playerBetElement2.textContent = `In Gioco: `;
+    opponentBe2tElement2.textContent = `In Gioco: `;
+    playerChips2 = playerChips2 + opponentBet2 + playerBet2;
+    playerChipsElement2.textContent = `${playerChips2} 💰`;
+    wage2 = 50;
+    playerBet2 = 0;
+    opponentBet2 = 0;
+    commonCard2.innerHTML = '';
+    fold2.onclick = null;
+    call2.onclick = null;
+    raise2.onclick = null;
+    all_in2.onclick = null;
+} else {
+    new_round2.onclick = function() {
+        startGame_it();
+    }
+
+    playerCards2.innerHTML = '';
+    opponentCards2.innerHTML = '';
+    commonCard2.innerHTML = '';
+    countdownElement2.innerHTML = '';
+    turni2.textContent = "Il tuo Turno";
+    new_round2.style.display = 'none';
+    countdownElement2.style.fontSize = "100px";   
+    table.classList.remove('hidden');
+    controls.classList.remove('hidden');
+    call2.textContent = "Chiama";
+    raise2.textContent = "Rilancia";
+    all_in2.textContent = "All-in";
+    
+    let countdown = 3;
+    const countdownInterval = setInterval(() => {
+        countdownElement2.style.display = 'block';   
+        countdownElement2.textContent = countdown;
+        countdown--;
+        switch (countdown) {
+            case 2:
+                playerChips2 = playerChips2 - 50;
+                playerBet2 = playerBet2 + 50;
+                playerChipsElement2.textContent = `${playerChips2} 💰 -50`;
+                playerChipsElement2.style.color = 'red';
+                playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰 +50`;
+                playerBetElement2.style.color = 'green';
+                break;
+            case 1:
+                opponentChips2 = opponentChips2 - 50;
+                opponentBet2 = opponentBet2 + 50;
+                playerChipsElement2.style.color = 'white';
+                playerBetElement2.style.color = 'white';
+                opponentChipsElement2.textContent = `${opponentChips2} 💰 -50`;
+                opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰 +50`;
+                opponentChipsElement2.style.color = 'red';
+                opponentBe2tElement2.style.color = 'green';
+                playerChipsElement2.textContent = `${playerChips2} 💰`;
+                playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰`;
+                break;
+            case 0:
+                opponentChipsElement2.style.color = 'white';
+                opponentBe2tElement2.style.color = 'white';
+                break;
+            case -1:
+                opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+                opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰`;
+                clearInterval(countdownInterval);
+                countdownElement2.style.display = 'none';
+                break;
+        }
+    }, 1000);
+
+    setTimeout(() => {
+        pre_flop_it();
+    }, 4000); 
+}
+
+    function pre_flop_it() {
+    cond2 = true;
+    turno = 1;
+    suit = suits[Math.floor(Math.random() * suits.length)];
+    rank = ranks[Math.floor(Math.random() * ranks.length)];
+    playerHand[0] = rank;
+    playerHand[1] = suit;
+
+    const cartaPlayer = document.createElement('div');
+    cartaPlayer.className = 'card';
+    cartaPlayer.textContent += `${playerHand[0]} ${playerHand[1]}`;
+    cartaPlayer.style.fontSize = '40px';
+    playerCards2.appendChild(cartaPlayer);
+    cartaPlayer.style.cursor = 'pointer';
+    cartaPlayer.addEventListener('click', () => {
+        cartaPlayer.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            cartaPlayer.style.transform = 'scale(1)';
+        }, 2000);
+    });
+
+    suit = suits[Math.floor(Math.random() * suits.length)];
+    rank = ranks[Math.floor(Math.random() * ranks.length)];
+    opponentHand[0] = rank;
+    opponentHand[1] = suit;
+
+    const cartaBot = document.createElement('div');
+    cartaBot.className = 'card back';
+    opponentCards2.appendChild(cartaBot);
+
+    setTimeout(() => {
+        
+        suit = suits[Math.floor(Math.random() * suits.length)];
+        rank = ranks[Math.floor(Math.random() * ranks.length)];
+        playerHand[2] = rank;
+        playerHand[3] = suit;
+
+        const cartaPlayer = document.createElement('div');
+        cartaPlayer.className = 'card';
+        cartaPlayer.textContent += `${playerHand[2]} ${playerHand[3]}`;
+        playerCards2.appendChild(cartaPlayer);
+        cartaPlayer.style.cursor = 'pointer';
+        cartaPlayer.style.fontSize = '40px';
+        cartaPlayer.addEventListener('click', () => {
+            cartaPlayer.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                cartaPlayer.style.transform = 'scale(1)';
+            }, 2000);
+        });
+
+        suit = suits[Math.floor(Math.random() * suits.length)];
+        rank = ranks[Math.floor(Math.random() * ranks.length)];
+        opponentHand[2] = rank;
+        opponentHand[3] = suit;
+
+        const cartaBot = document.createElement('div');
+        cartaBot.className = 'card back';
+        opponentCards2.appendChild(cartaBot);
+    }, 300);
+    call2.textContent += "  -" + wage2 + " 💰";
+    raise2.textContent += "  -" + (wage2 * 2) + " 💰";
+    all_in2.textContent += "  -" + playerChips2 + " 💰";
+
+    fold2.onclick = function () {
+        if (cond2) {
+            fold2.onclick = null;
+            call2.onclick = null;
+            raise2.onclick = null;
+            all_in2.onclick = null;
+            cond2 = false;
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "PASSA - Il Bot vince " + (opponentBet2 + playerBet2) + " 💰";
+            countdownElement2.innerHTML += "<br>Nuovo Turno ↓";
+            new_round2.style.display = 'block';
+            call.textContent = "Chiama";
+            raise.textContent = "Rilancia";
+            all_in.textContent = "All-in";
+            playerBetElement2.textContent = `In Gioco: `;
+            opponentBe2tElement2.textContent = `In Gioco: `;
+            opponentChips2 = opponentChips2 + opponentBet2 + playerBet2;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+        }
+    };
+
+    call2.onclick = function () {
+        if (cond2) {
+            cond2 = false;
+            if (playerChips2 >= wage2) {
+                playerBet2 += wage2;
+                playerChips2 -= wage2;
+                playerChipsElement2.textContent = `${playerChips2} 💰 -${wage2}`;
+                playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰 +${wage2}`;
+                playerChipsElement2.style.color = 'red';
+                playerBetElement2.style.color = 'green';
+                turni2.textContent = "Turno del Bot";
+                call2.textContent = "Chiama -" + wage2 + " 💰";
+                raise2.textContent = "Rilancia -" + (wage2 * 2) + " 💰";
+                all_in2.textContent = "All-in -" + playerChips2 + " 💰";
+
+                setTimeout(() => {
+                    playerChipsElement2.style.color = 'white';
+                    playerBetElement2.style.color = 'white';
+                    playerChipsElement2.textContent = `${playerChips2} 💰`;
+                    playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰`;
+                    if (turno == 1) turno_bot_preflop_it(true, false, false);
+                    if (turno == 2) turno_flop_bot_it(true, false, false);
+                    if (turno == 3) turno_river_bot_it(true, false, false);
+                    if (turno == 4) turno_showdown_bot_it(true, false, false);
+                }, 2000);
+            } else {
+                alert("Non hai abbastanza gettoni per chiamare! Puoi solo andare all-in o passare.");
+            }
+        }
+    };
+
+    raise2.onclick = function () {
+        if (cond2) {
+            cond2 = false;
+            if (playerChips2 >= wage2 * 2) {
+                wage2 *= 2;
+                playerBet2 += wage2;
+                playerChips2 -= wage2;
+                playerChipsElement2.textContent = `${playerChips2} 💰 -${wage2}`;
+                playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰 +${wage2}`;
+                playerChipsElement2.style.color = 'red';
+                playerBetElement2.style.color = 'green';
+                turni2.textContent = "Turno del Bot";
+                call.textContent = "Chiama -" + wage2 + " 💰";
+                raise.textContent = "Rilancia -" + (wage2 * 2) + " 💰";
+                all_in.textContent = "All-in -" + playerChips2 + " 💰";
+
+                setTimeout(() => {
+                    playerChipsElement2.style.color = 'white';
+                    playerBetElement2.style.color = 'white';
+                    playerChipsElement2.textContent = `${playerChips2} 💰`;
+                    playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰`;
+                    if (turno == 1) turno_bot_preflop_it(false, true, false);
+                    if (turno == 2) turno_flop_bot_it(false, true, false);
+                    if (turno == 3) turno_river_bot_it(false, true, false);
+                    if (turno == 4) turno_showdown_bot_it(false, true, false);
+                }, 2000);
+            } else {
+                alert("Non hai abbastanza gettoni per rilanciare! Puoi solo andare all-in o passare.");
+            }
+        }
+    };
+
+    all_in2.onclick = function () {
+        if (cond2) {
+            cond2 = false;
+            wage2 = playerChips2;
+            playerBet2 += playerChips2;
+            playerChips2 = 0;
+            playerChipsElement2.textContent = `${playerChips2} 💰 -${playerChips2}`;
+            playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰 +${playerBet2}`;
+            wage2 = opponentChips2;
+            call2.textContent = "Chiama (Disabilitato)";
+            raise2.textContent = "Rilancia (Disabilitato)";
+            call2.onclick = null;
+            raise2.onclick = null;
+            all_in2.textContent = "All-in -" + playerChips2 + " 💰";
+            playerChipsElement2.style.color = 'red';
+            playerBetElement2.style.color = 'green';
+            turni2.textContent = "Turno del Bot";
+
+            setTimeout(() => {
+                playerChipsElement2.style.color = 'white';
+                playerBetElement2.style.color = 'white';
+                playerChipsElement2.textContent = `${playerChips2} 💰`;
+                playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰`;
+                if (turno == 1) turno_bot_preflop_it(false, false, true);
+                if (turno == 2) turno_flop_bot_it(false, false, true);
+                if (turno == 3) turno_river_bot_it(false, false, true);
+                if (turno == 4) turno_showdown_bot_it(false, false, true);
+            }, 2000);
+        }
+    };
+}
+
+        function flop_it(all_in1, all_in2){
+            cond2 = true;
+            
+            if(!all_in2){
+                
+                turno = 2;
+            suit = suits[Math.floor(Math.random() * suits.length)];
+            rank = ranks[Math.floor(Math.random() * ranks.length)];
+            commonCards[0] = rank;
+            commonCards[1] = suit;
+            const cardElement = document.createElement('div');
+            cardElement.className = 'card centre';
+            cardElement.textContent += `${commonCards[0]} ${commonCards[1]}`;
+            cardElement.style.fontSize = '40px';
+            commonCard2.appendChild(cardElement);
+            cardElement.style.cursor = 'pointer';
+            cardElement.addEventListener('click', () => {
+                cardElement.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    cardElement.style.transform = 'scale(1)';
+                }, 2000);
+            });
+            setTimeout(() => {
+                suit = suits[Math.floor(Math.random() * suits.length)];
+                rank = ranks[Math.floor(Math.random() * ranks.length)];
+                commonCards[2] = rank;
+                commonCards[3] = suit;
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card centre';
+                cardElement.textContent += `${commonCards[2]} ${commonCards[3]}`;
+                cardElement.style.fontSize = '40px';
+                commonCard2.appendChild(cardElement);
+                cardElement.style.cursor = 'pointer';
+                cardElement.addEventListener('click', () => {
+                    cardElement.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        cardElement.style.transform = 'scale(1)';
+                    }, 2000);
+                });
+            }, 300);
+            setTimeout(() => {
+                suit = suits[Math.floor(Math.random() * suits.length)];
+                rank = ranks[Math.floor(Math.random() * ranks.length)];
+                commonCards[4] = rank;
+                commonCards[5] = suit;
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card centre';
+                cardElement.textContent += `${commonCards[4]} ${commonCards[5]}`;
+                cardElement.style.fontSize = '40px';
+                commonCard2.appendChild(cardElement);
+                cardElement.style.cursor = 'pointer';
+                cardElement.addEventListener('click', () => {
+                    cardElement.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        cardElement.style.transform = 'scale(1)';
+                    }, 2000);
+                });
+            }, 600);
+            }
+            else{
+            let punteggio_p=0.1, punteggio_b=0.1;
+            let playerHand2 = [...playerHand];
+            let opponentHand2 = [...opponentHand];
+            let carta_alta_player, carta_alta_opponent;
+            switch (playerHand2[0]) {
+                case 'A':
+                    playerHand2[0] = 14;
+                    break;
+                case 'K':
+                    playerHand2[0] = 13;
+                    break;
+                case 'Q':
+                    playerHand2[0] = 12;
+                    break;
+                case 'J':
+                    playerHand2[0] = 11;
+                    break;
+                case '10':
+                    playerHand2[0] = 10;
+                    break;
+            }
+            switch (playerHand2[2]) {
+                case 'A':
+                    playerHand2[2] = 14;
+                    break;
+                case 'K':
+                    playerHand2[2] = 13;
+                    break;
+                case 'Q':
+                    playerHand2[2] = 12;
+                    break;
+                case 'J':
+                    playerHand2[2] = 11;
+                    break;
+                case '10':
+                    playerHand2[2] = 10;
+                    break;
+            }
+            switch (opponentHand2[0]) {
+                case 'A':
+                    opponentHand2[0] = 14;
+                    break;
+                case 'K':
+                    opponentHand2[0] = 13;
+                    break;
+                case 'Q':
+                    opponentHand2[0] = 12;
+                    break;
+                case 'J':
+                    opponentHand2[0] = 11;
+                    break;
+                case '10':
+                    opponentHand2[0] = 10;
+                    break;
+            }
+            switch (opponentHand2[2]) {
+                case 'A':
+                    opponentHand2[2] = 14;
+                    break;
+                case 'K':
+                    opponentHand2[2] = 13;
+                    break;
+                case 'Q':
+                    opponentHand2[2] = 12;
+                    break;
+                case 'J':
+                    opponentHand2[2] = 11;
+                    break;
+                case '10':
+                    opponentHand2[2] = 10;
+                    break;
+            }
+            if(playerHand2[0] >= playerHand2[2]) {
+                carta_alta_player = playerHand2[0];
+            } else if(playerHand2[0] < playerHand2[2]) {
+                carta_alta_player = opponentHand2[0];
+            } 
+            if(opponentHand2[0] >= opponentHand2[2]) {
+                carta_alta_opponent = opponentHand2[0];
+            } else if(opponentHand2[0] < opponentHand2[2]) {
+                carta_alta_opponent = playerHand2[0];
+            }
+            punteggio_p += carta_alta_player / 100;
+            punteggio_b += carta_alta_opponent / 100;
+            switch (playerHand[0]) {
+                case 'A':
+                    if(playerHand[2] == 'A') {
+                        punteggio_p += Coppia_AA;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case '2':
+                    if(playerHand[2] == '2') {
+                        punteggio_p += Coppia_22;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case '3':
+                    if(playerHand[2] == '3') {
+                        punteggio_p += Coppia_33;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case '4':
+                    if(playerHand[2] == '4') {
+                        punteggio_p += Coppia_44;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case '5':
+                    if(playerHand[2] == '5') {
+                        punteggio_p += Coppia_55;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case '6':
+                    if(playerHand[2] == '6') {
+                        punteggio_p += Coppia_66;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case '7':
+                    if(playerHand[2] == '7') {
+                        punteggio_p += Coppia_77;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case '8':
+                    if(playerHand[2] == '8') {
+                        punteggio_p += Coppia_88;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case '9':
+                    if(playerHand[2] == '9') {
+                        punteggio_p += Coppia_99;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case '10':
+                    if(playerHand[2] == '10') {
+                        punteggio_p += Coppia_10_10;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case 'J':
+                    if(playerHand[2] == 'J') {
+                        punteggio_p += Coppia_JJ;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case 'Q':
+                    if(playerHand[2] == 'Q') {
+                        punteggio_p += Coppia_QQ;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+                case 'K':
+                    if(playerHand[2] == 'K') {
+                        punteggio_p += Coppia_KK;
+                        if(playerHand[1] == playerHand[3]) {
+                            punteggio_p += 0.04;
+                        }
+                    }
+                    break;
+            }
+            switch (opponentHand[0]) {
+                case 'A':
+                    if (opponentHand[2] == 'A') {
+                        punteggio_b += Coppia_AA;
+                        if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case '2':
+                    if (opponentHand[2] == '2') {
+                        punteggio_b += Coppia_22;
+                        if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case '3':
+                    if (opponentHand[2] == '3') {
+                        punteggio_b += Coppia_33;
+                        if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case '4':
+                    if (opponentHand[2] == '4') {
+                        punteggio_b += Coppia_44;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case '5':
+                    if (opponentHand[2] == '5') {
+                        punteggio_b += Coppia_55;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case '6':
+                    if (opponentHand[2] == '6') {
+                        punteggio_b += Coppia_66;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case '7':
+                    if (opponentHand[2] == '7') {
+                        punteggio_b += Coppia_77;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case '8':
+                    if (opponentHand[2] == '8') {
+                        punteggio_b += Coppia_88;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case '9':
+                    if (opponentHand[2] == '9') {
+                        punteggio_b += Coppia_99;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case '10':
+                    if (opponentHand[2] == '10') {
+                        punteggio_b += Coppia_10_10;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case 'J':
+                    if (opponentHand[2] == 'J') {
+                        punteggio_b += Coppia_JJ;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case 'Q':
+                    if (opponentHand[2] == 'Q') {
+                        punteggio_b += Coppia_QQ;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+                case 'K':
+                    if (opponentHand[2] == 'K') {
+                        punteggio_b += Coppia_KK;
+                         if (opponentHand[1] == opponentHand[3]) {
+                            punteggio_b += 0.04;
+                        }
+                    }
+                    break;
+            }
+            const all_in = document.getElementById('all-in');
+            if(punteggio_p < punteggio_b) {
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "GIOCATORE vince " + (opponentBet2 + playerBet2) + " 💰";
+            countdownElement2.innerHTML += "<br>Nuovo turno ↓";
+            new_round2.style.display = 'block';
+            call2.textContent = "Chiama";
+            raise2.textContent = "Rilancia";
+            all_in2.textContent = "All-in";
+            playerBetElement2.textContent = `In gioco: `;
+            opponentBe2tElement2.textContent = `In gioco: `;
+            opponentChips2 = opponentChips2 + opponentBet2 + playerBet2;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+            
+        } else if(punteggio_b > punteggio_p) {
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "GIOCATORE vince " + (opponentBet2 + playerBet2) + " 💰";
+            countdownElement2.innerHTML += "<br>Nuovo turno ↓";
+            new_round2.style.display = 'block';
+            call2.textContent = "Chiama";
+            raise2.textContent = "Rilancia";
+            all_in2.textContent = "All-in";
+            playerBetElement2.textContent = `In gioco: `;
+            opponentBe2tElement2.textContent = `In gioco: `;
+            opponentChips2 = opponentChips2 + opponentBet2 + playerBet2;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+        } else {
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "È un pareggio! Le puntate vengono restituite.";
+            countdownElement2.innerHTML += "<br>Nuovo turno ↓";
+            new_round2.style.display = 'block';
+            call2.textContent = "Chiama";
+            raise2.textContent = "Rilancia";
+            all_in2.textContent = "All-in";
+            playerBetElement2.textContent = `In gioco: `;
+            opponentBe2tElement2.textContent = `In gioco: `;
+            playerChips2 += playerBet2;
+            opponentChips2 += opponentBet2;
+            playerChipsElement2.textContent = `${playerChips2} 💰`;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+        }
+
+        }
+    }
+    function river_it(all_in1, all_in2){
+        cond2 = true;
+        if(!all_in2){
+            turno = 3;
+            suit = suits[Math.floor(Math.random() * suits.length)];
+            rank = ranks[Math.floor(Math.random() * ranks.length)];
+            commonCards[6] = rank;
+            commonCards[7] = suit;
+            const cardElement = document.createElement('div');
+            cardElement.className = 'card centre';
+            cardElement.textContent += `${commonCards[6]} ${commonCards[7]}`;
+            cardElement.style.fontSize = '40px';
+            commonCard2.appendChild(cardElement);
+            cardElement.style.cursor = 'pointer';
+            cardElement.addEventListener('click', () => {
+                cardElement.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    cardElement.style.transform = 'scale(1)';
+                }, 2000);
+            });
+        } else {
+            let punteggio_p=0.1, punteggio_b=0.1; 
+            let playerHand2 = [...playerHand];
+            let opponentHand2 = [...opponentHand];
+            let carta_alta_player, carta_alta_opponent;
+            let i, j, app;
+            let allCardsValue_player = [];
+            let allCardsSuit_player = [];
+            switch (playerHand[0]) {
+                case 'A':
+                    playerHand[0] = 14;
+                    break;
+                case 'K':
+                    playerHand[0] = 13;
+                    break;
+                case 'Q':
+                    playerHand[0] = 12;
+                    break;
+                case 'J':
+                    playerHand[0] = 11;
+                    break;
+                case '10':
+                    playerHand[0] = 10;
+                    break;
+            }
+
+            switch (playerHand[2]) {
+                case 'A':
+                    playerHand[2] = 14;
+                    break;
+                case 'K':
+                    playerHand[2] = 13;
+                    break;
+                case 'Q':
+                    playerHand[2] = 12;
+                    break;
+                case 'J':
+                    playerHand[2] = 11;
+                    break;
+                case '10':
+                    playerHand[2] = 10;
+                    break;
+            }
+            
+            allCardsValue_player = [playerHand[0], playerHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6]];
+            allCardsSuit_player = [playerHand[1], playerHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7]];
+
+            for(i=0;i<allCardsValue_player.lenght; i++) {
+                for(j=i+1;j<allCardsValue_player.lenght; j++) {
+                    if(allCardsValue_player[i] > allCardsValue_player[j]) {
+                        app = allCardsValue_player[i];
+                        allCardsValue_player[i] = allCardsValue_player[j];
+                        allCardsValue_player[j] = app;
+                    }
+                }
+            }
+
+            carta_alta_player = allCardsValue_player[0];
+            carta_alta_bot = allCardsValue_bot[0];
+
+            punteggio_p += carta_alta_player / 100;
+            punteggio_b += carta_alta_opponent / 100;
+
+            if (allCardsValue_bot[0] === 14 && allCardsValue_bot[1] === 13 && allCardsValue_bot[2] === 12 && allCardsValue_bot[3] === 11 && allCardsValue_bot[4] === 10 || (allCardsValue_bot[1] === 14 && allCardsValue_bot[2] === 13 && allCardsValue_bot[3] === 12 && allCardsValue_bot[4] === 11 && allCardsValue_bot[5] === 10)) {
+                punteggio_b += valore_royal_flush;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1]+1 && allCardsValue_bot[0] == allCardsValue_bot[2]+2 && allCardsValue_bot[0] == allCardsValue_bot[3]+3 && allCardsValue_bot[0] == allCardsValue_bot[4]+4) {
+                if(allCardsSuit_bot[0] == allCardsSuit_bot[1] && allCardsSuit_bot[0] == allCardsSuit_bot[2] && allCardsSuit_bot[0] == allCardsSuit_bot[3] && allCardsSuit_bot[0] == allCardsSuit_bot[4]) {
+                    punteggio_b += valore_straight_flush;
+                } else {
+                    punteggio_b += valore_straight;
+                }
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2]+2 && allCardsValue_bot[1] == allCardsValue_bot[3]+3 && allCardsValue_bot[1] == allCardsValue_bot[4]+4 && allCardsValue_bot[1] == allCardsValue_bot[5]+5) {
+                if(allCardsSuit_bot[1] == allCardsSuit_bot[2] && allCardsSuit_bot[1] == allCardsSuit_bot[3] && allCardsSuit_bot[1] == allCardsSuit_bot[4] && allCardsSuit_bot[1] == allCardsSuit_bot[5]) {
+                    punteggio_b += valore_straight_flush;
+                } else {
+                    punteggio_b += valore_straight;
+                }
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                punteggio_b += valore_four_of_a_kind;
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                punteggio_b += valore_four_of_a_kind;
+            } else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) { 
+                punteggio_b += valore_four_of_a_kind;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] ){
+                if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                    punteggio_b += valore_full;
+                } else {
+                    punteggio_b += valore_tris;
+                }
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                if(allCardsValue_bot[0] == allCardsValue_bot[4]) {
+                    punteggio_b += valore_full;
+                } else {
+                    punteggio_b += valore_tris;
+                } 
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]) {
+                    if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                        punteggio_b += valore_full;
+                    } else {
+                        punteggio_b += valore_tris;
+                    }
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+                if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                        punteggio_b += valore_full;
+                    } else {
+                        punteggio_b += valore_tris;
+                    }
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+                if(allCardsValue_bot[3] == allCardsValue_bot[5]) {
+                        punteggio_b += valore_full;
+                    } else {
+                        punteggio_b += valore_tris;
+                    }
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                    punteggio_b += valore_full;
+                } else {
+                    punteggio_b += valore_tris;
+                }
+            } else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+                    punteggio_b += valore_full;
+                } else {
+                    punteggio_b += valore_tris;
+                }
+            } else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+                    punteggio_b += valore_full;
+                } else {
+                    punteggio_b += valore_tris;
+                }
+            } else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+                    punteggio_b += valore_full;
+                } else {
+                    punteggio_b += valore_tris;
+                }
+            } else {
+                let allCardsSuit_bot2 = [...allCardsSuit_bot];
+                for(i=0;i<allCardsSuit_bot2.length;i++){
+                    if(allCardsSuit_bot2[i] == '♥'){
+                        allCardsSuit_bot2[i] = 1;
+                    } else if(allCardsSuit_bot2[i] == '♦'){
+                        allCardsSuit_bot2[i] = 2;
+                    } else if(allCardsSuit_bot2[i] == '♣'){
+                        allCardsSuit_bot2[i] = 3;
+                    } else if(allCardsSuit_bot2[i] == '♠'){
+                        allCardsSuit_bot2[i] = 4;
+                    }
+                }
+                for(i=0;i<allCardsSuit_bot2.length-1;i++){
+                    for(j=i+1;j<allCardsSuit_bot2.length;j++){
+                        if(allCardsSuit_bot2[i] < allCardsSuit_bot2[j]){
+                            app = allCardsSuit_bot2[i];
+                            allCardsSuit_bot2[i] = allCardsSuit_bot2[j];
+                            allCardsSuit_bot2[j] = app;
+                        }
+                    }
+                }
+                if(allCardsSuit_bot2[0] == allCardsSuit_bot2[1] && allCardsSuit_bot2[0] == allCardsSuit_bot2[2] && allCardsSuit_bot2[0] == allCardsSuit_bot2[3] && allCardsSuit_bot2[0] == allCardsSuit_bot2[4] || (allCardsSuit_bot2[1] == allCardsSuit_bot2[2] && allCardsSuit_bot2[1] == allCardsSuit_bot2[3] && allCardsSuit_bot2[1] == allCardsSuit_bot2[4] && allCardsSuit_bot2[1] == allCardsSuit_bot2[5])) {
+                punteggio_b += valore_colore;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                punteggio_b += valore_doppia_coppia;
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                punteggio_b += valore_doppia_coppia;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                punteggio_b += valore_doppia_coppia;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                punteggio_b += valore_doppia_coppia;
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                punteggio_b += valore_doppia_coppia;
+            } else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                punteggio_b += valore_doppia_coppia;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+                punteggio_b += valore_coppia;
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+                punteggio_b += valore_coppia;
+            } else if(allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                punteggio_b += valore_coppia;
+            } else if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                punteggio_b += valore_coppia;
+            } else if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                punteggio_b += valore_coppia;
+            }
+        }
+
+
+
+        if (allCardsValue_player[0] === 14 && allCardsValue_player[1] === 13 && allCardsValue_player[2] === 12 && allCardsValue_player[3] === 11 && allCardsValue_player[4] === 10 || (allCardsValue_player[1] === 14 && allCardsValue_player[2] === 13 && allCardsValue_player[3] === 12 && allCardsValue_player[4] === 11 && allCardsValue_player[5] === 10)) {
+                punteggio_p += valore_royal_flush;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1]+1 && allCardsValue_player[0] == allCardsValue_player[2]+2 && allCardsValue_player[0] == allCardsValue_player[3]+3 && allCardsValue_player[0] == allCardsValue_player[4]+4) {
+                if(allCardsSuit_player[0] == allCardsSuit_player[1] && allCardsSuit_player[0] == allCardsSuit_player[2] && allCardsSuit_player[0] == allCardsSuit_player[3] && allCardsSuit_player[0] == allCardsSuit_player[4]) {
+                    punteggio_p += valore_straight_flush;
+                } else {
+                    punteggio_p += valore_straight;
+                }
+            } else if(allCardsValue_player[1] == allCardsValue_player[2]+2 && allCardsValue_player[1] == allCardsValue_player[3]+3 && allCardsValue_player[1] == allCardsValue_player[4]+4 && allCardsValue_player[1] == allCardsValue_player[5]+5) {
+                if(allCardsSuit_player[1] == allCardsSuit_player[2] && allCardsSuit_player[1] == allCardsSuit_player[3] && allCardsSuit_player[1] == allCardsSuit_player[4] && allCardsSuit_player[1] == allCardsSuit_player[5]) {
+                    punteggio_p += valore_straight_flush;
+                } else {
+                    punteggio_p += valore_straight;
+                }
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                punteggio_p += valore_four_of_a_kind;
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[3] == allCardsValue_player[4]) {
+                punteggio_p += valore_four_of_a_kind;
+            } else if(allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[3] == allCardsValue_player[4] && allCardsValue_player[4] == allCardsValue_player[5]) { 
+                punteggio_p += valore_four_of_a_kind;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2] ){
+                if(allCardsValue_player[3] == allCardsValue_player[4]) {
+                    punteggio_p += valore_full;
+                } else {
+                    punteggio_p += valore_tris;
+                }
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                if(allCardsValue_player[0] == allCardsValue_player[4]) {
+                    punteggio_p += valore_full;
+                } else {
+                    punteggio_p += valore_tris;
+                } 
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2]) {
+                    if(allCardsValue_player[3] == allCardsValue_player[4]) {
+                        punteggio_p += valore_full;
+                    } else {
+                        punteggio_p += valore_tris;
+                    }
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2]){
+                if(allCardsValue_player[4] == allCardsValue_player[5]) {
+                        punteggio_p += valore_full;
+                    } else {
+                        punteggio_p += valore_tris;
+                    }
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2]){
+                if(allCardsValue_player[3] == allCardsValue_player[5]) {
+                        punteggio_p += valore_full;
+                    } else {
+                        punteggio_p += valore_tris;
+                    }
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                if(allCardsValue_player[4] == allCardsValue_player[5]) {
+                    punteggio_p += valore_full;
+                } else {
+                    punteggio_p += valore_tris;
+                }
+            } else if(allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[3] == allCardsValue_player[4]) {
+                if(allCardsValue_player[0] == allCardsValue_player[1]) {
+                    punteggio_p += valore_full;
+                } else {
+                    punteggio_p += valore_tris;
+                }
+            } else if(allCardsValue_player[3] == allCardsValue_player[4] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                if(allCardsValue_player[0] == allCardsValue_player[1]) {
+                    punteggio_p += valore_full;
+                } else {
+                    punteggio_p += valore_tris;
+                }
+            } else if(allCardsValue_player[3] == allCardsValue_player[4] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                if(allCardsValue_player[1] == allCardsValue_player[2]) {
+                    punteggio_p += valore_full;
+                } else {
+                    punteggio_p += valore_tris;
+                }
+            } else {
+            if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                punteggio_p += valore_doppia_coppia;
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[3] == allCardsValue_player[4]) {
+                punteggio_p += valore_doppia_coppia;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[3] == allCardsValue_player[4]) {
+                punteggio_p += valore_doppia_coppia;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                punteggio_p += valore_doppia_coppia;
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                punteggio_p += valore_doppia_coppia;
+            } else if(allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                punteggio_p += valore_doppia_coppia;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1]) {
+                punteggio_p += valore_coppia;
+            } else if(allCardsValue_player[1] == allCardsValue_player[2]) {
+                punteggio_p += valore_coppia;
+            } else if(allCardsValue_player[2] == allCardsValue_player[3]) {
+                punteggio_p += valore_coppia;
+            } else if(allCardsValue_player[3] == allCardsValue_player[4]) {
+                punteggio_p += valore_coppia;
+            } else if(allCardsValue_player[4] == allCardsValue_player[5]) {
+                punteggio_p += valore_coppia;
+            }
+        }
+        let allCardsSuit_player2 = [...allCardsSuit_player];
+                for(i=0;i<allCardsSuit_player2.length;i++){
+                    if(allCardsSuit_player2[i] == '♥'){
+                        allCardsSuit_player2[i] = 1;
+                    } else if(allCardsSuit_player2[i] == '♦'){
+                        allCardsSuit_player2[i] = 2;
+                    } else if(allCardsSuit_player2[i] == '♣'){
+                        allCardsSuit_player2[i] = 3;
+                    } else if(allCardsSuit_player2[i] == '♠'){
+                        allCardsSuit_player2[i] = 4;
+                    }
+                }
+                for(i=0;i<allCardsSuit_player2.length-1;i++){
+                    for(j=i+1;j<allCardsSuit_player2.length;j++){
+                        if(allCardsSuit_player2[i] < allCardsSuit_player2[j]){
+                            app = allCardsSuit_player2[i];
+                            allCardsSuit_player2[i] = allCardsSuit_player2[j];
+                            allCardsSuit_player2[j] = app;
+                        }
+                    }
+                }
+                if(allCardsSuit_player2[0] == allCardsSuit_player2[1] && allCardsSuit_player2[0] == allCardsSuit_player2[2] && allCardsSuit_player2[0] == allCardsSuit_player2[3] && allCardsSuit_player2[0] == allCardsSuit_player2[4] || (allCardsSuit_player2[1] == allCardsSuit_player2[2] && allCardsSuit_player2[1] == allCardsSuit_player2[3] && allCardsSuit_player2[1] == allCardsSuit_player2[4] && allCardsSuit_player2[1] == allCardsSuit_player2[5])) {
+                punteggio_p += valore_colore;
+                }
+                if(punteggio_p < punteggio_b) {
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "GIOCATORE vince " + (opponentBet2 + playerBet2) + " 💰";
+            countdownElement2.innerHTML += "<br>Nuovo turno ↓";
+            new_round2.style.display = 'block';
+            call2.textContent = "Chiama";
+            raise2.textContent = "Rilancia";
+            all_in2.textContent = "All-in";
+            playerBetElement2.textContent = `In gioco: `;
+            opponentBe2tElement2.textContent = `In gioco: `;
+            opponentChips2 = opponentChips2 + opponentBet2 + playerBet2;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+            
+        } else if(punteggio_b > punteggio_p) {
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "GIOCATORE vince " + (opponentBet2 + playerBet2) + " 💰";
+            countdownElement2.innerHTML += "<br>Nuovo turno ↓";
+            new_round2.style.display = 'block';
+            call2.textContent = "Chiama";
+            raise2.textContent = "Rilancia";
+            all_in2.textContent = "All-in";
+            playerBetElement2.textContent = `In gioco: `;
+            opponentBe2tElement2.textContent = `In gioco: `;
+            opponentChips2 = opponentChips2 + opponentBet2 + playerBet2;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+        } else {
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "È un pareggio! Le puntate vengono restituite.";
+            countdownElement2.innerHTML += "<br>Nuovo turno ↓";
+            new_round2.style.display = 'block';
+            call2.textContent = "Chiama";
+            raise2.textContent = "Rilancia";
+            all_in2.textContent = "All-in";
+            playerBetElement2.textContent = `In gioco: `;
+            opponentBe2tElement2.textContent = `In gioco: `;
+            playerChips2 += playerBet2;
+            opponentChips2 += opponentBet2;
+            playerChipsElement2.textContent = `${playerChips2} 💰`;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+        }
+        }
+    }
+    function showdown_it(all_in1, all_in2) {
+        cond2 = true;
+        if(!all_in2){
+            turno = 4;
+            suit = suits[Math.floor(Math.random() * suits.length)];
+            rank = ranks[Math.floor(Math.random() * ranks.length)];
+            commonCards[8] = rank;
+            commonCards[9] = suit;
+            const cardElement = document.createElement('div');
+            cardElement.className = 'card centre';
+            cardElement.textContent += `${commonCards[8]} ${commonCards[9]}`;
+            cardElement.style.fontSize = '40px';
+            commonCard2.appendChild(cardElement);
+            cardElement.style.cursor = 'pointer';
+            cardElement.addEventListener('click', () => {
+                cardElement.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    cardElement.style.transform = 'scale(1)';
+                }, 2000);
+            });
+        } else{
+            let punteggio_p=0.1, punteggio_b=0.1; 
+            let playerHand2 = [...playerHand];
+            let opponentHand2 = [...opponentHand];
+            let carta_alta_player, carta_alta_opponent;
+            let  allCardsValue_player = [playerHand[0], playerHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6], commonCards[8]];
+            let allCardsSuit_player = [playerHand[1], playerHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7], commonCards[9]];
+            let app, i, j;
+            for (i = 0; i < allCardsValue_player.length - 1; i++) {
+                for (j = i+1; j < allCardsValue_player.length; j++) {
+                    if (allCardsValue_player[i] < allCardsValue_player[j]) {
+                        app = allCardsValue_player[i];
+                        allCardsValue_player[i] = allCardsValue_player[j];
+                        allCardsValue_player[j] = app;
+                        app = allCardsSuit_player[i];
+                        allCardsSuit_player[i] = allCardsSuit_player[j];
+                        allCardsSuit_player[j] = app;
+                    }
+                }
+            }
+            carta_alta_player = allCardsValue_player[0];
+            carta_alta_bot = allCardsValue_bot[0];
+
+            punteggio_p += carta_alta_player / 100;
+            punteggio_b += carta_alta_opponent / 100;
+
+            if (allCardsValue_player[0] === 14 && allCardsValue_player[1] === 13 && allCardsValue_player[2] === 12 && allCardsValue_player[3] === 11 && allCardsValue_player[4] === 10 || (allCardsValue_player[1] === 14 && allCardsValue_player[2] === 13 && allCardsValue_player[3] === 12 && allCardsValue_player[4] === 11 && allCardsValue_player[5] === 10) || (allCardsValue_player[2] === 14 && allCardsValue_player[3] === 13 && allCardsValue_player[4] === 12 && allCardsValue_player[5] === 11 && allCardsValue_player[6] === 10)) {
+                punteggio_p = valore_royal_flush;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1]+1 && allCardsValue_player[0] == allCardsValue_player[2]+2 && allCardsValue_player[0] == allCardsValue_player[3]+3 && allCardsValue_player[0] == allCardsValue_player[4]+4) {
+                if(allCardsSuit_player[0] == allCardsSuit_player[1] && allCardsSuit_player[0] == allCardsSuit_player[2] && allCardsSuit_player[0] == allCardsSuit_player[3] && allCardsSuit_player[0] == allCardsSuit_player[4]) {
+                    punteggio_p = valore_straight_flush;
+                } else {
+                    punteggio_p = valore_straight;
+                }
+            } else if(allCardsValue_player[1] == allCardsValue_player[2]+2 && allCardsValue_player[1] == allCardsValue_player[3]+3 && allCardsValue_player[1] == allCardsValue_player[4]+4 && allCardsValue_player[1] == allCardsValue_player[5]+5) {
+                if(allCardsSuit_player[1] == allCardsSuit_player[2] && allCardsSuit_player[1] == allCardsSuit_player[3] && allCardsSuit_player[1] == allCardsSuit_player[4] && allCardsSuit_player[1] == allCardsSuit_player[5]) {
+                    punteggio_p = valore_straight_flush;
+                } else {
+                    punteggio_p = valore_straight;
+                }
+            } else if(allCardsValue_player[2] == allCardsValue_player[3]+3 && allCardsValue_player[2] == allCardsValue_player[4]+4 && allCardsValue_player[2] == allCardsValue_player[5]+5 && allCardsValue_player[2] == allCardsValue_player[6]+6) {
+                if(allCardsSuit_player[2] == allCardsSuit_player[3] && allCardsSuit_player[2] == allCardsSuit_player[4] && allCardsSuit_player[2] == allCardsSuit_player[5] && allCardsSuit_player[2] == allCardsSuit_player[6]) {
+                    punteggio_p = valore_straight_flush;
+                } else {
+                    punteggio_p = valore_straight;
+                }
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                punteggio_p = valore_four_of_a_kind;
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[3] == allCardsValue_player[4]) {
+                punteggio_p = valore_four_of_a_kind;
+            } else if(allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[3] == allCardsValue_player[4] && allCardsValue_player[4] == allCardsValue_player[5]) { 
+                punteggio_p = valore_four_of_a_kind;
+            } else if(allCardsValue_player[3] == allCardsValue_player[4] && allCardsValue_player[4] == allCardsValue_player[5] && allCardsValue_player[5] == allCardsValue_player[6]) { 
+                punteggio_p = valore_four_of_a_kind;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2] ){
+                if(allCardsValue_player[3] == allCardsValue_player[4]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2]){
+                if(allCardsValue_player[3] == allCardsValue_player[5]) {
+                        punteggio_p = valore_full;
+                    } else {
+                        punteggio_p = valore_tris;
+                    }
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2]) {
+                if(allCardsValue_player[3] == allCardsValue_player[6]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2]){
+                if(allCardsValue_player[4] == allCardsValue_player[5]) {
+                        punteggio_p = valore_full;
+                    } else {
+                        punteggio_p = valore_tris;
+                    }
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2]) {
+                if(allCardsValue_player[4] == allCardsValue_player[6]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                if(allCardsValue_player[0] == allCardsValue_player[4]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                } 
+            }  else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[1] == allCardsValue_player[2]){
+                if(allCardsValue_player[5] == allCardsValue_player[6]) {
+                        punteggio_p = valore_full;
+                    } else {
+                        punteggio_p = valore_tris;
+                    }
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                if(allCardsValue_player[4] == allCardsValue_player[5]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                if(allCardsValue_player[4] == allCardsValue_player[6]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                if(allCardsValue_player[0] == allCardsValue_player[5]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                if(allCardsValue_player[0] == allCardsValue_player[6]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            }
+            else if(allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[3] == allCardsValue_player[4]) {
+                if(allCardsValue_player[0] == allCardsValue_player[1]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } if(allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[3] == allCardsValue_player[4]) {
+                if(allCardsValue_player[5] == allCardsValue_player[6]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[3] == allCardsValue_player[4] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                if(allCardsValue_player[0] == allCardsValue_player[1]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[3] == allCardsValue_player[4] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                if(allCardsValue_player[1] == allCardsValue_player[2]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[4] == allCardsValue_player[5] && allCardsValue_player[5] == allCardsValue_player[6]) {
+                if(allCardsValue_player[0] == allCardsValue_player[1]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[4] == allCardsValue_player[5] && allCardsValue_player[5] == allCardsValue_player[6]) {
+                if(allCardsValue_player[1] == allCardsValue_player[2]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } else if(allCardsValue_player[4] == allCardsValue_player[5] && allCardsValue_player[5] == allCardsValue_player[6]) {
+                if(allCardsValue_player[2] == allCardsValue_player[3]) {
+                    punteggio_p = valore_full;
+                } else {
+                    punteggio_p = valore_tris;
+                }
+            } 
+            else {
+            if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[2] == allCardsValue_player[3]) {
+                punteggio_p = valore_doppia_coppia;
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[3] == allCardsValue_player[4]) {
+                punteggio_p = valore_doppia_coppia;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[3] == allCardsValue_player[4]) {
+                punteggio_p = valore_doppia_coppia;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                punteggio_p = valore_doppia_coppia;
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                punteggio_p = valore_doppia_coppia;
+            } else if(allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[4] == allCardsValue_player[5]) {
+                punteggio_p = valore_doppia_coppia;
+            } else if(allCardsValue_player[0] == allCardsValue_player[1] && allCardsValue_player[5] == allCardsValue_player[6]) {
+                punteggio_p = valore_doppia_coppia;
+            } else if(allCardsValue_player[1] == allCardsValue_player[2] && allCardsValue_player[5] == allCardsValue_player[6]) {
+                punteggio_p = valore_doppia_coppia;
+            } else if(allCardsValue_player[2] == allCardsValue_player[3] && allCardsValue_player[5] == allCardsValue_player[6]) {
+                punteggio_p = valore_doppia_coppia;
+            } else if(allCardsValue_player[3] == allCardsValue_player[4] && allCardsValue_player[5] == allCardsValue_player[6]) {
+                punteggio_p = valore_doppia_coppia;
+            } 
+            else if(allCardsValue_player[0] == allCardsValue_player[1]) {
+                punteggio_p = valore_coppia;
+            } else if(allCardsValue_player[1] == allCardsValue_player[2]) {
+                punteggio_p = valore_coppia;
+            } else if(allCardsValue_player[2] == allCardsValue_player[3]) {
+                punteggio_p = valore_coppia;
+            } else if(allCardsValue_player[3] == allCardsValue_player[4]) {
+                punteggio_p = valore_coppia;
+            } else if(allCardsValue_player[4] == allCardsValue_player[5]) {
+                punteggio_p = valore_coppia;
+            } else if(allCardsValue_player[5] == allCardsValue_player[6]) {
+                punteggio_p = valore_coppia;
+            }
+        }
+        let allCardsSuit_player2 = [...allCardsSuit_player];
+                for(i=0;i<allCardsSuit_player2.length;i++){
+                    if(allCardsSuit_player2[i] == '♥'){
+                        allCardsSuit_player2[i] = 1;
+                    } else if(allCardsSuit_player2[i] == '♦'){
+                        allCardsSuit_player2[i] = 2;
+                    } else if(allCardsSuit_player2[i] == '♣'){
+                        allCardsSuit_player2[i] = 3;
+                    } else if(allCardsSuit_player2[i] == '♠'){
+                        allCardsSuit_player2[i] = 4;
+                    }
+                }
+                for(i=0;i<allCardsSuit_player2.length-1;i++){
+                    for(j=i+1;j<allCardsSuit_player2.length;j++){
+                        if(allCardsSuit_player2[i] < allCardsSuit_player2[j]){
+                            app = allCardsSuit_player2[i];
+                            allCardsSuit_player2[i] = allCardsSuit_player2[j];
+                            allCardsSuit_player2[j] = app;
+                        }
+                    }
+                }
+                if(allCardsSuit_player2[0] == allCardsSuit_player2[1] && allCardsSuit_player2[0] == allCardsSuit_player2[2] && allCardsSuit_player2[0] == allCardsSuit_player2[3] && allCardsSuit_player2[0] == allCardsSuit_player2[4] || (allCardsSuit_player2[1] == allCardsSuit_player2[2] && allCardsSuit_player2[1] == allCardsSuit_player2[3] && allCardsSuit_player2[1] == allCardsSuit_player2[4] && allCardsSuit_player2[1] == allCardsSuit_player2[5]) || (allCardsSuit_player2[2] == allCardsSuit_player2[3] && allCardsSuit_player2[2] == allCardsSuit_player2[4] && allCardsSuit_player2[2] == allCardsSuit_player2[5] && allCardsSuit_player2[2] == allCardsSuit_player2[6])) {
+                punteggio_p = valore_colore;
+                }
+
+                if (allCardsValue_bot[0] === 14 && allCardsValue_bot[1] === 13 && allCardsValue_bot[2] === 12 && allCardsValue_bot[3] === 11 && allCardsValue_bot[4] === 10 || (allCardsValue_bot[1] === 14 && allCardsValue_bot[2] === 13 && allCardsValue_bot[3] === 12 && allCardsValue_bot[4] === 11 && allCardsValue_bot[5] === 10) || (allCardsValue_bot[2] === 14 && allCardsValue_bot[3] === 13 && allCardsValue_bot[4] === 12 && allCardsValue_bot[5] === 11 && allCardsValue_bot[6] === 10)) {
+                punteggio_b = valore_royal_flush;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1]+1 && allCardsValue_bot[0] == allCardsValue_bot[2]+2 && allCardsValue_bot[0] == allCardsValue_bot[3]+3 && allCardsValue_bot[0] == allCardsValue_bot[4]+4) {
+                if(allCardsSuit_bot[0] == allCardsSuit_bot[1] && allCardsSuit_bot[0] == allCardsSuit_bot[2] && allCardsSuit_bot[0] == allCardsSuit_bot[3] && allCardsSuit_bot[0] == allCardsSuit_bot[4]) {
+                    punteggio_b = valore_straight_flush;
+                } else {
+                    punteggio_b = valore_straight;
+                }
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2]+2 && allCardsValue_bot[1] == allCardsValue_bot[3]+3 && allCardsValue_bot[1] == allCardsValue_bot[4]+4 && allCardsValue_bot[1] == allCardsValue_bot[5]+5) {
+                if(allCardsSuit_bot[1] == allCardsSuit_bot[2] && allCardsSuit_bot[1] == allCardsSuit_bot[3] && allCardsSuit_bot[1] == allCardsSuit_bot[4] && allCardsSuit_bot[1] == allCardsSuit_bot[5]) {
+                    punteggio_b = valore_straight_flush;
+                } else {
+                    punteggio_b = valore_straight;
+                }
+            } else if(allCardsValue_bot[2] == allCardsValue_bot[3]+3 && allCardsValue_bot[2] == allCardsValue_bot[4]+4 && allCardsValue_bot[2] == allCardsValue_bot[5]+5 && allCardsValue_bot[2] == allCardsValue_bot[6]+6) {
+                if(allCardsSuit_bot[2] == allCardsSuit_bot[3] && allCardsSuit_bot[2] == allCardsSuit_bot[4] && allCardsSuit_bot[2] == allCardsSuit_bot[5] && allCardsSuit_bot[2] == allCardsSuit_bot[6]) {
+                    punteggio_b = valore_straight_flush;
+                } else {
+                    punteggio_b = valore_straight;
+                }
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                punteggio_b = valore_four_of_a_kind;
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                punteggio_b = valore_four_of_a_kind;
+            } else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) { 
+                punteggio_b = valore_four_of_a_kind;
+            } else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5] && allCardsValue_bot[5] == allCardsValue_bot[6]) { 
+                punteggio_b = valore_four_of_a_kind;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] ){
+                if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+                if(allCardsValue_bot[3] == allCardsValue_bot[5]) {
+                        punteggio_b = valore_full;
+                    } else {
+                        punteggio_b = valore_tris;
+                    }
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]) {
+                if(allCardsValue_bot[3] == allCardsValue_bot[6]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+                if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                        punteggio_b = valore_full;
+                    } else {
+                        punteggio_b = valore_tris;
+                    }
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]) {
+                if(allCardsValue_bot[4] == allCardsValue_bot[6]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                if(allCardsValue_bot[0] == allCardsValue_bot[4]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                } 
+            }  else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+                if(allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                        punteggio_b = valore_full;
+                    } else {
+                        punteggio_b = valore_tris;
+                    }
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                if(allCardsValue_bot[4] == allCardsValue_bot[6]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                if(allCardsValue_bot[0] == allCardsValue_bot[5]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                if(allCardsValue_bot[0] == allCardsValue_bot[6]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            }
+            else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                if(allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[4] == allCardsValue_bot[5] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[4] == allCardsValue_bot[5] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } else if(allCardsValue_bot[4] == allCardsValue_bot[5] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                if(allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                    punteggio_b = valore_full;
+                } else {
+                    punteggio_b = valore_tris;
+                }
+            } 
+            else {
+            if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                punteggio_b = valore_doppia_coppia;
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                punteggio_b = valore_doppia_coppia;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                punteggio_b = valore_doppia_coppia;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                punteggio_b = valore_doppia_coppia;
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                punteggio_b = valore_doppia_coppia;
+            } else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                punteggio_b = valore_doppia_coppia;
+            } else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                punteggio_b = valore_doppia_coppia;
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                punteggio_b = valore_doppia_coppia;
+            } else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                punteggio_b = valore_doppia_coppia;
+            } else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                punteggio_b = valore_doppia_coppia;
+            } 
+            else if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+                punteggio_b = valore_coppia;
+            } else if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+                punteggio_b = valore_coppia;
+            } else if(allCardsValue_bot[2] == allCardsValue_bot[3]) {
+                punteggio_b = valore_coppia;
+            } else if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+                punteggio_b = valore_coppia;
+            } else if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+                punteggio_b = valore_coppia;
+            } else if(allCardsValue_bot[5] == allCardsValue_bot[6]) {
+                punteggio_b = valore_coppia;
+            }
+        }
+        let allCardsSuit_bot2 = [...allCardsSuit_bot];
+                for(i=0;i<allCardsSuit_bot2.length;i++){
+                    if(allCardsSuit_bot2[i] == '♥'){
+                        allCardsSuit_bot2[i] = 1;
+                    } else if(allCardsSuit_bot2[i] == '♦'){
+                        allCardsSuit_bot2[i] = 2;
+                    } else if(allCardsSuit_bot2[i] == '♣'){
+                        allCardsSuit_bot2[i] = 3;
+                    } else if(allCardsSuit_bot2[i] == '♠'){
+                        allCardsSuit_bot2[i] = 4;
+                    }
+                }
+                for(i=0;i<allCardsSuit_bot2.length-1;i++){
+                    for(j=i+1;j<allCardsSuit_bot2.length;j++){
+                        if(allCardsSuit_bot2[i] < allCardsSuit_bot2[j]){
+                            app = allCardsSuit_bot2[i];
+                            allCardsSuit_bot2[i] = allCardsSuit_bot2[j];
+                            allCardsSuit_bot2[j] = app;
+                        }
+                    }
+                }
+                if(allCardsSuit_bot2[0] == allCardsSuit_bot2[1] && allCardsSuit_bot2[0] == allCardsSuit_bot2[2] && allCardsSuit_bot2[0] == allCardsSuit_bot2[3] && allCardsSuit_bot2[0] == allCardsSuit_bot2[4] || (allCardsSuit_bot2[1] == allCardsSuit_bot2[2] && allCardsSuit_bot2[1] == allCardsSuit_bot2[3] && allCardsSuit_bot2[1] == allCardsSuit_bot2[4] && allCardsSuit_bot2[1] == allCardsSuit_bot2[5]) || (allCardsSuit_bot2[2] == allCardsSuit_bot2[3] && allCardsSuit_bot2[2] == allCardsSuit_bot2[4] && allCardsSuit_bot2[2] == allCardsSuit_bot2[5] && allCardsSuit_bot2[2] == allCardsSuit_bot2[6])) {
+                punteggio_b = valore_colore;
+                }
+                if(punteggio_p < punteggio_b) {
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "GIOCATORE vince " + (opponentBet2 + playerBet2) + " 💰";
+            countdownElement2.innerHTML += "<br>Nuovo turno ↓";
+            new_round2.style.display = 'block';
+            call2.textContent = "Chiama";
+            raise2.textContent = "Rilancia";
+            all_in2.textContent = "All-in";
+            playerBetElement2.textContent = `In gioco: `;
+            opponentBe2tElement2.textContent = `In gioco: `;
+            opponentChips2 = opponentChips2 + opponentBet2 + playerBet2;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+            
+        } else if(punteggio_b > punteggio_p) {
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "GIOCATORE vince " + (opponentBet2 + playerBet2) + " 💰";
+            countdownElement2.innerHTML += "<br>Nuovo turno ↓";
+            new_round2.style.display = 'block';
+            call2.textContent = "Chiama";
+            raise2.textContent = "Rilancia";
+            all_in2.textContent = "All-in";
+            playerBetElement2.textContent = `In gioco: `;
+            opponentBe2tElement2.textContent = `In gioco: `;
+            opponentChips2 = opponentChips2 + opponentBet2 + playerBet2;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+        } else {
+            countdownElement2.style.fontSize = "30px";
+            countdownElement2.style.display = 'block';
+            countdownElement2.textContent = "È un pareggio! Le puntate vengono restituite.";
+            countdownElement2.innerHTML += "<br>Nuovo turno ↓";
+            new_round2.style.display = 'block';
+            call2.textContent = "Chiama";
+            raise2.textContent = "Rilancia";
+            all_in2.textContent = "All-in";
+            playerBetElement2.textContent = `In gioco: `;
+            opponentBe2tElement2.textContent = `In gioco: `;
+            playerChips2 += playerBet2;
+            opponentChips2 += opponentBet2;
+            playerChipsElement2.textContent = `${playerChips2} 💰`;
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            wage2 = 50;
+            playerBet2 = 0;
+            opponentBet2 = 0;
+            commonCard2.innerHTML = '';
+        }
+        }
+    }
+
+
+        //SEZIONE BOT
+
+
+
+        let indicatore_di_cognizione;
+
+
+
+        let allCardsValue_bot = [];
+        let allCardsSuit_bot = [];
+
+            let Coppia_22 = 0.50;
+            let Coppia_33 = 0.54;
+            let Coppia_44 = 0.58;
+            let Coppia_55 = 0.62;
+            let Coppia_66 = 0.66;
+            let Coppia_77 = 0.70;
+            let Coppia_88 = 0.74;
+            let Coppia_99 = 0.78;
+            let Coppia_10_10 = 0.82;
+            let Coppia_JJ = 0.86;
+            let Coppia_QQ = 0.90;
+            let Coppia_KK = 0.94;
+            let Coppia_AA = 0.98;
+        
+
+        function turno_bot_preflop_it(call, raise, all_in1) {
+            
+            indicatore_di_cognizione = 0.11;
+            switch (opponentHand[0]) {
+                case 'A':
+                    if (opponentHand[2] == 'A') {
+                        indicatore_di_cognizione += Coppia_AA;
+                    }
+                    break;
+                case '2':
+                    if (opponentHand[2] == '2') {
+                        indicatore_di_cognizione += Coppia_22;
+                    }
+                    break;
+                case '3':
+                    if (opponentHand[2] == '3') {
+                        indicatore_di_cognizione += Coppia_33;
+                    }
+                    break;
+                case '4':
+                    if (opponentHand[2] == '4') {
+                        indicatore_di_cognizione += Coppia_44;
+                    }
+                    break;
+                case '5':
+                    if (opponentHand[2] == '5') {
+                        indicatore_di_cognizione += Coppia_55;
+                    }
+                    break;
+                case '6':
+                    if (opponentHand[2] == '6') {
+                        indicatore_di_cognizione += Coppia_66;
+                    }
+                    break;
+                case '7':
+                    if (opponentHand[2] == '7') {
+                        indicatore_di_cognizione += Coppia_77;
+                    }
+                    break;
+                case '8':
+                    if (opponentHand[2] == '8') {
+                        indicatore_di_cognizione += Coppia_88;
+                    }
+                    break;
+                case '9':
+                    if (opponentHand[2] == '9') {
+                        indicatore_di_cognizione += Coppia_99;
+                    }
+                    break;
+                case '10':
+                    if (opponentHand[2] == '10') {
+                        indicatore_di_cognizione += Coppia_10_10;
+                    }
+                    break;
+                case 'J':
+                    if (opponentHand[2] == 'J') {
+                        indicatore_di_cognizione += Coppia_JJ;
+                    }
+                    break;
+                case 'Q':
+                    if (opponentHand[2] == 'Q') {
+                        indicatore_di_cognizione += Coppia_QQ;
+                    }
+                    break;
+                case 'K':
+                    if (opponentHand[2] == 'K') {
+                        indicatore_di_cognizione += Coppia_KK;
+                    }
+                    break;
+        }
+        
+        let randomValue = (Math.random() * 0.14 - 0.04).toFixed(2);
+        indicatore_di_cognizione += parseFloat(randomValue);
+        if(opponentHand[1] == opponentHand[3]) {
+            indicatore_di_cognizione += 0.04;
+        }
+
+        if(call == true) indicatore_di_cognizione += 0.02;
+        if(raise == true) indicatore_di_cognizione -= 0.02;
+        if(all_in == true) indicatore_di_cognizione -= 0.2;
+        
+        if(indicatore_di_cognizione < 0.12) {
+            fold_bot();
+        } else if(indicatore_di_cognizione > 0.12 && indicatore_di_cognizione < 0.7){
+            
+            if(!all_in1) {
+                call_bot(all_in1);
+            } else {
+                fold_bot();
+            }
+        } else if(indicatore_di_cognizione > 0.7 && indicatore_di_cognizione < 0.8){
+            if(!all_in1) {
+                raise_bot(all_in1);
+            } else {
+                fold_bot();
+            }   
+        } else if(indicatore_di_cognizione > 0.8){
+            all_in_bot(all_in1);
+        }
+
+        
+    }
+    function fold_bot() {
+    const call = document.getElementById("call");
+    const raise = document.getElementById("raise");
+    const all_in = document.getElementById("all-in");
+    countdownElement2.style.fontSize = "30px";
+    countdownElement2.style.display = 'block';
+    countdownElement2.textContent = "PASSA - Il giocatore vince " + (opponentBet2 + playerBet2) + " 💰";
+    countdownElement2.innerHTML += "<br>Nuovo Turno ↓";
+    new_round2.style.display = 'block';
+    call.textContent = "Chiama";
+    raise.textContent = "Rilancia";
+    all_in.textContent = "All-in";
+    playerBetElement2.textContent = `In Gioco: `;
+    opponentBe2tElement2.textContent = `In Gioco: `;
+    playerChips2 = playerChips2 + opponentBet2 + playerBet2;
+    playerChipsElement2.textContent = `${playerChips2} 💰`;
+    wage2 = 50;
+    playerBet2 = 0;
+    opponentBet2 = 0;
+    commonCard2.innerHTML = '';
+}
+
+function call_bot(all_in1) {
+    if(opponentChips2 >= wage2) {
+        opponentBet2 = opponentBet2 + wage2;
+        opponentChips2 = opponentChips2 - wage2;
+        opponentChipsElement2.textContent = `${opponentChips2} 💰 -` + wage2;
+        opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰 +` + wage2;
+        opponentChipsElement2.style.color = 'red';
+        opponentBe2tElement2.style.color = 'green';
+        turni2.textContent = "Turno del Giocatore";
+        setTimeout(() => {
+            opponentChipsElement2.style.color = 'white';
+            opponentBe2tElement2.style.color = 'white';
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰`;
+            
+            if(turno == 1) flop_it(all_in1, false);
+            else if(turno == 2) river_it(all_in1, false);
+            else if(turno == 3) showdown_it(all_in1, false);
+            else if(turno == 4) showdown_it(all_in1, true);
+        }, 2000);
+    } else {
+        all_in_bot(all_in1);
+    }
+}
+
+function raise_bot(all_in1) {
+    if(opponentChips2 >= wage2 * 2) {
+        wage2 = wage2 * 2;
+        opponentBet2 = opponentBet2 + wage2;
+        opponentChips2 = opponentChips2 - wage2;
+        opponentChipsElement2.textContent = `${opponentChips2} 💰 -` + wage2;
+        opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰 +` + wage2;
+        opponentChipsElement2.style.color = 'red';
+        opponentBe2tElement2.style.color = 'green';
+        turni2.textContent = "Turno del Giocatore";
+        setTimeout(() => {
+            opponentChipsElement2.style.color = 'white';
+            opponentBe2tElement2.style.color = 'white';
+            opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+            opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰`;
+            if(turno == 1) flop_it(all_in1, false);
+            else if(turno == 2) river_it(all_in1, false);
+            else if(turno == 3) showdown_it(all_in1, false);
+            else if(turno == 4) showdown_it(all_in1, true);
+        }, 2000);
+    } else {
+        call_bot(all_in1);
+    }
+}
+
+all_in_bot = function(all_in1) {
+    wage2 = opponentChips2;
+    opponentBet2 = opponentBet2 + opponentChips2;
+    opponentChips2 = 0;
+    opponentChipsElement2.textContent = `${opponentChips2} 💰 -` + opponentChips2;
+    opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰 +` + wage2;
+    opponentChipsElement2.style.color = 'red';
+    opponentBe2tElement2.style.color = 'green';
+    turni2.textContent = "Turno del Giocatore";
+    call.textContent = "Chiama disabilitato";
+    raise.textContent = "Rilancia disabilitato";
+    call.onclick = null;
+    raise.onclick = null;
+    setTimeout(() => {
+        opponentChipsElement2.style.color = 'white';
+        opponentBe2tElement2.style.color = 'white';
+        opponentChipsElement2.textContent = `${opponentChips2} 💰`;
+        opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰`;
+        if(all_in1 == true) {
+            if(turno == 1) flop_it(all_in1, true);
+            else if(turno == 2) river_it(all_in1, true);
+            else if(turno == 3) showdown_it(all_in1, true);
+            else if(turno == 4) showdown_it(all_in1, true);
+        } else {
+            if(turno == 1) flop_it(all_in1, false);
+            else if(turno == 2) river_it(all_in1, false);
+            else if(turno == 3) showdown_it(all_in1, false);
+            else if(turno == 4) showdown_it(all_in1, true);
+        }
+    }, 2000);
+}
+
+function turno_flop_bot_it(call, raise, all_in1){
+indicatore_di_cognizione = 0.11;
+switch (opponentHand[0]) {
+    case 'A':
+        opponentHand[0] = 14;
+        break;
+    case 'K':
+        opponentHand[0] = 13;
+        break;
+    case 'Q':
+        opponentHand[0] = 12;
+        break;
+    case 'J':
+        opponentHand[0] = 11;
+        break;
+    case '10':
+        opponentHand[0] = 10;
+        break;
+}
+
+switch (opponentHand[2]) {
+    case 'A':
+        opponentHand[2] = 14;
+        break;
+    case 'K':
+        opponentHand[2] = 13;
+        break;
+    case 'Q':
+        opponentHand[2] = 12;
+        break;
+    case 'J':
+        opponentHand[2] = 11;
+        break;
+    case '10':
+        opponentHand[2] = 10;
+        break;
+}
+switch (commonCards[0]) {
+    case 'A':
+        commonCards[0] = 14;
+        break;
+    case 'K':
+        commonCards[0] = 13;
+        break;
+    case 'Q':
+        commonCards[0] = 12;
+        break;
+    case 'J':
+        commonCards[0] = 11;
+        break;
+    case '10':
+        commonCards[0] = 10;
+        break;
+}
+switch (commonCards[2]) {
+    case 'A':
+        commonCards[2] = 14;
+        break;
+    case 'K':
+        commonCards[2] = 13;
+        break;
+    case 'Q':
+        commonCards[2] = 12;
+        break;
+    case 'J':
+        commonCards[2] = 11;
+        break;
+    case '10':
+        commonCards[2] = 10;
+        break;
+}
+switch (commonCards[4]) {
+    case 'A':
+        commonCards[4] = 14;
+        break;
+    case 'K':
+        commonCards[4] = 13;
+        break;
+    case 'Q':
+        commonCards[4] = 12;
+        break;
+    case 'J':
+        commonCards[4] = 11;
+        break;
+    case '10':
+        commonCards[4] = 10;
+        break;
+}
+allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4]];
+allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5]];
+let app, i, j;
+for (i = 0; i < allCardsValue_bot.length - 1; i++) {
+    for (j = i+1; j < allCardsValue_bot.length; j++) {
+        if (allCardsValue_bot[i] < allCardsValue_bot[j]) {
+            app = allCardsValue_bot[i];
+            allCardsValue_bot[i] = allCardsValue_bot[j];
+            allCardsValue_bot[j] = app;
+            app = allCardsSuit_bot[i];
+            allCardsSuit_bot[i] = allCardsSuit_bot[j];
+            allCardsSuit_bot[j] = app;
+        }
+    }
+}
+if (allCardsValue_bot[0] === 14 && allCardsValue_bot[1] === 13 && allCardsValue_bot[2] === 12 && allCardsValue_bot[3] === 11 && allCardsValue_bot[4] === 10) {
+    indicatore_di_cognizione = valore_royal_flush;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[0]-1 && allCardsValue_bot[2] == allCardsValue_bot[0]-2 && allCardsValue_bot[3] == allCardsValue_bot[0]-3 && allCardsValue_bot[4] == allCardsValue_bot[0]-4) {
+    if(allCardsSuit_bot[0] == allCardsSuit_bot[1] && allCardsSuit_bot[0] == allCardsSuit_bot[2] && allCardsSuit_bot[0] == allCardsSuit_bot[3] && allCardsSuit_bot[0] == allCardsSuit_bot[4]) {
+        indicatore_di_cognizione = valore_straight_flush;
+    } else {
+        indicatore_di_cognizione = valore_straight;
+    }
+
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    indicatore_di_cognizione = valore_four_of_a_kind;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_four_of_a_kind;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] ){
+    if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[4]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    } 
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+        if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+            indicatore_di_cognizione = valore_full;
+        } else {
+            indicatore_di_cognizione = valore_tris;
+        }
+} else if(allCardsSuit_bot[0] == allCardsSuit_bot[1] && allCardsSuit_bot[0] == allCardsSuit_bot[2] && allCardsSuit_bot[0] == allCardsSuit_bot[3] && allCardsSuit_bot[0] == allCardsSuit_bot[4]) {
+    indicatore_di_cognizione = valore_colore;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_coppia;
+}
+let randomValue = (Math.random() * 0.14 - 0.07).toFixed(2);
+indicatore_di_cognizione += parseFloat(randomValue);
+if(call == true) indicatore_di_cognizione += 0.04;
+if(raise == true) indicatore_di_cognizione -= 0.04;
+if(all_in1 == true) indicatore_di_cognizione -= 0.15;
+let randomValue2 = Math.floor(Math.random() * 6) + 1;
+if(randomValue2 == 1) {
+    indicatore_di_cognizione = 1;
+}
+if(indicatore_di_cognizione < 0.14) {
+    fold_bot();
+} else if(indicatore_di_cognizione >0.14 && indicatore_di_cognizione < 0.55){
+    if(!all_in1) {
+        call_bot();
+    } else {
+        fold_bot();
+    }
+} else if(indicatore_di_cognizione >0.55 && indicatore_di_cognizione < 0.75){
+    if(!all_in1) {
+        raise_bot();
+    } else {
+        fold_bot();
+    }   
+} else if(indicatore_di_cognizione > 0.75){
+    all_in_bot(all_in1);
+}
+} 
+function turno_river_bot_it(call, raise, all_in1){
+indicatore_di_cognizione = 0.11;
+switch (opponentHand[0]) {
+    case 'A':
+        opponentHand[0] = 14;
+        break;
+    case 'K':
+        opponentHand[0] = 13;
+        break;
+    case 'Q':
+        opponentHand[0] = 12;
+        break;
+    case 'J':
+        opponentHand[0] = 11;
+        break;
+    case '10':
+        opponentHand[0] = 10;
+        break;
+}
+
+switch (opponentHand[2]) {
+    case 'A':
+        opponentHand[2] = 14;
+        break;
+    case 'K':
+        opponentHand[2] = 13;
+        break;
+    case 'Q':
+        opponentHand[2] = 12;
+        break;
+    case 'J':
+        opponentHand[2] = 11;
+        break;
+    case '10':
+        opponentHand[2] = 10;
+        break;
+}
+switch (commonCards[0]) {
+    case 'A':
+        commonCards[0] = 14;
+        break;
+    case 'K':
+        commonCards[0] = 13;
+        break;
+    case 'Q':
+        commonCards[0] = 12;
+        break;
+    case 'J':
+        commonCards[0] = 11;
+        break;
+    case '10':
+        opponentHand[4] = 10;
+        break;
+}
+switch (commonCards[2]) {
+    case 'A':
+        commonCards[2] = 14;
+        break;
+    case 'K':
+        commonCards[2] = 13;
+        break;
+    case 'Q':
+        commonCards[2] = 12;
+        break;
+    case 'J':
+        commonCards[2] = 11;
+        break;
+    case '10':
+        commonCards[2] = 10;
+        break;
+}
+switch (commonCards[4]) {
+    case 'A':
+        commonCards[4] = 14;
+        break;
+    case 'K':
+        commonCards[4] = 13;
+        break;
+    case 'Q':
+        commonCards[4] = 12;
+        break;
+    case 'J':
+        commonCards[4] = 11;
+        break;
+    case '10':
+        commonCards[4] = 10;
+        break;
+}
+switch (commonCards[6]) {
+    case 'A':
+        commonCards[6] = 14;
+        break;
+    case 'K':
+        commonCards[6] = 13;
+        break;
+    case 'Q':
+        commonCards[6] = 12;
+        break;
+    case 'J':
+        commonCards[6] = 11;
+        break;
+    case '10':
+        commonCards[6] = 10;
+        break;
+}
+allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6]];
+allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7]];
+let app, i, j;
+for (i = 0; i < allCardsValue_bot.length - 1; i++) {
+    for (j = i+1; j < allCardsValue_bot.length; j++) {
+        if (allCardsValue_bot[i] < allCardsValue_bot[j]) {
+            app = allCardsValue_bot[i];
+            allCardsValue_bot[i] = allCardsValue_bot[j];
+            allCardsValue_bot[j] = app;
+            app = allCardsSuit_bot[i];
+            allCardsSuit_bot[i] = allCardsSuit_bot[j];
+            allCardsSuit_bot[j] = app;
+        }
+    }
+}
+if (allCardsValue_bot[0] === 14 && allCardsValue_bot[1] === 13 && allCardsValue_bot[2] === 12 && allCardsValue_bot[3] === 11 && allCardsValue_bot[4] === 10 || (allCardsValue_bot[1] === 14 && allCardsValue_bot[2] === 13 && allCardsValue_bot[3] === 12 && allCardsValue_bot[4] === 11 && allCardsValue_bot[5] === 10)) {
+    indicatore_di_cognizione = valore_royal_flush;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1]+1 && allCardsValue_bot[0] == allCardsValue_bot[2]+2 && allCardsValue_bot[0] == allCardsValue_bot[3]+3 && allCardsValue_bot[0] == allCardsValue_bot[4]+4) {
+    if(allCardsSuit_bot[0] == allCardsSuit_bot[1] && allCardsSuit_bot[0] == allCardsSuit_bot[2] && allCardsSuit_bot[0] == allCardsSuit_bot[3] && allCardsSuit_bot[0] == allCardsSuit_bot[4]) {
+        indicatore_di_cognizione = valore_straight_flush;
+    } else {
+        indicatore_di_cognizione = valore_straight;
+    }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2]+2 && allCardsValue_bot[1] == allCardsValue_bot[3]+3 && allCardsValue_bot[1] == allCardsValue_bot[4]+4 && allCardsValue_bot[1] == allCardsValue_bot[5]+5) {
+    if(allCardsSuit_bot[1] == allCardsSuit_bot[2] && allCardsSuit_bot[1] == allCardsSuit_bot[3] && allCardsSuit_bot[1] == allCardsSuit_bot[4] && allCardsSuit_bot[1] == allCardsSuit_bot[5]) {
+        indicatore_di_cognizione = valore_straight_flush;
+    } else {
+        indicatore_di_cognizione = valore_straight;
+    }
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    indicatore_di_cognizione = valore_four_of_a_kind;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_four_of_a_kind;
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) { 
+    indicatore_di_cognizione = valore_four_of_a_kind;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] ){
+    if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[4]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    } 
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+    if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+            indicatore_di_cognizione = valore_full;
+        } else {
+            indicatore_di_cognizione = valore_tris;
+        }
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+    if(allCardsValue_bot[3] == allCardsValue_bot[5]) {
+            indicatore_di_cognizione = valore_full;
+        } else {
+            indicatore_di_cognizione = valore_tris;
+        }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[5]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else {
+ if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    indicatore_di_cognizione = valore_coppia;
+}
+}
+let allCardsSuit_bot2 = [...allCardsSuit_bot];
+    for(i=0;i<allCardsSuit_bot2.length;i++){
+        if(allCardsSuit_bot2[i] == '♥'){
+            allCardsSuit_bot2[i] = 1;
+        } else if(allCardsSuit_bot2[i] == '♦'){
+            allCardsSuit_bot2[i] = 2;
+        } else if(allCardsSuit_bot2[i] == '♣'){
+            allCardsSuit_bot2[i] = 3;
+        } else if(allCardsSuit_bot2[i] == '♠'){
+            allCardsSuit_bot2[i] = 4;
+        }
+    }
+    for(i=0;i<allCardsSuit_bot2.length-1;i++){
+        for(j=i+1;j<allCardsSuit_bot2.length;j++){
+            if(allCardsSuit_bot2[i] < allCardsSuit_bot2[j]){
+                app = allCardsSuit_bot2[i];
+                allCardsSuit_bot2[i] = allCardsSuit_bot2[j];
+                allCardsSuit_bot2[j] = app;
+            }
+        }
+    }
+    if(allCardsSuit_bot2[0] == allCardsSuit_bot2[1] && allCardsSuit_bot2[0] == allCardsSuit_bot2[2] && allCardsSuit_bot2[0] == allCardsSuit_bot2[3] && allCardsSuit_bot2[0] == allCardsSuit_bot2[4] || (allCardsSuit_bot2[1] == allCardsSuit_bot2[2] && allCardsSuit_bot2[1] == allCardsSuit_bot2[3] && allCardsSuit_bot2[1] == allCardsSuit_bot2[4] && allCardsSuit_bot2[1] == allCardsSuit_bot2[5])) {
+    indicatore_di_cognizione = valore_colore;
+    }
+    let randomValue = (Math.random() * 0.14 - 0.07).toFixed(2);
+indicatore_di_cognizione += parseFloat(randomValue);
+if(call == true) indicatore_di_cognizione += 0.05;
+if(raise == true) indicatore_di_cognizione -= 0.03;
+if(all_in == true) indicatore_di_cognizione -= 0.15;
+let randomValue2 = Math.floor(Math.random() * 6) + 1;
+if(randomValue2 == 1) {
+    indicatore_di_cognizione = 1;
+}
+if(indicatore_di_cognizione < 0.15) {
+    fold_bot();
+} else if(indicatore_di_cognizione >0.15 && indicatore_di_cognizione <0.6){
+    if(!all_in1) {
+        call_bot();
+    } else {
+        fold_bot();
+    }
+} else if(indicatore_di_cognizione >0.6 && indicatore_di_cognizione <0.75){
+    if(!all_in1) {
+        raise_bot();
+    } else {
+        fold_bot();
+    }
+} else if(indicatore_di_cognizione >0.75){
+    all_in_bot(all_in1);
+}
+}
+function turno_showdown_bot_it(call, raise, all_in1){
+indicatore_di_cognizione = 0.05;
+
+allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6], commonCards[8]];
+allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7], commonCards[9]];
+let app, i, j;
+for (i = 0; i < allCardsValue_bot.length - 1; i++) {
+    for (j = i+1; j < allCardsValue_bot.length; j++) {
+        if (allCardsValue_bot[i] < allCardsValue_bot[j]) {
+            app = allCardsValue_bot[i];
+            allCardsValue_bot[i] = allCardsValue_bot[j];
+            allCardsValue_bot[j] = app;
+            app = allCardsSuit_bot[i];
+            allCardsSuit_bot[i] = allCardsSuit_bot[j];
+            allCardsSuit_bot[j] = app;
+        }
+    }
+}
+
+if (allCardsValue_bot[0] === 14 && allCardsValue_bot[1] === 13 && allCardsValue_bot[2] === 12 && allCardsValue_bot[3] === 11 && allCardsValue_bot[4] === 10 || (allCardsValue_bot[1] === 14 && allCardsValue_bot[2] === 13 && allCardsValue_bot[3] === 12 && allCardsValue_bot[4] === 11 && allCardsValue_bot[5] === 10) || (allCardsValue_bot[2] === 14 && allCardsValue_bot[3] === 13 && allCardsValue_bot[4] === 12 && allCardsValue_bot[5] === 11 && allCardsValue_bot[6] === 10)) {
+    indicatore_di_cognizione = valore_royal_flush;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1]+1 && allCardsValue_bot[0] == allCardsValue_bot[2]+2 && allCardsValue_bot[0] == allCardsValue_bot[3]+3 && allCardsValue_bot[0] == allCardsValue_bot[4]+4) {
+    if(allCardsSuit_bot[0] == allCardsSuit_bot[1] && allCardsSuit_bot[0] == allCardsSuit_bot[2] && allCardsSuit_bot[0] == allCardsSuit_bot[3] && allCardsSuit_bot[0] == allCardsSuit_bot[4]) {
+        indicatore_di_cognizione = valore_straight_flush;
+    } else {
+        indicatore_di_cognizione = valore_straight;
+    }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2]+2 && allCardsValue_bot[1] == allCardsValue_bot[3]+3 && allCardsValue_bot[1] == allCardsValue_bot[4]+4 && allCardsValue_bot[1] == allCardsValue_bot[5]+5) {
+    if(allCardsSuit_bot[1] == allCardsSuit_bot[2] && allCardsSuit_bot[1] == allCardsSuit_bot[3] && allCardsSuit_bot[1] == allCardsSuit_bot[4] && allCardsSuit_bot[1] == allCardsSuit_bot[5]) {
+        indicatore_di_cognizione = valore_straight_flush;
+    } else {
+        indicatore_di_cognizione = valore_straight;
+    }
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3]+3 && allCardsValue_bot[2] == allCardsValue_bot[4]+4 && allCardsValue_bot[2] == allCardsValue_bot[5]+5 && allCardsValue_bot[2] == allCardsValue_bot[6]+6) {
+    if(allCardsSuit_bot[2] == allCardsSuit_bot[3] && allCardsSuit_bot[2] == allCardsSuit_bot[4] && allCardsSuit_bot[2] == allCardsSuit_bot[5] && allCardsSuit_bot[2] == allCardsSuit_bot[6]) {
+        indicatore_di_cognizione = valore_straight_flush;
+    } else {
+        indicatore_di_cognizione = valore_straight;
+    }
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    indicatore_di_cognizione = valore_four_of_a_kind;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_four_of_a_kind;
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) { 
+    indicatore_di_cognizione = valore_four_of_a_kind;
+} else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5] && allCardsValue_bot[5] == allCardsValue_bot[6]) { 
+    indicatore_di_cognizione = valore_four_of_a_kind;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2] ){
+    if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+    if(allCardsValue_bot[3] == allCardsValue_bot[5]) {
+            indicatore_di_cognizione = valore_full;
+        } else {
+            indicatore_di_cognizione = valore_tris;
+        }
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]) {
+    if(allCardsValue_bot[3] == allCardsValue_bot[6]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+    if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+            indicatore_di_cognizione = valore_full;
+        } else {
+            indicatore_di_cognizione = valore_tris;
+        }
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]) {
+    if(allCardsValue_bot[4] == allCardsValue_bot[6]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[4]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    } 
+}  else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[1] == allCardsValue_bot[2]){
+    if(allCardsValue_bot[5] == allCardsValue_bot[6]) {
+            indicatore_di_cognizione = valore_full;
+        } else {
+            indicatore_di_cognizione = valore_tris;
+        }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    if(allCardsValue_bot[4] == allCardsValue_bot[6]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[5]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[6]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+}
+else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    if(allCardsValue_bot[5] == allCardsValue_bot[6]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[4] == allCardsValue_bot[5] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+    if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[4] == allCardsValue_bot[5] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+    if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} else if(allCardsValue_bot[4] == allCardsValue_bot[5] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+    if(allCardsValue_bot[2] == allCardsValue_bot[3]) {
+        indicatore_di_cognizione = valore_full;
+    } else {
+        indicatore_di_cognizione = valore_tris;
+    }
+} 
+else {
+if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[0] == allCardsValue_bot[1] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} else if(allCardsValue_bot[3] == allCardsValue_bot[4] && allCardsValue_bot[5] == allCardsValue_bot[6]) {
+    indicatore_di_cognizione = valore_doppia_coppia;
+} 
+else if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[1] == allCardsValue_bot[2]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[2] == allCardsValue_bot[3]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[3] == allCardsValue_bot[4]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[4] == allCardsValue_bot[5]) {
+    indicatore_di_cognizione = valore_coppia;
+} else if(allCardsValue_bot[5] == allCardsValue_bot[6]) {
+    indicatore_di_cognizione = valore_coppia;
+}
+}
+let allCardsSuit_bot2 = [...allCardsSuit_bot];
+    for(i=0;i<allCardsSuit_bot2.length;i++){
+        if(allCardsSuit_bot2[i] == '♥'){
+            allCardsSuit_bot2[i] = 1;
+        } else if(allCardsSuit_bot2[i] == '♦'){
+            allCardsSuit_bot2[i] = 2;
+        } else if(allCardsSuit_bot2[i] == '♣'){
+            allCardsSuit_bot2[i] = 3;
+        } else if(allCardsSuit_bot2[i] == '♠'){
+            allCardsSuit_bot2[i] = 4;
+        }
+    }
+    for(i=0;i<allCardsSuit_bot2.length-1;i++){
+        for(j=i+1;j<allCardsSuit_bot2.length;j++){
+            if(allCardsSuit_bot2[i] < allCardsSuit_bot2[j]){
+                app = allCardsSuit_bot2[i];
+                allCardsSuit_bot2[i] = allCardsSuit_bot2[j];
+                allCardsSuit_bot2[j] = app;
+            }
+        }
+    }
+    if(allCardsSuit_bot2[0] == allCardsSuit_bot2[1] && allCardsSuit_bot2[0] == allCardsSuit_bot2[2] && allCardsSuit_bot2[0] == allCardsSuit_bot2[3] && allCardsSuit_bot2[0] == allCardsSuit_bot2[4] || (allCardsSuit_bot2[1] == allCardsSuit_bot2[2] && allCardsSuit_bot2[1] == allCardsSuit_bot2[3] && allCardsSuit_bot2[1] == allCardsSuit_bot2[4] && allCardsSuit_bot2[1] == allCardsSuit_bot2[5]) || (allCardsSuit_bot2[2] == allCardsSuit_bot2[3] && allCardsSuit_bot2[2] == allCardsSuit_bot2[4] && allCardsSuit_bot2[2] == allCardsSuit_bot2[5] && allCardsSuit_bot2[2] == allCardsSuit_bot2[6])) {
+    indicatore_di_cognizione = valore_colore;
+    }
+    let randomValue = (Math.random() * 0.14 - 0.07).toFixed(2);
+indicatore_di_cognizione += parseFloat(randomValue);
+if(call == true) indicatore_di_cognizione += 0.06;
+if(raise == true) indicatore_di_cognizione -= 0.03;
+if(all_in == true) indicatore_di_cognizione -= 0.1;
+let randomValue2 = Math.floor(Math.random() * 8) + 1;
+if(randomValue2 == 1) {
+    indicatore_di_cognizione = 1;
+}
+if(indicatore_di_cognizione < 0.15) {
+    fold_bot();
+} else if(indicatore_di_cognizione >0.15 && indicatore_di_cognizione <0.6){
+    if(!all_in1) {
+        call_bot();
+    } else {
+        fold_bot();
+    }
+} else if(indicatore_di_cognizione >0.6 && indicatore_di_cognizione <0.75){
+    if(!all_in1) {
+        raise_bot();
+    } else {
+        fold_bot();
+    }
+} else if(indicatore_di_cognizione >0.75){
+    all_in_bot(all_in1);
+}
+} 
+
+}
+
     </script>
 </body>
 </html>
