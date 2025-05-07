@@ -538,8 +538,8 @@
                     cond = false;
                 wage = playerChips;
                 playerBet = playerBet + playerChips;
-                playerChips = 0;
                 playerChipsElement.textContent = `${playerChips} 💰 -`+playerChips;
+                playerChips = 0;
                 playerBetElement.textContent = `Current Playing: ${playerBet} 💰 +`+playerBet;
                 wage = opponentChips;
                 call.textContent = "Call";
@@ -3073,8 +3073,8 @@ function startGame_it(){
             cond2 = false;
             wage2 = playerChips2;
             playerBet2 += playerChips2;
-            playerChips2 = 0;
             playerChipsElement2.textContent = `${playerChips2} 💰 -${playerChips2}`;
+            playerChips2 = 0;
             playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰 +${playerBet2}`;
             wage2 = opponentChips2;
             call2.textContent = "Chiama (Disabilitato)";
