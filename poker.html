@@ -309,14 +309,14 @@
                 new_round.style.display = 'block';
                 //Nuova funzione di new round se il gioco finisce (reset dati)
                 new_round.onclick = function() {
-                    let playerChips = 2000;
-                    let opponentChips = 2000;
-                    let playerBet = 0;
-                    let opponentBet = 0;
-                    let wage = 50;
-                    let playerHand = [];
-                    let opponentHand = [];
-                    let commonCards = [];
+                     playerChips = 2000;
+                     opponentChips = 2000;
+                     playerBet = 0;
+                     opponentBet = 0;
+                     wage = 50;
+                     playerHand = [];
+                     opponentHand = [];
+                     commonCards = [];
                     startGame();
                 }
                 //Cambio del testo dei pulsanti
@@ -342,14 +342,14 @@
                 countdownElement.textContent = "Player wins! ";
                 countdownElement.innerHTML += "<br>New Match ↓";
                 new_round.onclick = function() {
-                    let playerChips = 2000;
-                    let opponentChips = 2000;
-                    let playerBet = 0;
-                    let opponentBet = 0;
-                    let wage = 50;
-                    let playerHand = [];
-                    let opponentHand = [];
-                    let commonCards = [];
+                     playerChips = 2000;
+                     opponentChips = 2000;
+                     playerBet = 0;
+                     opponentBet = 0;
+                     wage = 50;
+                     playerHand = [];
+                     opponentHand = [];
+                     commonCards = [];
                     startGame();
                 }
                 new_round.style.display = 'block';
@@ -548,6 +548,7 @@
                 raise.onclick = null;
                 all_in.textContent = "All in  -"+playerChips+" 💰";
                 //Se l'all in è stato già fatto dal bot, controllato dal parametro all_in2, si passa al flop, river o showdown che controlleranno i punteggi e assegneranno la vittoria
+                
                 if(all_in2 == true) {
                     if(turno == 2) flop(true, false);
                     if(turno == 3) river(true, false);
@@ -2890,6 +2891,7 @@
 
 //Funzione del gioco in italiano, struttura molto simile, vedere i commenti nella pagina in inglese per comprendere anche questa parte
 function startGame_it(){
+    
     if(playerChips2 <= 0) {
     countdownElement2.style.fontSize = "30px";
     countdownElement2.style.display = 'block';
@@ -2897,14 +2899,14 @@ function startGame_it(){
     countdownElement2.innerHTML += "<br>Nuovo Match ↓";
     new_round2.style.display = 'block';
     new_round2.onclick = function() {
-        let playerChips2 = 2000;
-        let opponentChips2 = 2000;
-        let playerBet2 = 0;
-        let opponentBet2 = 0;
-        let wage2 = 50;
-        let playerHand = [];
-        let opponentHand = [];
-        let commonCards = [];
+        playerChips2 = 2000;
+        opponentChips2 = 2000;
+        playerBet2 = 0;
+        opponentBet2 = 0;
+        wage2 = 50;
+        playerHand = [];
+        opponentHand = [];
+        commonCards = [];
         startGame_it();
     }
     call.textContent = "Chiama";
@@ -2928,14 +2930,14 @@ function startGame_it(){
     countdownElement2.textContent = "Il Giocatore vince! ";
     countdownElement2.innerHTML += "<br>Nuovo Match ↓";
     new_round2.onclick = function() {
-        let playerChips2 = 2000;
-        let opponentChips2 = 2000;
-        let playerBet2 = 0;
-        let opponentBet2 = 0;
-        let wage2 = 50;
-        let playerHand = [];
-        let opponentHand = [];
-        let commonCards = [];
+         playerChips2 = 2000;
+         opponentChips2 = 2000;
+         playerBet2 = 0;
+         opponentBet2 = 0;
+         wage2 = 50;
+         playerHand = [];
+         opponentHand = [];
+         commonCards = [];
         startGame_it();
     }
     new_round2.style.display = 'block';
@@ -2958,7 +2960,7 @@ function startGame_it(){
     new_round2.onclick = function() {
         startGame_it();
     }
-
+    alert("si");
     playerCards2.innerHTML = '';
     opponentCards2.innerHTML = '';
     commonCard2.innerHTML = '';
@@ -3110,7 +3112,7 @@ function startGame_it(){
             cond2 = false;
             if (playerChips2 >= wage2) {
                 playerBet2 += wage2;
-                playerChips2 -= wage2;
+                playerChips2 -= wage2;5
                 playerChipsElement2.textContent = `${playerChips2} 💰 -${wage2}`;
                 playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰 +${wage2}`;
                 playerChipsElement2.style.color = 'red';
@@ -3131,6 +3133,7 @@ function startGame_it(){
                     if (turno == 4) turno_showdown_bot_it(true, false, false);
                 }, 2000);
             } else {
+               cond = true;
                 alert("Non hai abbastanza gettoni per chiamare! Puoi solo andare all-in o passare.");
             }
         }
@@ -3163,6 +3166,7 @@ function startGame_it(){
                     if (turno == 4) turno_showdown_bot_it(false, true, false);
                 }, 2000);
             } else {
+               cond = true;
                 alert("Non hai abbastanza gettoni per rilanciare! Puoi solo andare all-in o passare.");
             }
         }
@@ -3185,6 +3189,7 @@ function startGame_it(){
             playerChipsElement2.style.color = 'red';
             playerBetElement2.style.color = 'green';
             turni2.textContent = "Turno del Bot";
+            alert(all_in2);
             if(all_in2 == true) {
                 if(turno == 2) flop_it(true, false);
                 if(turno == 3) river_it(true, false);
@@ -3208,7 +3213,6 @@ function startGame_it(){
             cond2 = true;
             
             if(!all_in2){
-                
                 turno = 2;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -4711,10 +4715,10 @@ all_in_bot = function(all_in1) {
     opponentChipsElement2.style.color = 'red';
     opponentBe2tElement2.style.color = 'green';
     turni2.textContent = "Turno del Giocatore";
-    call.textContent = "Chiama disabilitato";
-    raise.textContent = "Rilancia disabilitato";
-    call.onclick = null;
-    raise.onclick = null;
+    call2.textContent = "Chiama disabilitato";
+    raise2.textContent = "Rilancia disabilitato";
+    call2.onclick = null;
+    raise2.onclick = null;
     setTimeout(() => {
         opponentChipsElement2.style.color = 'white';
         opponentBe2tElement2.style.color = 'white';
