@@ -339,12 +339,12 @@
         const volumeControl = document.getElementById('volumeControl');
         volumeControl.addEventListener('input', () => {
         audio.volume = volumeControl.value / 100;
-            audioValore = volumeControl.value / 100;
+            let audioValore = volumeControl.value / 100;
         });
         const volumeControl2 = document.getElementById('volumeControl2');
         volumeControl2.addEventListener('input', () => {
         audio2.volume = volumeControl2.value / 100;
-            audioValore2 = volumeControl2.value / 100;
+            let audioValore2 = volumeControl2.value / 100;
         audio3.volume = volumeControl2.value / 100;
         });
 
