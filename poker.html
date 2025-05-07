@@ -428,7 +428,7 @@
                 wage = playerChips;
                 playerBet = playerBet + playerChips;
                 playerChips = 0;
-                playerChipsElement.textContent = `${playerChips} 🪙 -`+playerBet;
+                playerChipsElement.textContent = `${playerChips} 🪙 -`+playerChips;
                 playerBetElement.textContent = `Current Playing: ${playerBet} 🪙 +`+playerBet;
                 wage = opponentChips;
                 call.textContent = "Call";
@@ -437,8 +437,8 @@
                 playerChipsElement.style.color = 'red';
                 playerBetElement.style.color = 'green';
                 turni.textContent = "Bot Turn";
-                call.textContent += "Disabled";
-                raise.textContent += "Disabled";
+                call.textContent = "Call Disabled";
+                raise.textContent = "Raise Disabled";
                 call.onclick = null;
                 raise.onclick = null;
                 all_in.textContent = "All in  -"+playerChips+" 🪙";
@@ -1877,13 +1877,13 @@
             } else {
                 fold_bot();
             }
-        } else if(indicatore_di_cognizione > 0.7 && indicatore_di_cognizione < 0.9){
+        } else if(indicatore_di_cognizione > 0.7 && indicatore_di_cognizione < 0.8){
             if(!all_in1) {
                 raise_bot(all_in1);
             } else {
                 fold_bot();
             }   
-        } else if(indicatore_di_cognizione > 0.9){
+        } else if(indicatore_di_cognizione > 0.8){
             all_in_bot(all_in1);
         }
 
@@ -1961,11 +1961,15 @@
             wage = opponentChips;
             opponentBet = opponentBet + opponentChips;
             opponentChips = 0;
-            opponentChipsElement.textContent = `${opponentChips} 🪙 -`+ wage;
+            opponentChipsElement.textContent = `${opponentChips} 🪙 -`+ opponentChips;
             opponentBetElement.textContent = `Current Playing: ${opponentBet} 🪙 +`+ wage;
             opponentChipsElement.style.color = 'red';
             opponentBetElement.style.color = 'green';
             turni.textContent = "Player Turn";
+            call.textContent = "Call disabled";
+            raise.textContent = "Raise disabled";
+            call.onclick = null;
+            raise.onclick = null;
             setTimeout(() => {
                 opponentChipsElement.style.color = 'white';
                 opponentBetElement.style.color = 'white';
@@ -2144,21 +2148,25 @@
             if(raise == true) indicatore_di_cognizione -= 0.04;
             if(all_in1 == true) indicatore_di_cognizione -= 0.15;
             alert("Indicatore di cognizione: " + indicatore_di_cognizione);
+            let randomValue2 = Math.floor(Math.random() * 6) + 1;
+            if(randomValue2 == 1) {
+                indicatore_di_cognizione = 1;
+            }
             if(indicatore_di_cognizione < 0.14) {
                 fold_bot();
-            } else if(indicatore_di_cognizione >0.14 && indicatore_di_cognizione <0.7){
+            } else if(indicatore_di_cognizione >0.14 && indicatore_di_cognizione < 0.55){
                 if(!all_in1) {
                     call_bot();
                 } else {
                     fold_bot();
                 }
-            } else if(indicatore_di_cognizione >0.7 && indicatore_di_cognizione <0.9){
+            } else if(indicatore_di_cognizione >0.55 && indicatore_di_cognizione < 0.75){
                 if(!all_in1) {
                     raise_bot();
                 } else {
                     fold_bot();
                 }   
-            } else if(indicatore_di_cognizione >0.9){
+            } else if(indicatore_di_cognizione > 0.75){
                 all_in_bot(all_in1);
             }
         } 
@@ -2413,21 +2421,25 @@
             if(raise == true) indicatore_di_cognizione -= 0.03;
             if(all_in == true) indicatore_di_cognizione -= 0.15;
             alert("Indicatore di cognizione: " + indicatore_di_cognizione);
+            let randomValue2 = Math.floor(Math.random() * 6) + 1;
+            if(randomValue2 == 1) {
+                indicatore_di_cognizione = 1;
+            }
             if(indicatore_di_cognizione < 0.15) {
                 fold_bot();
-            } else if(indicatore_di_cognizione >0.15 && indicatore_di_cognizione <0.7){
+            } else if(indicatore_di_cognizione >0.15 && indicatore_di_cognizione <0.6){
                 if(!all_in1) {
                     call_bot();
                 } else {
                     fold_bot();
                 }
-            } else if(indicatore_di_cognizione >0.7 && indicatore_di_cognizione <0.9){
+            } else if(indicatore_di_cognizione >0.6 && indicatore_di_cognizione <0.75){
                 if(!all_in1) {
                     raise_bot();
                 } else {
                     fold_bot();
                 }
-            } else if(indicatore_di_cognizione >0.9){
+            } else if(indicatore_di_cognizione >0.75){
                 all_in_bot(all_in1);
             }
         }
@@ -2655,21 +2667,25 @@
             if(raise == true) indicatore_di_cognizione -= 0.03;
             if(all_in == true) indicatore_di_cognizione -= 0.1;
             alert("Indicatore di cognizione: " + indicatore_di_cognizione);
+            let randomValue2 = Math.floor(Math.random() * 8) + 1;
+            if(randomValue2 == 1) {
+                indicatore_di_cognizione = 1;
+            }
             if(indicatore_di_cognizione < 0.15) {
                 fold_bot();
-            } else if(indicatore_di_cognizione >0.15 && indicatore_di_cognizione <0.7){
+            } else if(indicatore_di_cognizione >0.15 && indicatore_di_cognizione <0.6){
                 if(!all_in1) {
                     call_bot();
                 } else {
                     fold_bot();
                 }
-            } else if(indicatore_di_cognizione >0.7 && indicatore_di_cognizione <0.9){
+            } else if(indicatore_di_cognizione >0.6 && indicatore_di_cognizione <0.75){
                 if(!all_in1) {
                     raise_bot();
                 } else {
                     fold_bot();
                 }
-            } else if(indicatore_di_cognizione >0.9){
+            } else if(indicatore_di_cognizione >0.75){
                 all_in_bot(all_in1);
             }
         } 
