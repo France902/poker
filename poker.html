@@ -568,7 +568,79 @@
                 }
             }
             };
-
+            //Controllo dei chips rimanenti del giocatore e del bot per decidere la vittoria
+            if(playerChips <= 0) {
+                countdownElement.style.fontSize = "30px";
+                countdownElement.style.display = 'block';
+                countdownElement.textContent = "Bot wins! ";
+                countdownElement.innerHTML += "<br>New Match ↓";
+                new_round.style.display = 'block';
+                //Nuova funzione di new round se il gioco finisce (reset dati)
+                new_round.onclick = function() {
+                     playerChips = 2000;
+                     opponentChips = 2000;
+                     playerBet = 0;
+                     opponentBet = 0;
+                     wage = 50;
+                     playerHand = [];
+                     opponentHand = [];
+                     commonCards = [];
+                    startGame();
+                }
+                //Cambio del testo dei pulsanti
+                call.textContent = "Call";
+                raise.textContent = "Raise";
+                all_in.textContent = "All in";
+                playerBetElement.textContent = `Current Playing: `;
+                opponentBetElement.textContent = `Current Playing: `;
+                opponentChips = opponentChips + opponentBet + playerBet;
+                opponentChipsElement.textContent = `${opponentChips} 💰`;
+                wage = 50;
+                playerBet = 0;
+                opponentBet = 0;
+                commonCard.innerHTML = '';
+                //Disabilitazione dei pulsanti
+                fold.onclick = null;
+                call.onclick = null;
+                raise.onclick = null;
+                all_in.onclick = null;
+            } else if(opponentChips <= 0) {
+                countdownElement.style.fontSize = "30px";
+                countdownElement.style.display = 'block';
+                countdownElement.textContent = "Player wins! ";
+                countdownElement.innerHTML += "<br>New Match ↓";
+                new_round.onclick = function() {
+                     playerChips = 2000;
+                     opponentChips = 2000;
+                     playerBet = 0;
+                     opponentBet = 0;
+                     wage = 50;
+                     playerHand = [];
+                     opponentHand = [];
+                     commonCards = [];
+                    startGame();
+                }
+                new_round.style.display = 'block';
+                call.textContent = "Call";
+                raise.textContent = "Raise";
+                all_in.textContent = "All in";
+                playerBetElement.textContent = `Current Playing: `;
+                opponentBetElement.textContent = `Current Playing: `;
+                playerChips = playerChips + opponentBet + playerBet;
+                playerChipsElement.textContent = `${playerChips} 💰`;
+                wage = 50;
+                playerBet = 0;
+                opponentBet = 0;
+                commonCard.innerHTML = '';
+                fold.onclick = null;
+                call.onclick = null;
+                raise.onclick = null;
+                all_in.onclick = null;
+            } else{
+                new_round.onclick = function(){
+                    startGame();
+                }
+            };
             //Creazione della prima carta del giocatore 
             cond = true;
             turno = 1;
@@ -642,6 +714,17 @@
             cond = true;
             //Se non è stato fatto all in, si creano 3 carte comuni e la mossa passa al giocatore
             if(!all_in2){
+                            //Controllo dei chips rimanenti del giocatore e del bot per decidere la vittoria
+            if(playerChips <= 0) {
+                showdown(true, true);
+            } else if(opponentChips <= 0) {
+                showdown(true, true);
+            } else{
+                new_round.onclick = function(){
+                    startGame();
+                }
+            
+
                 turno = 2;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -695,6 +778,7 @@
                     }, 2000);
                 });
             }, 600);
+        }
             }
             else{
                 //Assegnazione predefinita di punteggio
@@ -1063,6 +1147,16 @@
     function river(all_in1, all_in2){
         cond = true;
         if(!all_in2){
+                        //Controllo dei chips rimanenti del giocatore e del bot per decidere la vittoria
+                if(playerChips <= 0) {
+                    showdown(true, true);
+            } else if(opponentChips <= 0) {
+                showdown(true, true);
+            } else{
+                new_round.onclick = function(){
+                    startGame();
+                }
+            
             turno = 3;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -1080,6 +1174,7 @@
                     cardElement.style.transform = 'scale(1)';
                 }, 2000);
             });
+        }
         } else {
             //Assegnazione dei punteggi come nel flop, con l'aggiunta del controllo delle mani da 5 carte, 4 carte e 3 carte
             let punteggio_p=0.1, punteggio_b=0.1; 
@@ -1454,6 +1549,16 @@
     function showdown(all_in1, all_in2) {
         cond = true;
         if(!all_in2){
+                        //Controllo dei chips rimanenti del giocatore e del bot per decidere la vittoria
+                if(playerChips <= 0) {
+                    showdown(true, true);
+            } else if(opponentChips <= 0) {
+                showdown(true, true);
+            } else{
+                new_round.onclick = function(){
+                    startGame();
+                }
+            
             turno = 4;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -1471,6 +1576,7 @@
                     cardElement.style.transform = 'scale(1)';
                 }, 2000);
             });
+        }
         } else{
             //Assegnazione dei punteggi come nel river, aggiungendo le combinazioni con la settima carta
             let punteggio_p=0.1, punteggio_b=0.1; 
@@ -2960,7 +3066,6 @@ function startGame_it(){
     new_round2.onclick = function() {
         startGame_it();
     }
-    alert("si");
     playerCards2.innerHTML = '';
     opponentCards2.innerHTML = '';
     commonCard2.innerHTML = '';
@@ -3213,6 +3318,14 @@ function startGame_it(){
             cond2 = true;
             
             if(!all_in2){
+                if(playerChips2 <= 0) {
+                    showdown_it(true, true);
+} else if(opponentChips2 <= 0) {
+    showdown_it(true, true);
+} else {
+    new_round2.onclick = function() {
+        startGame_it();
+    }
                 turno = 2;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -3266,6 +3379,7 @@ function startGame_it(){
                     }, 2000);
                 });
             }, 600);
+        }
             }
             else{
             let punteggio_p=0.1, punteggio_b=0.1;
@@ -3626,6 +3740,14 @@ function startGame_it(){
     function river_it(all_in1, all_in2){
         cond2 = true;
         if(!all_in2){
+            if(playerChips2 <= 0) {
+                showdown_it(true, true);
+} else if(opponentChips2 <= 0) {
+    showdown_it(true, true);
+} else {
+    new_round2.onclick = function() {
+        startGame_it();
+    }
             turno = 3;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -3643,6 +3765,7 @@ function startGame_it(){
                     cardElement.style.transform = 'scale(1)';
                 }, 2000);
             });
+        }
         } else {
             let punteggio_p=0.1, punteggio_b=0.1; 
             let playerHand2 = [...playerHand];
@@ -4014,6 +4137,14 @@ function startGame_it(){
     function showdown_it(all_in1, all_in2) {
         cond2 = true;
         if(!all_in2){
+            if(playerChips2 <= 0) {
+                showdown_it(true, true);
+} else if(opponentChips2 <= 0) {
+    showdown_it(true, true);
+} else {
+    new_round2.onclick = function() {
+        startGame_it();
+    }
             turno = 4;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -4031,6 +4162,7 @@ function startGame_it(){
                     cardElement.style.transform = 'scale(1)';
                 }, 2000);
             });
+        }
         } else{
             let punteggio_p=0.1, punteggio_b=0.1; 
             let playerHand2 = [...playerHand];
