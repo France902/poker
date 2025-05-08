@@ -3307,7 +3307,7 @@ function startGame_it(){
             playerChipsElement2.style.color = 'red';
             playerBetElement2.style.color = 'green';
             turni2.textContent = "Turno del Bot";
-            alert(all_in3);
+            
             if(all_in3 == true) {
                 if(turno == 2) flop_it(true, false);
                 if(turno == 3) river_it(true, false);
@@ -3328,7 +3328,6 @@ function startGame_it(){
 }
 
     function flop_it(all_in1, all_in2 ){
-        alert(all_in1)
             cond2 = true;
             if(!all_in2){
                 if(playerChips2 <= 0) {
@@ -3751,7 +3750,6 @@ function startGame_it(){
         }
     }
     function river_it(all_in1, all_in2){
-        alert(all_in1)
         cond2 = true;
         if(!all_in2){
             if(playerChips2 <= 0) {
@@ -4149,7 +4147,6 @@ function startGame_it(){
         }
     }
     function showdown_it(all_in1, all_in2) {
-        alert(all_in1)
         cond2 = true;
         if(!all_in2){
             if(playerChips2 <= 0) {
