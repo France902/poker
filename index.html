@@ -380,7 +380,7 @@
         function resetCard(card, back, rotation) {
             card.style.transform = "scale(1) rotate("+rotation+"deg)";
         }
-
+        
         //Funzione del tasto che avvia il gioco
         function play() {
             document.getElementById('audio3').play();
@@ -396,7 +396,8 @@
             if(lang == "it"){
                 setTimeout(function() {
                     //Indirizzamento a guide_italian.html con parametri di lingua
-                    window.location.href = "guide_italian.html?lang=" + lang;
+                    passaggio = true;
+                    window.location.href = "guide_italian.html?lang=" + lang ;
                 }, 900);
             }
             else{
