@@ -178,7 +178,7 @@
         let playerHand = [];
         let opponentHand = [];
         let commonCards = [];
-        let suit, rank, turno, all_in3, made_allin = false;
+        let suit, rank, turno, all_in3, made_allin, made_allin2 = false;
 
         //Dichiarazione dei valori di ogni mano
         let valore_coppia = 0.25;
@@ -322,7 +322,7 @@
                      playerHand = [];
                      opponentHand = [];
                      commonCards = [];
-                     suit, rank, turno, all_in3, made_allin = false;
+                     suit, rank, turno, all_in3, made_allin, made_allin2 = false;
                     startGame();
                 }
                 //Cambio del testo dei pulsanti
@@ -356,7 +356,7 @@
                      playerHand = [];
                      opponentHand = [];
                      commonCards = [];
-                     suit, rank, turno, all_in3, made_allin = false;
+                     suit, rank, turno, all_in3, made_allin, made_allin2 = false;
                     startGame();
                 }
                 new_round.style.display = 'block';
@@ -535,13 +535,14 @@
             } 
             };
             all_in.onclick = function() {
+
                 if(cond){
                     made_allin = true;
                     cond = false;
                 wage = playerChips;
                 playerBet = playerBet + playerChips;
-                playerChipsElement.textContent = `${playerChips} 💰 -`+playerChips;
                 playerChips = 0;
+                playerChipsElement.textContent = `${playerChips} 💰 -`+playerChips;
                 playerBetElement.textContent = `Current Playing: ${playerBet} 💰 +`+playerBet;
                 wage = opponentChips;
                 call.textContent = "Call";
@@ -557,11 +558,12 @@
                 raise.onclick = null;
                 all_in.textContent = "All in  -"+playerChips+" 💰";
                 //Se l'all in è stato già fatto dal bot, controllato dal parametro all_in2, si passa al flop, river o showdown che controlleranno i punteggi e assegneranno la vittoria
-                
-                if(all_in2 == true) {
+                if(all_in2 == true  || made_allin2 == true) {
+                    setTimeout(() => {
                     if(turno == 2) flop(true, false);
                     if(turno == 3) river(true, false);
                     if(turno == 4) showdown(true, false);
+                    }, 2000);
                 } else{
                 setTimeout(() => {
                     playerChipsElement.style.color = 'white';
@@ -732,10 +734,8 @@
             } else{
                 new_round.onclick = function(){
                     startGame();
-                }
-            
-
-                turno = 2;
+                }           //ok
+            turno = 2;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
             commonCards[0] = rank;
@@ -1613,7 +1613,7 @@
 
             punteggio_p += carta_alta_player / 100;
             punteggio_b += carta_alta_opponent / 100;
-
+            alert(allCardsValue_player)
             if (allCardsValue_player[0] === 14 && allCardsValue_player[1] === 13 && allCardsValue_player[2] === 12 && allCardsValue_player[3] === 11 && allCardsValue_player[4] === 10 || (allCardsValue_player[1] === 14 && allCardsValue_player[2] === 13 && allCardsValue_player[3] === 12 && allCardsValue_player[4] === 11 && allCardsValue_player[5] === 10) || (allCardsValue_player[2] === 14 && allCardsValue_player[3] === 13 && allCardsValue_player[4] === 12 && allCardsValue_player[5] === 11 && allCardsValue_player[6] === 10)) {
                 punteggio_p = valore_royal_flush;
             } else if(allCardsValue_player[0] == allCardsValue_player[1]+1 && allCardsValue_player[0] == allCardsValue_player[2]+2 && allCardsValue_player[0] == allCardsValue_player[3]+3 && allCardsValue_player[0] == allCardsValue_player[4]+4) {
@@ -2011,6 +2011,7 @@
                 if(allCardsSuit_bot2[0] == allCardsSuit_bot2[1] && allCardsSuit_bot2[0] == allCardsSuit_bot2[2] && allCardsSuit_bot2[0] == allCardsSuit_bot2[3] && allCardsSuit_bot2[0] == allCardsSuit_bot2[4] || (allCardsSuit_bot2[1] == allCardsSuit_bot2[2] && allCardsSuit_bot2[1] == allCardsSuit_bot2[3] && allCardsSuit_bot2[1] == allCardsSuit_bot2[4] && allCardsSuit_bot2[1] == allCardsSuit_bot2[5]) || (allCardsSuit_bot2[2] == allCardsSuit_bot2[3] && allCardsSuit_bot2[2] == allCardsSuit_bot2[4] && allCardsSuit_bot2[2] == allCardsSuit_bot2[5] && allCardsSuit_bot2[2] == allCardsSuit_bot2[6])) {
                 punteggio_b = valore_colore;
                 }
+                alert(punteggio_b + " " + punteggio_p);
                 if(punteggio_p < punteggio_b) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
@@ -2028,7 +2029,11 @@
                 playerBet = 0;
                 opponentBet = 0;
                 commonCard.innerHTML = '';
-                
+                const opponentCardsChildren = opponentCards.children;
+                for (let i = 0; i < opponentCardsChildren.length; i++) {
+                    opponentCardsChildren[i].style.fontSize = "40px";
+                    opponentCardsChildren[i].textContent = `${opponentHand[2 * i]} ${opponentHand[2 * i + 1]}`;
+                }
             } else if(punteggio_b > punteggio_p) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
@@ -2046,6 +2051,11 @@
                 playerBet = 0;
                 opponentBet = 0;
                 commonCard.innerHTML = '';
+                const opponentCardsChildren = opponentCards.children;
+                for (let i = 0; i < opponentCardsChildren.length; i++) {
+                    opponentCardsChildren[i].style.fontSize = "40px";
+                    opponentCardsChildren[i].textContent = `${opponentHand[2 * i]} ${opponentHand[2 * i + 1]}`;
+                }
             } else {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
@@ -2065,6 +2075,11 @@
                 playerBet = 0;
                 opponentBet = 0;
                 commonCard.innerHTML = '';
+                const opponentCardsChildren = opponentCards.children;
+                for (let i = 0; i < opponentCardsChildren.length; i++) {
+                    opponentCardsChildren[i].style.fontSize = "40px";
+                    opponentCardsChildren[i].textContent = `${opponentHand[2 * i]} ${opponentHand[2 * i + 1]}`;
+                }
             }
         }
     }
@@ -2276,6 +2291,7 @@
         //Funzione all_in del bot con passaggio di parametri
         all_in_bot = function(all_in1){
             cond = true;
+            made_allin2 = true;
             wage = opponentChips;
             opponentBet = opponentBet + opponentChips;
             opponentChips = 0;
@@ -2294,7 +2310,6 @@
                 opponentChipsElement.textContent = `${opponentChips} 💰`;
                 opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰`;
                 //Invocazione delle funzioni in base al all_in precedente del giocatore e dal turno
-                alert(made_allin);
                 if(made_allin == true) {
                     if(all_in1 == true) {
                     if(turno == 1) flop(all_in1, true);
@@ -3037,6 +3052,7 @@ function startGame_it(){
         playerHand = [];
         opponentHand = [];
         commonCards = [];
+        suit, rank, turno, all_in3, made_allin, made_allin2 = false;
         startGame_it();
     }
     call.textContent = "Chiama";
@@ -3068,6 +3084,7 @@ function startGame_it(){
          playerHand = [];
          opponentHand = [];
          commonCards = [];
+         suit, rank, turno, all_in3, made_allin, made_allin2 = false;
         startGame_it();
     }
     new_round2.style.display = 'block';
@@ -3088,6 +3105,7 @@ function startGame_it(){
     all_in2.onclick = null;
 } else {
     new_round2.onclick = function() {
+        suit, rank, turno, all_in3, made_allin, made_allin2 = false;
         startGame_it();
     }
     playerCards2.innerHTML = '';
@@ -3304,10 +3322,11 @@ function startGame_it(){
     all_in2.onclick = function () {
         if (cond2) {
             cond2 = false;
+            made_allin = true;
             wage2 = playerChips2;
             playerBet2 += playerChips2;
-            playerChipsElement2.textContent = `${playerChips2} 💰 -${playerChips2}`;
             playerChips2 = 0;
+            playerChipsElement2.textContent = `${playerChips2} 💰 -${playerChips2}`;
             playerBetElement2.textContent = `In Gioco: ${playerBet2} 💰 +${playerBet2}`;
             wage2 = opponentChips2;
             call2.textContent = "Chiama (Disabilitato)";
@@ -3318,8 +3337,7 @@ function startGame_it(){
             playerChipsElement2.style.color = 'red';
             playerBetElement2.style.color = 'green';
             turni2.textContent = "Turno del Bot";
-            
-            if(all_in3 == true) {
+            if(all_in3 == true || made_allin2 == true) {
                 if(turno == 2) flop_it(true, false);
                 if(turno == 3) river_it(true, false);
                  if(turno == 4) showdown_it(true, false);
@@ -4166,6 +4184,7 @@ function startGame_it(){
     showdown_it(true, true);
 } else {
     new_round2.onclick = function() {
+        suit, rank, turno, all_in3, made_allin, made_allin2 = false;
         startGame_it();
     }
             turno = 4;
@@ -4862,7 +4881,9 @@ function raise_bot(all_in1) {
 }
 
 all_in_bot = function(all_in1) {
+    cond2 = true;
     wage2 = opponentChips2;
+    made_allin2 = true;
     opponentBet2 = opponentBet2 + opponentChips2;
     opponentChips2 = 0;
     opponentChipsElement2.textContent = `${opponentChips2} 💰 -` + opponentChips2;
@@ -4879,7 +4900,8 @@ all_in_bot = function(all_in1) {
         opponentBe2tElement2.style.color = 'white';
         opponentChipsElement2.textContent = `${opponentChips2} 💰`;
         opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰`;
-        if(all_in1 == true) {
+        if(made_allin == true) {
+        if (all_in1 == true) {
             if(turno == 1) flop_it(all_in1, true); 
             else if(turno == 2) river_it(all_in1, true); 
             else if(turno == 3) showdown_it(all_in1, true);
@@ -4899,6 +4921,7 @@ all_in_bot = function(all_in1) {
                 all_in3 = true;
             } 
         }
+    }
     }, 2000);
 }
 
