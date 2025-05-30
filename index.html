@@ -226,8 +226,8 @@
         <source src="effetto_click.mp3" type="audio/mpeg">
     </audio>
     <!--Sezione tasti del volume-->
-    <button onclick="document.getElementById('audio').play(); document.getElementById('on').style.display = 'none'; document.getElementById('off').style.display = 'block';"><img class="bottoni_audio" id="on" src="blocca_volume.png" alt="" ></button>
-    <button onclick="document.getElementById('audio').pause(); document.getElementById('off').style.display = 'none'; document.getElementById('on').style.display = 'block';"><img style="display: none; " class="bottoni_audio" id="off" src="volume.png" alt=""></button>
+    <button onclick="document.getElementById('audio').play();document.getElementById('audio2').volume = volumeControl2.value / 100; document.getElementById('audio3'). volume = volumeControl2.value / 100; document.getElementById('on').style.display = 'none'; document.getElementById('off').style.display = 'block';"><img class="bottoni_audio" id="on" src="blocca_volume.png" alt="" ></button>
+    <button onclick="document.getElementById('audio').pause(); document.getElementById('audio2').volume = 0; document.getElementById('audio3').volume = 0; document.getElementById('off').style.display = 'none'; document.getElementById('on').style.display = 'block';"><img style="display: none; " class="bottoni_audio" id="off" src="volume.png" alt=""></button>
     <!--Pagina in lingua inglese-->
     <div id="pagina_iniziale_inglese">       
     <h1 >Welcome</h1>  
