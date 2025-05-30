@@ -68,6 +68,7 @@
         .controls {
             margin-top: 20px;
             position: fixed;
+            font-size: 20px;
         }
         /* Proprietà predefinite dei pulsanti della pagina */
         button {
@@ -90,8 +91,12 @@
         .hidden {
             display: none;
         }
-        
-        
+        #wrapper {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            transform-origin: top left; /*Punto di origine delle trasformazioni */
+        }
     </style>
 </head>
 <body>
@@ -106,37 +111,41 @@
         <source src="effetto_click.mp3" type="audio/mpeg">
     </audio>
     <!-- Pagina principale in lingua inglese, con all'interno il tavolo, gettoni, icone, tasti e countdown-->
+     <div id="wrapper">
     <div id="pagina_inglese">
-    <div class="table hidden" id="table">
-        <h1 id="gettoni_bot" style="position: fixed; font-size: 40px; color: white; margin-left: 525px; margin-top: 100px; ">2000 💰</h1>
-        <h1 id="piatto_bot" style="position: fixed; font-size: 30px; color: white; margin-left: 1150px; margin-top: 150px;">Current Playing:</h1>
+    <div class="table hidden" id="table" style="margin-left: 530px;">
+        <h1 id="gettoni_bot" style="position: fixed; font-size: 40px; color: white; margin-left: 550px; margin-top: 100px; ">2000 💰</h1>
+        <h1 id="piatto_bot" style="position: fixed; font-size: 30px; color: white; margin-left: 1250px; margin-top: 150px; width: 500px;">Current Playing:</h1>
         <h1 id="gettoni_player" style="position: fixed; font-size: 40px; color: white; margin-left: -450px; margin-top: 650px;">2000 💰</h1>
-        <h1 id="piatto_player" style="position: fixed; font-size: 30px; color: white; margin-left: 1150px; margin-top: 600px; ">Current Playing:</h1>
-        <h1 id="turni" style="position: fixed; font-size: 50px; color: white; margin-left: -1200px; margin-top: 0px; "></h1>
+        <h1 id="piatto_player" style="position: fixed; font-size: 30px; color: white; margin-left: 1250px; margin-top: 650px; width: 500px;">Current Playing:</h1>
+        <h1 id="turni" style="position: fixed; font-size: 60px; color: white; margin-left: -1200px; margin-top: 100px; "></h1>
         <img src="pila_gettoni.png" alt="" style="position: fixed; width: 200px; height: 150px; margin-top: 500px; margin-left: -480px;">
         <img src="pila_gettoni.png" alt="" style="position: fixed; width: 200px; height: 150px; margin-top: 150px; margin-left: 520px;">
-        <img src="icona_bot.jpg" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 1150px; margin-top: -15px; border-radius: 20px;">
+        <img src="icona_bot.jpg" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 1250px; margin-top: -15px; border-radius: 20px;">
         <div class="opponent-cards" id="opponent-cards"></div>
-        <img src="icona_player.png" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 1150px; margin-top: 660px; border-radius: 20px;">
+        <img src="icona_player.png" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 1250px; margin-top: 710px; border-radius: 20px;">
         <div class="player-cards" id="player-cards" ></div>
         <img src="dietro_carta2.jpg" alt="" style="margin-left: 670px; margin-top: 430px; position: fixed; width: 120px; height: 150px; border: 4px solid black;">
+        <div id="countdown" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 0px;  margin-top: 320px; display: none;">3</div>
+        <button onclick="startGame()" id="new_round" style="display: none; width: 150px; height: 90px; position: fixed; font-size: 30px; margin-top: 440px; margin-left:0px">New round</button>
+        
         <div class="controls2" style="position: fixed;"></div>
-            <button id="fold" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 300px; margin-left: -1200px;">Fold</button>
-            <button id="call" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 400px; margin-left: -1200px;">Call</button>
-            <button id="raise" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 500px; margin-left: -1200px;">Raise</button>
-            <button id="all-in" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 600px; margin-left: -1200px;">All in</button>
+            <button id="fold" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 300px; margin-left: -1230px;">Fold</button>
+            <button id="call" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 400px; margin-left: -1230px;">Call</button>
+            <button id="raise" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 500px; margin-left: -1230px;">Raise</button>
+            <button id="all-in" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 600px; margin-left: -1230px;">All in</button>
+            
         </div>
-        <div id="countdown" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 660px;  margin-top: -500px; display: none;">3</div>
-        <button onclick="startGame()" id="new_round" style="display: none; width: 150px; height: 90px; position: fixed; font-size: 30px; margin-top: -380px; margin-left:840px">New round</button>
         <div class="common-cards" id="common-cards" ></div>
     </div>
-    <div class="bottom-controls hidden" id="controls">
+    <div class="bottom-controls hidden" id="controls" style="margin-left: 400px;">
         <button onclick="window.location.href = 'index.html?lang=' + lang + '&audio=' + audio.currentTime + '&audio2=' + audio2.currentTime;">Exit the Game <br>(Return to menu)</button>
     </div>
-    </div>
+</div>
     <!-- Pagina principale in lingua italiana, con all'interno il tavolo, gettoni, icone, tasti e countdown-->
+    <div id="wrapper">
     <div id="pagina_italiano" style="display: none;">
-        <div class="table hidden" id="table2">
+        <div class="table hidden" id="table2" style="margin-left: 400px;">
             <h1 id="gettoni_bot2" style="position: fixed; font-size: 40px; color: white; margin-left: 525px; margin-top: 100px;">2000 💰</h1>
             <h1 id="piatto_bot2" style="position: fixed; font-size: 30px; color: white; margin-left: 1150px; margin-top: 150px;">In Gioco:</h1>
             <h1 id="gettoni_player2" style="position: fixed; font-size: 40px; color: white; margin-left: -450px; margin-top: 650px;">2000 💰</h1>
@@ -152,24 +161,24 @@
             <img src="icona_player.png" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 1150px; margin-top: 660px; border-radius: 20px;">
             <div class="player-cards" id="player-cards2"></div>
             <img src="dietro_carta2.jpg" alt="" style="margin-left: 670px; margin-top: 430px; position: fixed; width: 120px; height: 150px; border: 4px solid black;">
-            
+            <div id="countdown2" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 660px; margin-top: -500px; display: none; text-align: center;">3</div>
+            <button onclick="startGame()" id="new_round2" style="display: none; width: 150px; height: 90px; position: fixed; font-size: 30px; margin-top: 440px; margin-left:0px; text-align: center;">Nuovo turno</button>
             <div class="controls2" style="position: fixed;"></div>
-                <button id="fold2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 300px; margin-left: -1200px;">Passa</button>
-                <button id="call2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 400px; margin-left: -1200px;">Chiama</button>
-                <button id="raise2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 500px; margin-left: -1200px;">Rilancia</button>
-                <button id="all-in2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 600px; margin-left: -1200px;">All-in</button>
+                <button id="fold2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 300px; margin-left: -1230px;">Passa</button>
+                <button id="call2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 400px; margin-left: -1230px;">Chiama</button>
+                <button id="raise2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 500px; margin-left: -1230px;">Rilancia</button>
+                <button id="all-in2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 600px; margin-left: -1230px;">All-in</button>
             </div>
         
-            <div id="countdown2" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 660px; margin-top: -500px; display: none; text-align: center;">3</div>
-            <button onclick="startGame()" id="new_round2" style="display: none; width: 150px; height: 90px; position: fixed; font-size: 30px; margin-top: -380px; margin-left: 840px; text-align: center;">Nuovo turno</button>
             
             <div class="common-cards" id="common-cards2"></div>
         </div>
         
-        <div class="bottom-controls hidden" id="controls2">
+        <div class="bottom-controls hidden" id="controls2" style="margin-left: 400px;">
             <button onclick="window.location.href = 'index.html?lang=' + lang + '&audio=' + audio.currentTime + '&audio2=' + audio2.currentTime;">Esci dal Gioco <br>(Torna al menu)</button>
         </div>
     </div>        
+
     <script>
         // Inizializzazione degli Array e variabili, scelti come parametri di gioco
         const suits = ['♥', '♦', '♣', '♠'];
@@ -283,7 +292,7 @@
 
         //Funzione per il passaggio della lingua scelta dall'utente nella pagina principale del gioco
         function lingua(){
-            lang = "en";
+            lang = "it";
             if(lang == "en") {
                 document.getElementById('pagina_inglese').style.display = 'block';
                 document.getElementById('pagina_italiano').style.display = 'none';
@@ -1593,6 +1602,126 @@
             let playerHand2 = [...playerHand];
             let opponentHand2 = [...opponentHand];
             let carta_alta_player, carta_alta_opponent;
+            switch (playerHand[0]) {
+                case 'A':
+                    playerHand[0] = 14;
+                    break;
+                case 'K':
+                    playerHand[0] = 13;
+                    break;
+                case 'Q':
+                    playerHand[0] = 12;
+                    break;
+                case 'J':
+                    playerHand[0] = 11;
+                    break;
+                case '10':
+                    playerHand[0] = 10;
+                    break;
+            }
+
+            switch (playerHand[2]) {
+                case 'A':
+                    playerHand[2] = 14;
+                    break;
+                case 'K':
+                    playerHand[2] = 13;
+                    break;
+                case 'Q':
+                    playerHand[2] = 12;
+                    break;
+                case 'J':
+                    playerHand[2] = 11;
+                    break;
+                case '10':
+                    playerHand[2] = 10;
+                    break;
+            }
+            switch (commonCards[0]) {
+                case 'A':
+                    commonCards[0] = 14;
+                    break;
+                case 'K':
+                    commonCards[0] = 13;
+                    break;
+                case 'Q':
+                    commonCards[0] = 12;
+                    break;
+                case 'J':
+                    commonCards[0] = 11;
+                    break;
+                case '10':
+                    commonCards[0] = 10;
+                    break;
+            }
+            switch (commonCards[2]) {
+                case 'A':
+                    commonCards[2] = 14;
+                    break;
+                case 'K':
+                    commonCards[2] = 13;
+                    break;
+                case 'Q':
+                    commonCards[2] = 12;
+                    break;
+                case 'J':
+                    commonCards[2] = 11;
+                    break;
+                case '10':
+                    commonCards[2] = 10;
+                    break;
+            }
+            switch (commonCards[4]) {
+                case 'A':
+                    commonCards[4] = 14;
+                    break;
+                case 'K':
+                    commonCards[4] = 13;
+                    break;
+                case 'Q':
+                    commonCards[4] = 12;
+                    break;
+                case 'J':
+                    commonCards[4] = 11;
+                    break;
+                case '10':
+                    commonCards[4] = 10;
+                    break;
+            }
+            switch (commonCards[6]) {
+                case 'A':
+                    commonCards[6] = 14;
+                    break;
+                case 'K':
+                    commonCards[6] = 13;
+                    break;
+                case 'Q':
+                    commonCards[6] = 12;
+                    break;
+                case 'J':
+                    commonCards[6] = 11;
+                    break;
+                case '10':
+                    commonCards[6] = 10;
+                    break;
+            }
+            switch (commonCards[8]) {
+                case 'A':
+                    commonCards[8] = 14;
+                    break;
+                case 'K':
+                    commonCards[8] = 13;
+                    break;
+                case 'Q':
+                    commonCards[8] = 12;
+                    break;
+                case 'J':
+                    commonCards[8] = 11;
+                    break;
+                case '10':
+                    commonCards[8] = 10;
+                    break;
+            }
             let  allCardsValue_player = [playerHand[0], playerHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6], commonCards[8]];
             let allCardsSuit_player = [playerHand[1], playerHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7], commonCards[9]];
             let app, i, j;
@@ -1613,7 +1742,7 @@
 
             punteggio_p += carta_alta_player / 100;
             punteggio_b += carta_alta_opponent / 100;
-            alert(allCardsValue_player)
+
             if (allCardsValue_player[0] === 14 && allCardsValue_player[1] === 13 && allCardsValue_player[2] === 12 && allCardsValue_player[3] === 11 && allCardsValue_player[4] === 10 || (allCardsValue_player[1] === 14 && allCardsValue_player[2] === 13 && allCardsValue_player[3] === 12 && allCardsValue_player[4] === 11 && allCardsValue_player[5] === 10) || (allCardsValue_player[2] === 14 && allCardsValue_player[3] === 13 && allCardsValue_player[4] === 12 && allCardsValue_player[5] === 11 && allCardsValue_player[6] === 10)) {
                 punteggio_p = valore_royal_flush;
             } else if(allCardsValue_player[0] == allCardsValue_player[1]+1 && allCardsValue_player[0] == allCardsValue_player[2]+2 && allCardsValue_player[0] == allCardsValue_player[3]+3 && allCardsValue_player[0] == allCardsValue_player[4]+4) {
@@ -2246,7 +2375,7 @@
             opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰 +`+wage;
             opponentChipsElement.style.color = 'red';
             opponentBetElement.style.color = 'green';
-            turni.textContent = "Player Turn";
+            turni.textContent = "Your Turn";
             setTimeout(() => {
                 opponentChipsElement.style.color = 'white';
                 opponentBetElement.style.color = 'white';
@@ -2273,7 +2402,7 @@
             opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰 +`+wage;
             opponentChipsElement.style.color = 'red';
             opponentBetElement.style.color = 'green';
-            turni.textContent = "Player Turn";
+            turni.textContent = "Your Turn";
             setTimeout(() => {
                 opponentChipsElement.style.color = 'white';
                 opponentBetElement.style.color = 'white';
@@ -2299,7 +2428,7 @@
             opponentBetElement.textContent = `Current Playing: ${opponentBet} 💰 +`+ wage;
             opponentChipsElement.style.color = 'red';
             opponentBetElement.style.color = 'green';
-            turni.textContent = "Player Turn";
+            turni.textContent = "Your Turn";
             call.textContent = "Call disabled";
             raise.textContent = "Raise disabled";
             call.onclick = null;
@@ -4838,7 +4967,7 @@ function call_bot(all_in1) {
         opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰 +` + wage2;
         opponentChipsElement2.style.color = 'red';
         opponentBe2tElement2.style.color = 'green';
-        turni2.textContent = "Turno del Giocatore";
+        turni2.textContent = "Il tuo Turno";
         setTimeout(() => {
             opponentChipsElement2.style.color = 'white';
             opponentBe2tElement2.style.color = 'white';
@@ -4864,7 +4993,7 @@ function raise_bot(all_in1) {
         opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰 +` + wage2;
         opponentChipsElement2.style.color = 'red';
         opponentBe2tElement2.style.color = 'green';
-        turni2.textContent = "Turno del Giocatore";
+        turni2.textContent = "Il tuo Turno";
         setTimeout(() => {
             opponentChipsElement2.style.color = 'white';
             opponentBe2tElement2.style.color = 'white';
@@ -4890,7 +5019,7 @@ all_in_bot = function(all_in1) {
     opponentBe2tElement2.textContent = `In Gioco: ${opponentBet2} 💰 +` + wage2;
     opponentChipsElement2.style.color = 'red';
     opponentBe2tElement2.style.color = 'green';
-    turni2.textContent = "Turno del Giocatore";
+    turni2.textContent = "Il tuo Turno";
     call2.textContent = "Chiama disabilitato";
     raise2.textContent = "Rilancia disabilitato";
     call2.onclick = null;
@@ -5620,7 +5749,25 @@ if(indicatore_di_cognizione < 0.15) {
 
 }
 }
+    </script>
 
+    <script>
+        function scalePage() {
+                //Dimensioni preimpstate della pagina
+            const baseWidth = 1920; 
+            const baseHeight = 970;
+
+            //Calcolo del rapporto tra la dimensione attuale della scheda con quelle preimpostate in modo da scalare dinamicamente
+            const scaleX = window.innerWidth / baseWidth;
+            const scaleY = window.innerHeight / baseHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            const wrapper = document.getElementById('wrapper');
+            wrapper.style.transform = `scale(${scale})`;
+        }
+        //Controlli dello zoom o dezoom della scheda 
+        window.addEventListener('resize', scalePage);
+        window.addEventListener('load', scalePage);
     </script>
 </body>
 </html>
