@@ -52,6 +52,7 @@
             background-size: cover;  
             background-position: center; 
             border: 2px solid black;
+            margin: 3px;
         }
         /* Proprietà predefinite della carta centrale*/
         .card.centre {
@@ -97,6 +98,16 @@
             left: 0;
             transform-origin: top left; /*Punto di origine delle trasformazioni */
         }
+        /*Bottone per mettere o togliere l'audio*/
+        .bottoni_audio {
+            width: 62.5px;
+            height: 62.5px; 
+            margin-top: -770px;
+            margin-left: -250px;
+            position: fixed;
+            z-index: 1;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -134,8 +145,9 @@
             <button id="call" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 400px; margin-left: -1230px;">Call</button>
             <button id="raise" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 500px; margin-left: -1230px;">Raise</button>
             <button id="all-in" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 600px; margin-left: -1230px;">All in</button>
-            
         </div>
+        <button style="background: none;" onclick="audio.play();  document.getElementById('on').style.display = 'none'; document.getElementById('off').style.display = 'block';"><img class="bottoni_audio" id="on" src="blocca_volume.png" alt="" ></button>
+        <button style="background: none;" onclick="audio.pause(); document.getElementById('off').style.display = 'none'; document.getElementById('on').style.display = 'block';"><img style="display: none; " class="bottoni_audio" id="off" src="volume.png" alt=""></button>
         <div class="common-cards" id="common-cards" ></div>
     </div>
     <div class="bottom-controls hidden" id="controls" style="margin-left: -500px; margin-top: -50px;">
@@ -161,8 +173,11 @@
             <img src="icona_player.png" alt="" style="position: fixed; width: 150px; height: 150px; margin-left: 1150px; margin-top: 660px; border-radius: 20px;">
             <div class="player-cards" id="player-cards2"></div>
             <img src="dietro_carta2.jpg" alt="" style="margin-left: 670px; margin-top: 430px; position: fixed; width: 120px; height: 150px; border: 4px solid black;">
-            <div id="countdown2" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 660px; margin-top: -500px; display: none; text-align: center;">3</div>
+            <div id="countdown2" style="position: fixed; font-size: 100px; width: 500px; height: 50px; margin-left: 0px;  margin-top: 320px; display: none;">3</div>
             <button onclick="startGame()" id="new_round2" style="display: none; width: 150px; height: 90px; position: fixed; font-size: 30px; margin-top: 440px; margin-left:0px; text-align: center;">Nuovo turno</button>
+            <button style="background: none;" onclick="audio.play();  document.getElementById('on').style.display = 'none'; document.getElementById('off').style.display = 'block';"><img class="bottoni_audio" id="on" src="blocca_volume.png" alt="" ></button>
+            <button style="background: none;" onclick="audio.pause(); document.getElementById('off').style.display = 'none'; document.getElementById('on').style.display = 'block';"><img style="display: none; " class="bottoni_audio" id="off" src="volume.png" alt=""></button>
+
             <div class="controls2" style="position: fixed;"></div>
                 <button id="fold2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 300px; margin-left: -1230px;">Passa</button>
                 <button id="call2" style="width: 270px; height: 67px; position: fixed; font-size: 30px; margin-top: 400px; margin-left: -1230px;">Chiama</button>
@@ -181,8 +196,8 @@
 
     <script>
         // Inizializzazione degli Array e variabili, scelti come parametri di gioco
-        const suits = ['♥', '♦', '♣', '♠'];
-        const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        const suits = ['cuori', 'quadri', 'fiori', 'picche'];
+        const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'];
         const rankValues = { 'A': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13 };
         let playerHand = [];
         let opponentHand = [];
@@ -276,18 +291,25 @@
         // Passaggio dei parametri audio e lingua dalla pagina principale del gioco
         const urlParams = new URLSearchParams(window.location.search);
         let lang = urlParams.get('lang');
-        let valore_audio = urlParams.get('audioValore');
-        let valore_audio2 = urlParams.get('audioValore2');
+        let valore_audio = urlParams.get('audio');
+        let valore_audio2 = urlParams.get('audio2');
         const audio = document.getElementById('audio');
         const audio2 = document.getElementById('audio2');
         const audio3 = document.getElementById('audio3');
 
         //Assegnazione del volume nel gioco
-        if(valore_audio > 1) valore_audio = 1;
-        if(valore_audio2 > 1) valore_audio2 = 1;
-        
+        if(valore_audio == null) {
+            valore_audio = 0.5; // Valore di default se non specificato
+        } else {
+            if(valore_audio > 1) valore_audio = 1; // Limite massimo del volume
+        }
+        if (valore_audio2 == null) {
+            valore_audio2 = 0.5; // Valore di default se non specificato
+        } else {
+            if (valore_audio2 > 1) valore_audio2 = 1; // Limite massimo del volume
+        }
         audio.volume = valore_audio;
-        audio2.volume = valore_audio2;
+        audio2.volume = valore_audio;
         audio3.volume = valore_audio2;
 
         //Funzione per il passaggio della lingua scelta dall'utente nella pagina principale del gioco
@@ -315,6 +337,7 @@
                 new_round2.onclick = startGame_it();
             }
             //Controllo dei chips rimanenti del giocatore e del bot per decidere la vittoria
+            
             if(playerChips <= 0) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
@@ -477,6 +500,19 @@
                 playerBet = 0;
                 opponentBet = 0;
                 commonCard.innerHTML = '';
+                opponentCards.innerHTML = '';
+                const img8 = document.createElement('img');
+                img8.src = `${opponentHand[0]}_${opponentHand[1]}.jpg`;
+                img8.style.width = '100px';
+                img8.style.height = '142px';
+                img8.style.border = "3px solid black";
+                opponentCards.appendChild(img8);   
+                const img9 = document.createElement('img');
+                img9.src = `${opponentHand[2]}_${opponentHand[3]}.jpg`;
+                img9.style.width = '100px';
+                img9.style.height = '142px';
+                img9.style.border = "3px solid black";  
+                opponentCards.appendChild(img9);    
                 }
             };
             call.onclick = function() {
@@ -569,7 +605,7 @@
                 //Se l'all in è stato già fatto dal bot, controllato dal parametro all_in2, si passa al flop, river o showdown che controlleranno i punteggi e assegneranno la vittoria
                 if(all_in2 == true  || made_allin2 == true) {
                     setTimeout(() => {
-                    if(turno == 2) flop(true, false);
+                    if(turno == 2 || turno == 1 ) flop(true, false);
                     if(turno == 3) river(true, false);
                     if(turno == 4) showdown(true, false);
                     }, 2000);
@@ -669,12 +705,18 @@
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
             playerHand[0] = rank;
-            playerHand[1] = suit;
+            playerHand[1] = "cuori";
             //Creazione di un elemento div per la carta del giocatore
             const cardElement = document.createElement('div');
             //Assegnazione della classe css card
             cardElement.className = 'card';
-            cardElement.textContent += `${playerHand[0]} ${playerHand[1]}`;
+            const img = document.createElement('img');
+            img.src = `${playerHand[0]}_${playerHand[1]}.jpg`;
+            img.style.width = '100px';
+            img.style.height = '142px';
+            img.style.border = "3px solid black";
+            cardElement.appendChild(img);
+            audio2.play();
             cardElement.style.fontSize = '40px';
             //Assegnazione della carta alla mano del giocatore tramite la struttura appendChild, in cui si inserisce in un elemento html esistente l'elemento creato precedentemente
             playerCards.appendChild(cardElement);
@@ -702,10 +744,16 @@
                 suit = suits[Math.floor(Math.random() * suits.length)];
                 rank = ranks[Math.floor(Math.random() * ranks.length)];
                 playerHand[2] = rank;
-                playerHand[3] = suit;
+                playerHand[3] = "cuori";
                 const cardElement = document.createElement('div');
                 cardElement.className = 'card';
-                cardElement.textContent += `${playerHand[2]} ${playerHand[3]}`;
+                const img2 = document.createElement('img');
+                img2.src = `${playerHand[2]}_${playerHand[3]}.jpg`;
+                img2.style.width = '100px';
+                img2.style.height = '142px';
+                img2.style.border = "3px solid black";
+                cardElement.appendChild(img2);
+                audio2.play();
                 playerCards.appendChild(cardElement);
                 cardElement.style.cursor = 'pointer';
                 cardElement.style.fontSize = '40px';
@@ -743,7 +791,7 @@
             } else{
                 new_round.onclick = function(){
                     startGame();
-                }           //ok
+                }           
             turno = 2;
             suit = suits[Math.floor(Math.random() * suits.length)];
             rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -751,7 +799,13 @@
             commonCards[1] = suit;
             const cardElement = document.createElement('div');
             cardElement.className = 'card centre';
-            cardElement.textContent += `${commonCards[0]} ${commonCards[1]}`;
+            const img3 = document.createElement('img');
+            img3.src = `${commonCards[0]}_${commonCards[1]}.jpg`;
+            img3.style.width = '100px';
+            img3.style.height = '142px';
+            img3.style.border = "3px solid black";
+            cardElement.appendChild(img3);
+            audio2.play();
             cardElement.style.fontSize = '40px';
             commonCard.appendChild(cardElement);
             cardElement.style.cursor = 'pointer';
@@ -768,7 +822,13 @@
                 commonCards[3] = suit;
                 const cardElement = document.createElement('div');
                 cardElement.className = 'card centre';
-                cardElement.textContent += `${commonCards[2]} ${commonCards[3]}`;
+                const img4 = document.createElement('img');
+                img4.src = `${commonCards[2]}_${commonCards[3]}.jpg`;
+                img4.style.width = '100px';
+                img4.style.height = '142px';
+                img4.style.border = "3px solid black";
+                cardElement.appendChild(img4);
+                audio2.play();
                 cardElement.style.fontSize = '40px';
                 commonCard.appendChild(cardElement);
                 cardElement.style.cursor = 'pointer';
@@ -786,7 +846,13 @@
                 commonCards[5] = suit;
                 const cardElement = document.createElement('div');
                 cardElement.className = 'card centre';
-                cardElement.textContent += `${commonCards[4]} ${commonCards[5]}`;
+                const img5 = document.createElement('img');
+                img5.src = `${commonCards[4]}_${commonCards[5]}.jpg`;
+                img5.style.width = '100px';
+                img5.style.height = '142px';
+                img5.style.border = "3px solid black";
+                cardElement.appendChild(img5);
+                audio2.play();
                 cardElement.style.fontSize = '40px';
                 commonCard.appendChild(cardElement);
                 cardElement.style.cursor = 'pointer';
@@ -807,75 +873,7 @@
             let opponentHand2 = [...opponentHand];
             //Creazione del punteggio previsto dalle carte alte del giocatore e del bot
             let carta_alta_player, carta_alta_opponent;
-            //Controllo delle lettere nelle mani del giocatore e del bot, in modo da convertire le lettere in numeri per il calcolo del punteggio
-            switch (playerHand2[0]) {
-                case 'A':
-                    playerHand2[0] = 14;
-                    break;
-                case 'K':
-                    playerHand2[0] = 13;
-                    break;
-                case 'Q':
-                    playerHand2[0] = 12;
-                    break;
-                case 'J':
-                    playerHand2[0] = 11;
-                    break;
-                case '10':
-                    playerHand2[0] = 10;
-                    break;
-            }
-            switch (playerHand2[2]) {
-                case 'A':
-                    playerHand2[2] = 14;
-                    break;
-                case 'K':
-                    playerHand2[2] = 13;
-                    break;
-                case 'Q':
-                    playerHand2[2] = 12;
-                    break;
-                case 'J':
-                    playerHand2[2] = 11;
-                    break;
-                case '10':
-                    playerHand2[2] = 10;
-                    break;
-            }
-            switch (opponentHand2[0]) {
-                case 'A':
-                    opponentHand2[0] = 14;
-                    break;
-                case 'K':
-                    opponentHand2[0] = 13;
-                    break;
-                case 'Q':
-                    opponentHand2[0] = 12;
-                    break;
-                case 'J':
-                    opponentHand2[0] = 11;
-                    break;
-                case '10':
-                    opponentHand2[0] = 10;
-                    break;
-            }
-            switch (opponentHand2[2]) {
-                case 'A':
-                    opponentHand2[2] = 14;
-                    break;
-                case 'K':
-                    opponentHand2[2] = 13;
-                    break;
-                case 'Q':
-                    opponentHand2[2] = 12;
-                    break;
-                case 'J':
-                    opponentHand2[2] = 11;
-                    break;
-                case '10':
-                    opponentHand2[2] = 10;
-                    break;
-            }
+            
             //Controllo delle carte alte del giocatore e del bot, in modo da calcolare il punteggio in base alla carta alta
             if(playerHand2[0] >= playerHand2[2]) {
                 carta_alta_player = playerHand2[0];
@@ -892,8 +890,8 @@
             punteggio_b += carta_alta_opponent / 100;
             //Controllo delle coppie; se trovata la coppia si aggiunge il punteggio di ogni coppia al punteggio del giocatore e del bot più 0.04 se hanno lo stesso seme
             switch (playerHand[0]) {
-                case 'A':
-                    if(playerHand[2] == 'A') {
+                case '14':
+                    if(playerHand[2] == '14') {
                         punteggio_p += Coppia_AA;
                         if(playerHand[1] == playerHand[3]) {
                             punteggio_p += 0.04;
@@ -972,24 +970,24 @@
                         }
                     }
                     break;
-                case 'J':
-                    if(playerHand[2] == 'J') {
+                case '11':
+                    if(playerHand[2] == '11') {
                         punteggio_p += Coppia_JJ;
                         if(playerHand[1] == playerHand[3]) {
                             punteggio_p += 0.04;
                         }
                     }
                     break;
-                case 'Q':
-                    if(playerHand[2] == 'Q') {
+                case '12':
+                    if(playerHand[2] == '12') {
                         punteggio_p += Coppia_QQ;
                         if(playerHand[1] == playerHand[3]) {
                             punteggio_p += 0.04;
                         }
                     }
                     break;
-                case 'K':
-                    if(playerHand[2] == 'K') {
+                case '13':
+                    if(playerHand[2] == '13') {
                         punteggio_p += Coppia_KK;
                         if(playerHand[1] == playerHand[3]) {
                             punteggio_p += 0.04;
@@ -998,8 +996,8 @@
                     break;
             }
             switch (opponentHand[0]) {
-                case 'A':
-                    if (opponentHand[2] == 'A') {
+                case '14':
+                    if (opponentH14nd[2] == 'A') {
                         punteggio_b += Coppia_AA;
                         if (opponentHand[1] == opponentHand[3]) {
                             punteggio_b += 0.04;
@@ -1078,24 +1076,24 @@
                         }
                     }
                     break;
-                case 'J':
-                    if (opponentHand[2] == 'J') {
+                case '11':
+                    if (opponentHand[2] == '11') {
                         punteggio_b += Coppia_JJ;
                          if (opponentHand[1] == opponentHand[3]) {
                             punteggio_b += 0.04;
                         }
                     }
                     break;
-                case 'Q':
-                    if (opponentHand[2] == 'Q') {
+                case '12':
+                    if (opponentHand[2] == '12') {
                         punteggio_b += Coppia_QQ;
                          if (opponentHand[1] == opponentHand[3]) {
                             punteggio_b += 0.04;
                         }
                     }
                     break;
-                case 'K':
-                    if (opponentHand[2] == 'K') {
+                case '13':
+                    if (opponentHand[2] == '13') {
                         punteggio_b += Coppia_KK;
                          if (opponentHand[1] == opponentHand[3]) {
                             punteggio_b += 0.04;
@@ -1123,7 +1121,7 @@
                 opponentBet = 0;
                 commonCard.innerHTML = '';
                 
-            } else if(punteggio_b > punteggio_p) {
+            } else if(punteggio_b < punteggio_p) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
                 countdownElement.textContent = "PLAYER wins "+ (opponentBet + playerBet) + " 💰";
@@ -1183,7 +1181,13 @@
             commonCards[7] = suit;
             const cardElement = document.createElement('div');
             cardElement.className = 'card centre';
-            cardElement.textContent += `${commonCards[6]} ${commonCards[7]}`;
+            const img6 = document.createElement('img');
+            img6.src = `${commonCards[6]}_${commonCards[7]}.jpg`;
+            img6.style.width = '100px';
+            img6.style.height = '142px';
+            img6.style.border = "3px solid black";
+            cardElement.appendChild(img6);
+            audio2.play();
             cardElement.style.fontSize = '40px';
             commonCard.appendChild(cardElement);
             cardElement.style.cursor = 'pointer';
@@ -1203,41 +1207,6 @@
             let i, j, app;
             let allCardsValue_player = [];
             let allCardsSuit_player = [];
-            switch (playerHand[0]) {
-                case 'A':
-                    playerHand[0] = 14;
-                    break;
-                case 'K':
-                    playerHand[0] = 13;
-                    break;
-                case 'Q':
-                    playerHand[0] = 12;
-                    break;
-                case 'J':
-                    playerHand[0] = 11;
-                    break;
-                case '10':
-                    playerHand[0] = 10;
-                    break;
-            }
-
-            switch (playerHand[2]) {
-                case 'A':
-                    playerHand[2] = 14;
-                    break;
-                case 'K':
-                    playerHand[2] = 13;
-                    break;
-                case 'Q':
-                    playerHand[2] = 12;
-                    break;
-                case 'J':
-                    playerHand[2] = 11;
-                    break;
-                case '10':
-                    playerHand[2] = 10;
-                    break;
-            }
             
             allCardsValue_player = [playerHand[0], playerHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6]];
             allCardsSuit_player = [playerHand[1], playerHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7]];
@@ -1335,13 +1304,13 @@
             } else {
                 let allCardsSuit_bot2 = [...allCardsSuit_bot];
                 for(i=0;i<allCardsSuit_bot2.length;i++){
-                    if(allCardsSuit_bot2[i] == '♥'){
+                    if(allCardsSuit_bot2[i] == 'cuori'){
                         allCardsSuit_bot2[i] = 1;
-                    } else if(allCardsSuit_bot2[i] == '♦'){
+                    } else if(allCardsSuit_bot2[i] == 'quadri'){
                         allCardsSuit_bot2[i] = 2;
-                    } else if(allCardsSuit_bot2[i] == '♣'){
+                    } else if(allCardsSuit_bot2[i] == 'fiori'){
                         allCardsSuit_bot2[i] = 3;
-                    } else if(allCardsSuit_bot2[i] == '♠'){
+                    } else if(allCardsSuit_bot2[i] == 'picche'){
                         allCardsSuit_bot2[i] = 4;
                     }
                 }
@@ -1485,13 +1454,13 @@
         //Creazione di un array di appoggio dei semi delle carte del giocatore
         let allCardsSuit_player2 = [...allCardsSuit_player];
                 for(i=0;i<allCardsSuit_player2.length;i++){
-                    if(allCardsSuit_player2[i] == '♥'){
+                    if(allCardsSuit_player2[i] == 'cuori'){
                         allCardsSuit_player2[i] = 1;
-                    } else if(allCardsSuit_player2[i] == '♦'){
+                    } else if(allCardsSuit_player2[i] == 'quadri'){
                         allCardsSuit_player2[i] = 2;
-                    } else if(allCardsSuit_player2[i] == '♣'){
+                    } else if(allCardsSuit_player2[i] == 'fiori'){
                         allCardsSuit_player2[i] = 3;
-                    } else if(allCardsSuit_player2[i] == '♠'){
+                    } else if(allCardsSuit_player2[i] == 'picche'){
                         allCardsSuit_player2[i] = 4;
                     }
                 }
@@ -1525,7 +1494,7 @@
                 playerBet = 0;
                 opponentBet = 0;
                 commonCard.innerHTML = '';
-            } else if(punteggio_b > punteggio_p) {
+            } else if(punteggio_b < punteggio_p) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
                 countdownElement.textContent = "PLAYER wins "+ (opponentBet + playerBet) + " 💰";
@@ -1585,7 +1554,13 @@
             commonCards[9] = suit;
             const cardElement = document.createElement('div');
             cardElement.className = 'card centre';
-            cardElement.textContent += `${commonCards[8]} ${commonCards[9]}`;
+            const img7 = document.createElement('img');
+            img7.src = `${commonCards[8]}_${commonCards[9]}.jpg`;
+            img7.style.width = '100px';
+            img7.style.height = '142px';
+            img7.style.border = "3px solid black";
+            cardElement.appendChild(img7);      
+            audio2.play();
             cardElement.style.fontSize = '40px';
             commonCard.appendChild(cardElement);
             cardElement.style.cursor = 'pointer';
@@ -1602,126 +1577,6 @@
             let playerHand2 = [...playerHand];
             let opponentHand2 = [...opponentHand];
             let carta_alta_player, carta_alta_opponent;
-            switch (playerHand[0]) {
-                case 'A':
-                    playerHand[0] = 14;
-                    break;
-                case 'K':
-                    playerHand[0] = 13;
-                    break;
-                case 'Q':
-                    playerHand[0] = 12;
-                    break;
-                case 'J':
-                    playerHand[0] = 11;
-                    break;
-                case '10':
-                    playerHand[0] = 10;
-                    break;
-            }
-
-            switch (playerHand[2]) {
-                case 'A':
-                    playerHand[2] = 14;
-                    break;
-                case 'K':
-                    playerHand[2] = 13;
-                    break;
-                case 'Q':
-                    playerHand[2] = 12;
-                    break;
-                case 'J':
-                    playerHand[2] = 11;
-                    break;
-                case '10':
-                    playerHand[2] = 10;
-                    break;
-            }
-            switch (commonCards[0]) {
-                case 'A':
-                    commonCards[0] = 14;
-                    break;
-                case 'K':
-                    commonCards[0] = 13;
-                    break;
-                case 'Q':
-                    commonCards[0] = 12;
-                    break;
-                case 'J':
-                    commonCards[0] = 11;
-                    break;
-                case '10':
-                    commonCards[0] = 10;
-                    break;
-            }
-            switch (commonCards[2]) {
-                case 'A':
-                    commonCards[2] = 14;
-                    break;
-                case 'K':
-                    commonCards[2] = 13;
-                    break;
-                case 'Q':
-                    commonCards[2] = 12;
-                    break;
-                case 'J':
-                    commonCards[2] = 11;
-                    break;
-                case '10':
-                    commonCards[2] = 10;
-                    break;
-            }
-            switch (commonCards[4]) {
-                case 'A':
-                    commonCards[4] = 14;
-                    break;
-                case 'K':
-                    commonCards[4] = 13;
-                    break;
-                case 'Q':
-                    commonCards[4] = 12;
-                    break;
-                case 'J':
-                    commonCards[4] = 11;
-                    break;
-                case '10':
-                    commonCards[4] = 10;
-                    break;
-            }
-            switch (commonCards[6]) {
-                case 'A':
-                    commonCards[6] = 14;
-                    break;
-                case 'K':
-                    commonCards[6] = 13;
-                    break;
-                case 'Q':
-                    commonCards[6] = 12;
-                    break;
-                case 'J':
-                    commonCards[6] = 11;
-                    break;
-                case '10':
-                    commonCards[6] = 10;
-                    break;
-            }
-            switch (commonCards[8]) {
-                case 'A':
-                    commonCards[8] = 14;
-                    break;
-                case 'K':
-                    commonCards[8] = 13;
-                    break;
-                case 'Q':
-                    commonCards[8] = 12;
-                    break;
-                case 'J':
-                    commonCards[8] = 11;
-                    break;
-                case '10':
-                    commonCards[8] = 10;
-                    break;
-            }
             let  allCardsValue_player = [playerHand[0], playerHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6], commonCards[8]];
             let allCardsSuit_player = [playerHand[1], playerHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7], commonCards[9]];
             let app, i, j;
@@ -1919,13 +1774,13 @@
         }
         let allCardsSuit_player2 = [...allCardsSuit_player];
                 for(i=0;i<allCardsSuit_player2.length;i++){
-                    if(allCardsSuit_player2[i] == '♥'){
+                    if(allCardsSuit_player2[i] == 'cuori'){
                         allCardsSuit_player2[i] = 1;
-                    } else if(allCardsSuit_player2[i] == '♦'){
+                    } else if(allCardsSuit_player2[i] == 'quadri'){
                         allCardsSuit_player2[i] = 2;
-                    } else if(allCardsSuit_player2[i] == '♣'){
+                    } else if(allCardsSuit_player2[i] == 'fiori'){
                         allCardsSuit_player2[i] = 3;
-                    } else if(allCardsSuit_player2[i] == '♠'){
+                    } else if(allCardsSuit_player2[i] == 'picche'){
                         allCardsSuit_player2[i] = 4;
                     }
                 }
@@ -2118,13 +1973,13 @@
         }
         let allCardsSuit_bot2 = [...allCardsSuit_bot];
                 for(i=0;i<allCardsSuit_bot2.length;i++){
-                    if(allCardsSuit_bot2[i] == '♥'){
+                    if(allCardsSuit_bot2[i] == 'cuori'){
                         allCardsSuit_bot2[i] = 1;
-                    } else if(allCardsSuit_bot2[i] == '♦'){
+                    } else if(allCardsSuit_bot2[i] == 'quadri'){
                         allCardsSuit_bot2[i] = 2;
-                    } else if(allCardsSuit_bot2[i] == '♣'){
+                    } else if(allCardsSuit_bot2[i] == 'fiori'){
                         allCardsSuit_bot2[i] = 3;
-                    } else if(allCardsSuit_bot2[i] == '♠'){
+                    } else if(allCardsSuit_bot2[i] == 'picche'){
                         allCardsSuit_bot2[i] = 4;
                     }
                 }
@@ -2158,12 +2013,20 @@
                 playerBet = 0;
                 opponentBet = 0;
                 commonCard.innerHTML = '';
-                const opponentCardsChildren = opponentCards.children;
-                for (let i = 0; i < opponentCardsChildren.length; i++) {
-                    opponentCardsChildren[i].style.fontSize = "40px";
-                    opponentCardsChildren[i].textContent = `${opponentHand[2 * i]} ${opponentHand[2 * i + 1]}`;
-                }
-            } else if(punteggio_b > punteggio_p) {
+                opponentCards.innerHTML = '';
+                const img8 = document.createElement('img');
+                img8.src = `${opponentHand[0]}_${opponentHand[1]}.jpg`;
+                img8.style.width = '100px';
+                img8.style.height = '142px';
+                img8.style.border = "3px solid black";
+                opponentCards.appendChild(img8);   
+                const img9 = document.createElement('img');
+                img9.src = `${opponentHand[2]}_${opponentHand[3]}.jpg`;
+                img9.style.width = '100px';
+                img9.style.height = '142px';
+                img9.style.border = "3px solid black";  
+                opponentCards.appendChild(img9);    
+            } else if(punteggio_b < punteggio_p) {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
                 countdownElement.textContent = "PLAYER wins "+ (opponentBet + playerBet) + " 💰";
@@ -2180,11 +2043,19 @@
                 playerBet = 0;
                 opponentBet = 0;
                 commonCard.innerHTML = '';
-                const opponentCardsChildren = opponentCards.children;
-                for (let i = 0; i < opponentCardsChildren.length; i++) {
-                    opponentCardsChildren[i].style.fontSize = "40px";
-                    opponentCardsChildren[i].textContent = `${opponentHand[2 * i]} ${opponentHand[2 * i + 1]}`;
-                }
+                opponentCards.innerHTML = '';
+                const img8 = document.createElement('img');
+                img8.src = `${opponentHand[0]}_${opponentHand[1]}.jpg`;
+                img8.style.width = '100px';
+                img8.style.height = '142px';
+                img8.style.border = "3px solid black";
+                opponentCards.appendChild(img8);   
+                const img9 = document.createElement('img');
+                img9.src = `${opponentHand[2]}_${opponentHand[3]}.jpg`;
+                img9.style.width = '100px';
+                img9.style.height = '142px';
+                img9.style.border = "3px solid black";  
+                opponentCards.appendChild(img9);   
             } else {
                 countdownElement.style.fontSize = "30px";
                 countdownElement.style.display = 'block';
@@ -2204,11 +2075,19 @@
                 playerBet = 0;
                 opponentBet = 0;
                 commonCard.innerHTML = '';
-                const opponentCardsChildren = opponentCards.children;
-                for (let i = 0; i < opponentCardsChildren.length; i++) {
-                    opponentCardsChildren[i].style.fontSize = "40px";
-                    opponentCardsChildren[i].textContent = `${opponentHand[2 * i]} ${opponentHand[2 * i + 1]}`;
-                }
+                opponentCards.innerHTML = '';
+                const img8 = document.createElement('img');
+                img8.src = `${opponentHand[0]}_${opponentHand[1]}.jpg`;
+                img8.style.width = '100px';
+                img8.style.height = '142px';
+                img8.style.border = "3px solid black";
+                opponentCards.appendChild(img8);   
+                const img9 = document.createElement('img');
+                img9.src = `${opponentHand[2]}_${opponentHand[3]}.jpg`;
+                img9.style.width = '100px';
+                img9.style.height = '142px';
+                img9.style.border = "3px solid black";  
+                opponentCards.appendChild(img9);   
             }
         }
     }
@@ -2246,8 +2125,8 @@
             indicatore_di_cognizione = 0.11;
             //Controllo delle coppie tra le due carte del bot
             switch (opponentHand[0]) {
-                case 'A':
-                    if (opponentHand[2] == 'A') {
+                case '14':
+                    if (opponentHand[2] == '14') {
                         indicatore_di_cognizione += Coppia_AA;
                     }
                     break;
@@ -2296,18 +2175,18 @@
                         indicatore_di_cognizione += Coppia_10_10;
                     }
                     break;
-                case 'J':
-                    if (opponentHand[2] == 'J') {
+                case '11':
+                    if (opponentHand[2] == '11') {
                         indicatore_di_cognizione += Coppia_JJ;
                     }
                     break;
-                case 'Q':
-                    if (opponentHand[2] == 'Q') {
+                case '12':
+                    if (opponentHand[2] == '12') {
                         indicatore_di_cognizione += Coppia_QQ;
                     }
                     break;
-                case 'K':
-                    if (opponentHand[2] == 'K') {
+                case '13':
+                    if (opponentHand[2] == '13') {
                         indicatore_di_cognizione += Coppia_KK;
                     }
                     break;
@@ -2467,92 +2346,6 @@
         //Funzione flop del bot
         function turno_flop_bot(call, raise, all_in1){
             indicatore_di_cognizione = 0.11;
-            switch (opponentHand[0]) {
-                case 'A':
-                    opponentHand[0] = 14;
-                    break;
-                case 'K':
-                    opponentHand[0] = 13;
-                    break;
-                case 'Q':
-                    opponentHand[0] = 12;
-                    break;
-                case 'J':
-                    opponentHand[0] = 11;
-                    break;
-                case '10':
-                    opponentHand[0] = 10;
-                    break;
-            }
-
-            switch (opponentHand[2]) {
-                case 'A':
-                    opponentHand[2] = 14;
-                    break;
-                case 'K':
-                    opponentHand[2] = 13;
-                    break;
-                case 'Q':
-                    opponentHand[2] = 12;
-                    break;
-                case 'J':
-                    opponentHand[2] = 11;
-                    break;
-                case '10':
-                    opponentHand[2] = 10;
-                    break;
-            }
-            switch (commonCards[0]) {
-                case 'A':
-                    commonCards[0] = 14;
-                    break;
-                case 'K':
-                    commonCards[0] = 13;
-                    break;
-                case 'Q':
-                    commonCards[0] = 12;
-                    break;
-                case 'J':
-                    commonCards[0] = 11;
-                    break;
-                case '10':
-                    commonCards[0] = 10;
-                    break;
-            }
-            switch (commonCards[2]) {
-                case 'A':
-                    commonCards[2] = 14;
-                    break;
-                case 'K':
-                    commonCards[2] = 13;
-                    break;
-                case 'Q':
-                    commonCards[2] = 12;
-                    break;
-                case 'J':
-                    commonCards[2] = 11;
-                    break;
-                case '10':
-                    commonCards[2] = 10;
-                    break;
-            }
-            switch (commonCards[4]) {
-                case 'A':
-                    commonCards[4] = 14;
-                    break;
-                case 'K':
-                    commonCards[4] = 13;
-                    break;
-                case 'Q':
-                    commonCards[4] = 12;
-                    break;
-                case 'J':
-                    commonCards[4] = 11;
-                    break;
-                case '10':
-                    commonCards[4] = 10;
-                    break;
-            }
             //Controllo delle mani da 5, 4, 3 e 2 per ponderare l'indicatore di cognizione
             allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4]];
             allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5]];
@@ -2648,109 +2441,6 @@
         //Funzione river del bot
         function turno_river_bot(call, raise, all_in1){
             indicatore_di_cognizione = 0.11;
-            switch (opponentHand[0]) {
-                case 'A':
-                    opponentHand[0] = 14;
-                    break;
-                case 'K':
-                    opponentHand[0] = 13;
-                    break;
-                case 'Q':
-                    opponentHand[0] = 12;
-                    break;
-                case 'J':
-                    opponentHand[0] = 11;
-                    break;
-                case '10':
-                    opponentHand[0] = 10;
-                    break;
-            }
-
-            switch (opponentHand[2]) {
-                case 'A':
-                    opponentHand[2] = 14;
-                    break;
-                case 'K':
-                    opponentHand[2] = 13;
-                    break;
-                case 'Q':
-                    opponentHand[2] = 12;
-                    break;
-                case 'J':
-                    opponentHand[2] = 11;
-                    break;
-                case '10':
-                    opponentHand[2] = 10;
-                    break;
-            }
-            switch (commonCards[0]) {
-                case 'A':
-                    commonCards[0] = 14;
-                    break;
-                case 'K':
-                    commonCards[0] = 13;
-                    break;
-                case 'Q':
-                    commonCards[0] = 12;
-                    break;
-                case 'J':
-                    commonCards[0] = 11;
-                    break;
-                case '10':
-                    opponentHand[4] = 10;
-                    break;
-            }
-            switch (commonCards[2]) {
-                case 'A':
-                    commonCards[2] = 14;
-                    break;
-                case 'K':
-                    commonCards[2] = 13;
-                    break;
-                case 'Q':
-                    commonCards[2] = 12;
-                    break;
-                case 'J':
-                    commonCards[2] = 11;
-                    break;
-                case '10':
-                    commonCards[2] = 10;
-                    break;
-            }
-            switch (commonCards[4]) {
-                case 'A':
-                    commonCards[4] = 14;
-                    break;
-                case 'K':
-                    commonCards[4] = 13;
-                    break;
-                case 'Q':
-                    commonCards[4] = 12;
-                    break;
-                case 'J':
-                    commonCards[4] = 11;
-                    break;
-                case '10':
-                    commonCards[4] = 10;
-                    break;
-            }
-            switch (commonCards[6]) {
-                case 'A':
-                    commonCards[6] = 14;
-                    break;
-                case 'K':
-                    commonCards[6] = 13;
-                    break;
-                case 'Q':
-                    commonCards[6] = 12;
-                    break;
-                case 'J':
-                    commonCards[6] = 11;
-                    break;
-                case '10':
-                    commonCards[6] = 10;
-                    break;
-            }
             //Ponderazione dell'indicatore di cognizione con l'aggiunta dei controlli dell'ultima carta comune aggiunta
             allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6]];
             allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7]];
@@ -2868,13 +2558,13 @@
         }
         let allCardsSuit_bot2 = [...allCardsSuit_bot];
                 for(i=0;i<allCardsSuit_bot2.length;i++){
-                    if(allCardsSuit_bot2[i] == '♥'){
+                    if(allCardsSuit_bot2[i] == 'cuori'){
                         allCardsSuit_bot2[i] = 1;
-                    } else if(allCardsSuit_bot2[i] == '♦'){
+                    } else if(allCardsSuit_bot2[i] == 'quadri'){
                         allCardsSuit_bot2[i] = 2;
-                    } else if(allCardsSuit_bot2[i] == '♣'){
+                    } else if(allCardsSuit_bot2[i] == 'fiori'){
                         allCardsSuit_bot2[i] = 3;
-                    } else if(allCardsSuit_bot2[i] == '♠'){
+                    } else if(allCardsSuit_bot2[i] == 'picche'){
                         allCardsSuit_bot2[i] = 4;
                     }
                 }
@@ -3113,13 +2803,13 @@
         }
         let allCardsSuit_bot2 = [...allCardsSuit_bot];
                 for(i=0;i<allCardsSuit_bot2.length;i++){
-                    if(allCardsSuit_bot2[i] == '♥'){
+                    if(allCardsSuit_bot2[i] == 'cuori'){
                         allCardsSuit_bot2[i] = 1;
-                    } else if(allCardsSuit_bot2[i] == '♦'){
+                    } else if(allCardsSuit_bot2[i] == 'quadri'){
                         allCardsSuit_bot2[i] = 2;
-                    } else if(allCardsSuit_bot2[i] == '♣'){
+                    } else if(allCardsSuit_bot2[i] == 'fiori'){
                         allCardsSuit_bot2[i] = 3;
-                    } else if(allCardsSuit_bot2[i] == '♠'){
+                    } else if(allCardsSuit_bot2[i] == 'picche'){
                         allCardsSuit_bot2[i] = 4;
                     }
                 }
@@ -3301,12 +2991,15 @@ function startGame_it(){
     rank = ranks[Math.floor(Math.random() * ranks.length)];
     playerHand[0] = rank;
     playerHand[1] = suit;
-
     const cartaPlayer = document.createElement('div');
     cartaPlayer.className = 'card';
-    cartaPlayer.textContent += `${playerHand[0]} ${playerHand[1]}`;
-    cartaPlayer.style.fontSize = '40px';
-    playerCards2.appendChild(cartaPlayer);
+    const img = document.createElement('img');
+    img.src = `${playerHand[0]}_${playerHand[1]}.jpg`;
+    img.style.width = '100px';
+    img.style.height = '142px';
+    img.style.border = "3px solid black";
+    playerCards2.appendChild(img);
+    audio2.play();
     cartaPlayer.style.cursor = 'pointer';
     cartaPlayer.addEventListener('click', () => {
         cartaPlayer.style.transform = 'scale(1.2)';
@@ -3333,8 +3026,13 @@ function startGame_it(){
 
         const cartaPlayer = document.createElement('div');
         cartaPlayer.className = 'card';
-        cartaPlayer.textContent += `${playerHand[2]} ${playerHand[3]}`;
-        playerCards2.appendChild(cartaPlayer);
+        const img2 = document.createElement('img');
+        img2.src = `${playerHand[2]}_${playerHand[3]}.jpg`;
+        img2.style.width = '100px';
+        img2.style.height = '142px';
+        img2.style.border = "3px solid black";
+        playerCards2.appendChild(img2);
+        audio2.play();
         cartaPlayer.style.cursor = 'pointer';
         cartaPlayer.style.fontSize = '40px';
         cartaPlayer.addEventListener('click', () => {
@@ -3380,6 +3078,19 @@ function startGame_it(){
             playerBet2 = 0;
             opponentBet2 = 0;
             commonCard2.innerHTML = '';
+            opponentCards2.innerHTML = '';
+            const img8 = document.createElement('img');
+            img8.src = `${opponentHand[0]}_${opponentHand[1]}.jpg`;
+            img8.style.width = '100px';
+            img8.style.height = '142px';
+            img8.style.border = "3px solid black";
+            opponentCards2.appendChild(img8);   
+            const img9 = document.createElement('img');
+            img9.src = `${opponentHand[2]}_${opponentHand[3]}.jpg`;
+            img9.style.width = '100px';
+            img9.style.height = '142px';
+            img9.style.border = "3px solid black";  
+            opponentCards2.appendChild(img9);  
         }
     };
 
@@ -3467,7 +3178,7 @@ function startGame_it(){
             playerBetElement2.style.color = 'green';
             turni2.textContent = "Turno del Bot";
             if(all_in3 == true || made_allin2 == true) {
-                if(turno == 2) flop_it(true, false);
+                if(turno == 2 || turno == 1) flop_it(true, false);
                 if(turno == 3) river_it(true, false);
                  if(turno == 4) showdown_it(true, false);
                 } else{
@@ -3503,9 +3214,14 @@ function startGame_it(){
             commonCards[1] = suit;
             const cardElement = document.createElement('div');
             cardElement.className = 'card centre';
-            cardElement.textContent += `${commonCards[0]} ${commonCards[1]}`;
-            cardElement.style.fontSize = '40px';
+            const img3 = document.createElement('img');
+            img3.src = `${commonCards[0]}_${commonCards[1]}.jpg`;
+            img3.style.width = '100px';
+            img3.style.height = '142px';
+            img3.style.border = "3px solid black";
+            cardElement.appendChild(img3);
             commonCard2.appendChild(cardElement);
+            audio2.play();
             cardElement.style.cursor = 'pointer';
             cardElement.addEventListener('click', () => {
                 cardElement.style.transform = 'scale(1.2)';
@@ -3520,9 +3236,14 @@ function startGame_it(){
                 commonCards[3] = suit;
                 const cardElement = document.createElement('div');
                 cardElement.className = 'card centre';
-                cardElement.textContent += `${commonCards[2]} ${commonCards[3]}`;
-                cardElement.style.fontSize = '40px';
+                const img4 = document.createElement('img');
+                img4.src = `${commonCards[2]}_${commonCards[3]}.jpg`;
+                img4.style.width = '100px';
+                img4.style.height = '142px';
+                img4.style.border = "3px solid black";
+                cardElement.appendChild(img4);
                 commonCard2.appendChild(cardElement);
+                audio2.play();
                 cardElement.style.cursor = 'pointer';
                 cardElement.addEventListener('click', () => {
                     cardElement.style.transform = 'scale(1.2)';
@@ -3538,9 +3259,15 @@ function startGame_it(){
                 commonCards[5] = suit;
                 const cardElement = document.createElement('div');
                 cardElement.className = 'card centre';
-                cardElement.textContent += `${commonCards[4]} ${commonCards[5]}`;
-                cardElement.style.fontSize = '40px';
+                const img5 = document.createElement('img');
+                img5.src = `${commonCards[4]}_${commonCards[5]}.jpg`;
+                img5.style.width = '100px';
+                img5.style.height = '142px';
+                img5.style.border = "3px solid black";
+                cardElement.appendChild(img5);
                 commonCard2.appendChild(cardElement);
+                audio2.play();
+                cardElement.style.fontSize = '40px';
                 cardElement.style.cursor = 'pointer';
                 cardElement.addEventListener('click', () => {
                     cardElement.style.transform = 'scale(1.2)';
@@ -3556,74 +3283,7 @@ function startGame_it(){
             let playerHand2 = [...playerHand];
             let opponentHand2 = [...opponentHand];
             let carta_alta_player, carta_alta_opponent;
-            switch (playerHand2[0]) {
-                case 'A':
-                    playerHand2[0] = 14;
-                    break;
-                case 'K':
-                    playerHand2[0] = 13;
-                    break;
-                case 'Q':
-                    playerHand2[0] = 12;
-                    break;
-                case 'J':
-                    playerHand2[0] = 11;
-                    break;
-                case '10':
-                    playerHand2[0] = 10;
-                    break;
-            }
-            switch (playerHand2[2]) {
-                case 'A':
-                    playerHand2[2] = 14;
-                    break;
-                case 'K':
-                    playerHand2[2] = 13;
-                    break;
-                case 'Q':
-                    playerHand2[2] = 12;
-                    break;
-                case 'J':
-                    playerHand2[2] = 11;
-                    break;
-                case '10':
-                    playerHand2[2] = 10;
-                    break;
-            }
-            switch (opponentHand2[0]) {
-                case 'A':
-                    opponentHand2[0] = 14;
-                    break;
-                case 'K':
-                    opponentHand2[0] = 13;
-                    break;
-                case 'Q':
-                    opponentHand2[0] = 12;
-                    break;
-                case 'J':
-                    opponentHand2[0] = 11;
-                    break;
-                case '10':
-                    opponentHand2[0] = 10;
-                    break;
-            }
-            switch (opponentHand2[2]) {
-                case 'A':
-                    opponentHand2[2] = 14;
-                    break;
-                case 'K':
-                    opponentHand2[2] = 13;
-                    break;
-                case 'Q':
-                    opponentHand2[2] = 12;
-                    break;
-                case 'J':
-                    opponentHand2[2] = 11;
-                    break;
-                case '10':
-                    opponentHand2[2] = 10;
-                    break;
-            }
+            
             if(playerHand2[0] >= playerHand2[2]) {
                 carta_alta_player = playerHand2[0];
             } else if(playerHand2[0] < playerHand2[2]) {
@@ -3637,8 +3297,8 @@ function startGame_it(){
             punteggio_p += carta_alta_player / 100;
             punteggio_b += carta_alta_opponent / 100;
             switch (playerHand[0]) {
-                case 'A':
-                    if(playerHand[2] == 'A') {
+                case '14':
+                    if(playerHand[2] == '14') {
                         punteggio_p += Coppia_AA;
                         if(playerHand[1] == playerHand[3]) {
                             punteggio_p += 0.04;
@@ -3717,24 +3377,24 @@ function startGame_it(){
                         }
                     }
                     break;
-                case 'J':
-                    if(playerHand[2] == 'J') {
+                case '11':
+                    if(playerHand[2] == '11') {
                         punteggio_p += Coppia_JJ;
                         if(playerHand[1] == playerHand[3]) {
                             punteggio_p += 0.04;
                         }
                     }
                     break;
-                case 'Q':
-                    if(playerHand[2] == 'Q') {
+                case '12':
+                    if(playerHand[2] == '12') {
                         punteggio_p += Coppia_QQ;
                         if(playerHand[1] == playerHand[3]) {
                             punteggio_p += 0.04;
                         }
                     }
                     break;
-                case 'K':
-                    if(playerHand[2] == 'K') {
+                case '13':
+                    if(playerHand[2] == '13') {
                         punteggio_p += Coppia_KK;
                         if(playerHand[1] == playerHand[3]) {
                             punteggio_p += 0.04;
@@ -3743,8 +3403,8 @@ function startGame_it(){
                     break;
             }
             switch (opponentHand[0]) {
-                case 'A':
-                    if (opponentHand[2] == 'A') {
+                case '14':
+                    if (opponentHand[2] == '14') {
                         punteggio_b += Coppia_AA;
                         if (opponentHand[1] == opponentHand[3]) {
                             punteggio_b += 0.04;
@@ -3823,24 +3483,24 @@ function startGame_it(){
                         }
                     }
                     break;
-                case 'J':
-                    if (opponentHand[2] == 'J') {
+                case '11':
+                    if (opponentHand[2] == '11') {
                         punteggio_b += Coppia_JJ;
                          if (opponentHand[1] == opponentHand[3]) {
                             punteggio_b += 0.04;
                         }
                     }
                     break;
-                case 'Q':
-                    if (opponentHand[2] == 'Q') {
+                case '12':
+                    if (opponentHand[2] == '12') {
                         punteggio_b += Coppia_QQ;
                          if (opponentHand[1] == opponentHand[3]) {
                             punteggio_b += 0.04;
                         }
                     }
                     break;
-                case 'K':
-                    if (opponentHand[2] == 'K') {
+                case '13':
+                    if (opponentHand[2] == '13') {
                         punteggio_b += Coppia_KK;
                          if (opponentHand[1] == opponentHand[3]) {
                             punteggio_b += 0.04;
@@ -3867,7 +3527,7 @@ function startGame_it(){
             opponentBet2 = 0;
             commonCard2.innerHTML = '';
             
-        } else if(punteggio_b > punteggio_p) {
+        } else if(punteggio_b < punteggio_p) {
             countdownElement2.style.fontSize = "30px";
             countdownElement2.style.display = 'block';
             countdownElement2.textContent = "GIOCATORE vince " + (opponentBet2 + playerBet2) + " 💰";
@@ -3907,6 +3567,7 @@ function startGame_it(){
 
         }
     }
+
     function river_it(all_in1, all_in2){
         cond2 = true;
         if(!all_in2){
@@ -3925,7 +3586,14 @@ function startGame_it(){
             commonCards[7] = suit;
             const cardElement = document.createElement('div');
             cardElement.className = 'card centre';
-            cardElement.textContent += `${commonCards[6]} ${commonCards[7]}`;
+            const img6 = document.createElement('img');
+            img6.src = `${commonCards[6]}_${commonCards[7]}.jpg`;
+            img6.style.width = '100px';
+            img6.style.height = '142px';
+            img6.style.border = "3px solid black";
+            cardElement.appendChild(img6);
+            commonCard2.appendChild(cardElement);
+            audio2.play();
             cardElement.style.fontSize = '40px';
             commonCard2.appendChild(cardElement);
             cardElement.style.cursor = 'pointer';
@@ -3944,42 +3612,6 @@ function startGame_it(){
             let i, j, app;
             let allCardsValue_player = [];
             let allCardsSuit_player = [];
-            switch (playerHand[0]) {
-                case 'A':
-                    playerHand[0] = 14;
-                    break;
-                case 'K':
-                    playerHand[0] = 13;
-                    break;
-                case 'Q':
-                    playerHand[0] = 12;
-                    break;
-                case 'J':
-                    playerHand[0] = 11;
-                    break;
-                case '10':
-                    playerHand[0] = 10;
-                    break;
-            }
-
-            switch (playerHand[2]) {
-                case 'A':
-                    playerHand[2] = 14;
-                    break;
-                case 'K':
-                    playerHand[2] = 13;
-                    break;
-                case 'Q':
-                    playerHand[2] = 12;
-                    break;
-                case 'J':
-                    playerHand[2] = 11;
-                    break;
-                case '10':
-                    playerHand[2] = 10;
-                    break;
-            }
-            
             allCardsValue_player = [playerHand[0], playerHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6]];
             allCardsSuit_player = [playerHand[1], playerHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7]];
 
@@ -4076,13 +3708,13 @@ function startGame_it(){
             } else {
                 let allCardsSuit_bot2 = [...allCardsSuit_bot];
                 for(i=0;i<allCardsSuit_bot2.length;i++){
-                    if(allCardsSuit_bot2[i] == '♥'){
+                    if(allCardsSuit_bot2[i] == 'cuori'){
                         allCardsSuit_bot2[i] = 1;
-                    } else if(allCardsSuit_bot2[i] == '♦'){
+                    } else if(allCardsSuit_bot2[i] == 'quadri'){
                         allCardsSuit_bot2[i] = 2;
-                    } else if(allCardsSuit_bot2[i] == '♣'){
+                    } else if(allCardsSuit_bot2[i] == 'fiori'){
                         allCardsSuit_bot2[i] = 3;
-                    } else if(allCardsSuit_bot2[i] == '♠'){
+                    } else if(allCardsSuit_bot2[i] == 'picche'){
                         allCardsSuit_bot2[i] = 4;
                     }
                 }
@@ -4225,13 +3857,13 @@ function startGame_it(){
         }
         let allCardsSuit_player2 = [...allCardsSuit_player];
                 for(i=0;i<allCardsSuit_player2.length;i++){
-                    if(allCardsSuit_player2[i] == '♥'){
+                    if(allCardsSuit_player2[i] == 'cuori'){
                         allCardsSuit_player2[i] = 1;
-                    } else if(allCardsSuit_player2[i] == '♦'){
+                    } else if(allCardsSuit_player2[i] == 'quadri'){
                         allCardsSuit_player2[i] = 2;
-                    } else if(allCardsSuit_player2[i] == '♣'){
+                    } else if(allCardsSuit_player2[i] == 'fiori'){
                         allCardsSuit_player2[i] = 3;
-                    } else if(allCardsSuit_player2[i] == '♠'){
+                    } else if(allCardsSuit_player2[i] == 'picche'){
                         allCardsSuit_player2[i] = 4;
                     }
                 }
@@ -4265,7 +3897,7 @@ function startGame_it(){
             opponentBet2 = 0;
             commonCard2.innerHTML = '';
             
-        } else if(punteggio_b > punteggio_p) {
+        } else if(punteggio_b < punteggio_p) {
             countdownElement2.style.fontSize = "30px";
             countdownElement2.style.display = 'block';
             countdownElement2.textContent = "GIOCATORE vince " + (opponentBet2 + playerBet2) + " 💰";
@@ -4323,7 +3955,14 @@ function startGame_it(){
             commonCards[9] = suit;
             const cardElement = document.createElement('div');
             cardElement.className = 'card centre';
-            cardElement.textContent += `${commonCards[8]} ${commonCards[9]}`;
+            const img7 = document.createElement('img');
+            img7.src = `${commonCards[8]}_${commonCards[9]}.jpg`;
+            img7.style.width = '100px';
+            img7.style.height = '142px';
+            img7.style.border = "3px solid black";
+            cardElement.appendChild(img7);
+            commonCard2.appendChild(cardElement);
+            audio2.play();
             cardElement.style.fontSize = '40px';
             commonCard2.appendChild(cardElement);
             cardElement.style.cursor = 'pointer';
@@ -4536,13 +4175,13 @@ function startGame_it(){
         }
         let allCardsSuit_player2 = [...allCardsSuit_player];
                 for(i=0;i<allCardsSuit_player2.length;i++){
-                    if(allCardsSuit_player2[i] == '♥'){
+                    if(allCardsSuit_player2[i] == 'cuori'){
                         allCardsSuit_player2[i] = 1;
-                    } else if(allCardsSuit_player2[i] == '♦'){
+                    } else if(allCardsSuit_player2[i] == 'quadri'){
                         allCardsSuit_player2[i] = 2;
-                    } else if(allCardsSuit_player2[i] == '♣'){
+                    } else if(allCardsSuit_player2[i] == 'fiori'){
                         allCardsSuit_player2[i] = 3;
-                    } else if(allCardsSuit_player2[i] == '♠'){
+                    } else if(allCardsSuit_player2[i] == 'picche'){
                         allCardsSuit_player2[i] = 4;
                     }
                 }
@@ -4735,13 +4374,13 @@ function startGame_it(){
         }
         let allCardsSuit_bot2 = [...allCardsSuit_bot];
                 for(i=0;i<allCardsSuit_bot2.length;i++){
-                    if(allCardsSuit_bot2[i] == '♥'){
+                    if(allCardsSuit_bot2[i] == 'cuori'){
                         allCardsSuit_bot2[i] = 1;
-                    } else if(allCardsSuit_bot2[i] == '♦'){
+                    } else if(allCardsSuit_bot2[i] == 'quadri'){
                         allCardsSuit_bot2[i] = 2;
-                    } else if(allCardsSuit_bot2[i] == '♣'){
+                    } else if(allCardsSuit_bot2[i] == 'fiori'){
                         allCardsSuit_bot2[i] = 3;
-                    } else if(allCardsSuit_bot2[i] == '♠'){
+                    } else if(allCardsSuit_bot2[i] == 'picche'){
                         allCardsSuit_bot2[i] = 4;
                     }
                 }
@@ -4774,8 +4413,21 @@ function startGame_it(){
             playerBet2 = 0;
             opponentBet2 = 0;
             commonCard2.innerHTML = '';
-            
-        } else if(punteggio_b > punteggio_p) {
+             opponentCards2.innerHTML = '';
+            const img8 = document.createElement('img');
+            img8.src = `${opponentHand[0]}_${opponentHand[1]}.jpg`;
+            img8.style.width = '100px';
+            img8.style.height = '142px';
+            img8.style.border = "3px solid black";
+            opponentCards2.appendChild(img8);   
+            const img9 = document.createElement('img');
+            img9.src = `${opponentHand[2]}_${opponentHand[3]}.jpg`;
+            img9.style.width = '100px';
+            img9.style.height = '142px';
+            img9.style.border = "3px solid black";  
+            opponentCards2.appendChild(img9);  
+
+        } else if(punteggio_b < punteggio_p) {
             countdownElement2.style.fontSize = "30px";
             countdownElement2.style.display = 'block';
             countdownElement2.textContent = "GIOCATORE vince " + (opponentBet2 + playerBet2) + " 💰";
@@ -4792,6 +4444,19 @@ function startGame_it(){
             playerBet2 = 0;
             opponentBet2 = 0;
             commonCard2.innerHTML = '';
+             opponentCards2.innerHTML = '';
+            const img8 = document.createElement('img');
+            img8.src = `${opponentHand[0]}_${opponentHand[1]}.jpg`;
+            img8.style.width = '100px';
+            img8.style.height = '142px';
+            img8.style.border = "3px solid black";
+            opponentCards2.appendChild(img8);   
+            const img9 = document.createElement('img');
+            img9.src = `${opponentHand[2]}_${opponentHand[3]}.jpg`;
+            img9.style.width = '100px';
+            img9.style.height = '142px';
+            img9.style.border = "3px solid black";  
+            opponentCards2.appendChild(img9);  
         } else {
             countdownElement2.style.fontSize = "30px";
             countdownElement2.style.display = 'block';
@@ -4811,6 +4476,19 @@ function startGame_it(){
             playerBet2 = 0;
             opponentBet2 = 0;
             commonCard2.innerHTML = '';
+            opponentCards2.innerHTML = '';
+            const img8 = document.createElement('img');
+            img8.src = `${opponentHand[0]}_${opponentHand[1]}.jpg`;
+            img8.style.width = '100px';
+            img8.style.height = '142px';
+            img8.style.border = "3px solid black";
+            opponentCards2.appendChild(img8);   
+            const img9 = document.createElement('img');
+            img9.src = `${opponentHand[2]}_${opponentHand[3]}.jpg`;
+            img9.style.width = '100px';
+            img9.style.height = '142px';
+            img9.style.border = "3px solid black";  
+            opponentCards2.appendChild(img9);  
         }
         }
     }
@@ -4839,8 +4517,8 @@ function startGame_it(){
             
             indicatore_di_cognizione = 0.11;
             switch (opponentHand[0]) {
-                case 'A':
-                    if (opponentHand[2] == 'A') {
+                case '14':
+                    if (opponentHand[2] == '14') {
                         indicatore_di_cognizione += Coppia_AA;
                     }
                     break;
@@ -4889,18 +4567,18 @@ function startGame_it(){
                         indicatore_di_cognizione += Coppia_10_10;
                     }
                     break;
-                case 'J':
-                    if (opponentHand[2] == 'J') {
+                case '11':
+                    if (opponentHand[2] == '11') {
                         indicatore_di_cognizione += Coppia_JJ;
                     }
                     break;
-                case 'Q':
-                    if (opponentHand[2] == 'Q') {
+                case '12':
+                    if (opponentHand[2] == '12') {
                         indicatore_di_cognizione += Coppia_QQ;
                     }
                     break;
-                case 'K':
-                    if (opponentHand[2] == 'K') {
+                case '13':
+                    if (opponentHand[2] == '13') {
                         indicatore_di_cognizione += Coppia_KK;
                     }
                     break;
@@ -5056,92 +4734,6 @@ all_in_bot = function(all_in1) {
 
 function turno_flop_bot_it(call, raise, all_in1){
 indicatore_di_cognizione = 0.11;
-switch (opponentHand[0]) {
-    case 'A':
-        opponentHand[0] = 14;
-        break;
-    case 'K':
-        opponentHand[0] = 13;
-        break;
-    case 'Q':
-        opponentHand[0] = 12;
-        break;
-    case 'J':
-        opponentHand[0] = 11;
-        break;
-    case '10':
-        opponentHand[0] = 10;
-        break;
-}
-
-switch (opponentHand[2]) {
-    case 'A':
-        opponentHand[2] = 14;
-        break;
-    case 'K':
-        opponentHand[2] = 13;
-        break;
-    case 'Q':
-        opponentHand[2] = 12;
-        break;
-    case 'J':
-        opponentHand[2] = 11;
-        break;
-    case '10':
-        opponentHand[2] = 10;
-        break;
-}
-switch (commonCards[0]) {
-    case 'A':
-        commonCards[0] = 14;
-        break;
-    case 'K':
-        commonCards[0] = 13;
-        break;
-    case 'Q':
-        commonCards[0] = 12;
-        break;
-    case 'J':
-        commonCards[0] = 11;
-        break;
-    case '10':
-        commonCards[0] = 10;
-        break;
-}
-switch (commonCards[2]) {
-    case 'A':
-        commonCards[2] = 14;
-        break;
-    case 'K':
-        commonCards[2] = 13;
-        break;
-    case 'Q':
-        commonCards[2] = 12;
-        break;
-    case 'J':
-        commonCards[2] = 11;
-        break;
-    case '10':
-        commonCards[2] = 10;
-        break;
-}
-switch (commonCards[4]) {
-    case 'A':
-        commonCards[4] = 14;
-        break;
-    case 'K':
-        commonCards[4] = 13;
-        break;
-    case 'Q':
-        commonCards[4] = 12;
-        break;
-    case 'J':
-        commonCards[4] = 11;
-        break;
-    case '10':
-        commonCards[4] = 10;
-        break;
-}
 allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4]];
 allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5]];
 let app, i, j;
@@ -5234,109 +4826,6 @@ if(indicatore_di_cognizione < 0.14) {
 } 
 function turno_river_bot_it(call, raise, all_in1){
 indicatore_di_cognizione = 0.11;
-switch (opponentHand[0]) {
-    case 'A':
-        opponentHand[0] = 14;
-        break;
-    case 'K':
-        opponentHand[0] = 13;
-        break;
-    case 'Q':
-        opponentHand[0] = 12;
-        break;
-    case 'J':
-        opponentHand[0] = 11;
-        break;
-    case '10':
-        opponentHand[0] = 10;
-        break;
-}
-
-switch (opponentHand[2]) {
-    case 'A':
-        opponentHand[2] = 14;
-        break;
-    case 'K':
-        opponentHand[2] = 13;
-        break;
-    case 'Q':
-        opponentHand[2] = 12;
-        break;
-    case 'J':
-        opponentHand[2] = 11;
-        break;
-    case '10':
-        opponentHand[2] = 10;
-        break;
-}
-switch (commonCards[0]) {
-    case 'A':
-        commonCards[0] = 14;
-        break;
-    case 'K':
-        commonCards[0] = 13;
-        break;
-    case 'Q':
-        commonCards[0] = 12;
-        break;
-    case 'J':
-        commonCards[0] = 11;
-        break;
-    case '10':
-        opponentHand[4] = 10;
-        break;
-}
-switch (commonCards[2]) {
-    case 'A':
-        commonCards[2] = 14;
-        break;
-    case 'K':
-        commonCards[2] = 13;
-        break;
-    case 'Q':
-        commonCards[2] = 12;
-        break;
-    case 'J':
-        commonCards[2] = 11;
-        break;
-    case '10':
-        commonCards[2] = 10;
-        break;
-}
-switch (commonCards[4]) {
-    case 'A':
-        commonCards[4] = 14;
-        break;
-    case 'K':
-        commonCards[4] = 13;
-        break;
-    case 'Q':
-        commonCards[4] = 12;
-        break;
-    case 'J':
-        commonCards[4] = 11;
-        break;
-    case '10':
-        commonCards[4] = 10;
-        break;
-}
-switch (commonCards[6]) {
-    case 'A':
-        commonCards[6] = 14;
-        break;
-    case 'K':
-        commonCards[6] = 13;
-        break;
-    case 'Q':
-        commonCards[6] = 12;
-        break;
-    case 'J':
-        commonCards[6] = 11;
-        break;
-    case '10':
-        commonCards[6] = 10;
-        break;
-}
 allCardsValue_bot = [opponentHand[0], opponentHand[2], commonCards[0], commonCards[2], commonCards[4], commonCards[6]];
 allCardsSuit_bot = [opponentHand[1], opponentHand[3], commonCards[1], commonCards[3], commonCards[5], commonCards[7]];
 let app, i, j;
@@ -5453,13 +4942,13 @@ if (allCardsValue_bot[0] === 14 && allCardsValue_bot[1] === 13 && allCardsValue_
 }
 let allCardsSuit_bot2 = [...allCardsSuit_bot];
     for(i=0;i<allCardsSuit_bot2.length;i++){
-        if(allCardsSuit_bot2[i] == '♥'){
+        if(allCardsSuit_bot2[i] == 'cuori'){
             allCardsSuit_bot2[i] = 1;
-        } else if(allCardsSuit_bot2[i] == '♦'){
+        } else if(allCardsSuit_bot2[i] == 'quadri'){
             allCardsSuit_bot2[i] = 2;
-        } else if(allCardsSuit_bot2[i] == '♣'){
+        } else if(allCardsSuit_bot2[i] == 'fiori'){
             allCardsSuit_bot2[i] = 3;
-        } else if(allCardsSuit_bot2[i] == '♠'){
+        } else if(allCardsSuit_bot2[i] == 'picche'){
             allCardsSuit_bot2[i] = 4;
         }
     }
@@ -5697,13 +5186,13 @@ else if(allCardsValue_bot[0] == allCardsValue_bot[1]) {
 }
 let allCardsSuit_bot2 = [...allCardsSuit_bot];
     for(i=0;i<allCardsSuit_bot2.length;i++){
-        if(allCardsSuit_bot2[i] == '♥'){
+        if(allCardsSuit_bot2[i] == 'cuori'){
             allCardsSuit_bot2[i] = 1;
-        } else if(allCardsSuit_bot2[i] == '♦'){
+        } else if(allCardsSuit_bot2[i] == 'quadri'){
             allCardsSuit_bot2[i] = 2;
-        } else if(allCardsSuit_bot2[i] == '♣'){
+        } else if(allCardsSuit_bot2[i] == 'fiori'){
             allCardsSuit_bot2[i] = 3;
-        } else if(allCardsSuit_bot2[i] == '♠'){
+        } else if(allCardsSuit_bot2[i] == 'picche'){
             allCardsSuit_bot2[i] = 4;
         }
     }
